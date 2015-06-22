@@ -1,4 +1,4 @@
-FROM ruby
+ROM ruby
 MAINTAINER liumengxinfly@gmail.com
 
 RUN gem install jekyll rdiscount kramdown
@@ -7,5 +7,5 @@ EXPOSE 4000
 
 WORKDIR /src
 ENTRYPOINT ["jekyll"]
-CMD ["serve", "-H 0.0.0.0"]
+CMD ["serve"]
 ADD . /src
