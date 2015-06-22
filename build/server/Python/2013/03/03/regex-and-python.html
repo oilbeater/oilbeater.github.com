@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+         **
+         * Auther:      掌心
+         * Contact:     http://www.zhanxin.info
+         * Create:      2013.08.10
+         * Theme Name:  Kunka
+         * Authorize:   BY-NC-SA
+         **
+        -->
+        <meta charset="utf-8">
+        <meta name="baidu-site-verification" content="iqhuonCLkd" />
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?0432ef76122f4980cc9591d92b64cfa8";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+        <title>正则 in Python - Oilbeater</title>
+        <!-- meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="generator" content="Jekyll" />
+        <meta name="author" content="Oilbeater" />
+        <meta name="description" content="简单说一下为什么要用正则表达式，因为可以用简洁的方式处理几乎所有的字符串查找和匹配，节省生命，节省脑子。" />
+        <meta name="keywords" content="" />
+        <!-- atom -->
+        <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+        <link rel="shortcut icon" href="http://jekyllrb.com/favicon.png" type="image/x-icon" />
+        <!-- font-awesome -->
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+        <link href='http://fonts.useso.com/css?family=Spirax' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="/css/syntax.css">
+        <link rel="stylesheet" href="/css/main.css">
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-31254339-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0];
+                  s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        
+    </head>
+    <body>
+        <div class="head fn-clear">
+            <div class="header">
+                <h1 class="logo">
+                    <a href=""><i class="icon-anchor"></i></a>
+                </h1>
+                <nav class="nav">
+                    <ul>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/index.html">
+                                首页
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/categories.html">
+                                分类目录
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/archives.html">
+                                文章归档
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/contact.html">
+                                我是谁
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/links.html">
+                                友情链接
+                            </a>
+                            
+                        </li>
+                        
+                    </ul>
+                </nav>
+                <div class="follow">
+                    
+                    <a href="/atom.xml" target="_blank"><i class="icon-rss"></i></a>
+                    
+                    <a href="http://weibo.com/oilbeater" target="_blank"><i class="icon-weibo"></i></a>
+                    
+                    <a href="http://renren.com/231128018" target="_blank"><i class="icon-renren"></i></a>
+                    
+                    <a href="http://github.com/oilbeater" target="_blank"><i class="icon-github-alt"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="contain fn-clear">
+            <div class="container fn-clear">
+                <div class="main">
+                    <div class="article article-post">
+    <h2 class="title">正则 in Python</h2>
+    <div class="info">
+        <span class="info-title"><i class="icon-calendar"></i> Published: </span>
+        <span class="info-date">03 Mar 2013</span>
+        <span class="info-title"><i class="icon-folder-open"></i> Category: </span>
+        <span class="info-link"><a href="/categories.html#Python-ref" >Python</a></span>
+    </div>
+    <p>简单说一下为什么要用正则表达式，因为可以用简洁的方式处理几乎所有的字符串查找和匹配，节省生命，节省脑子。</p>
+
+<p>文中的内容主要参考自<a href="http://book.douban.com/subject/2154713/">《精通正则表达式 第三版》</a>
+和<a href="http://book.douban.com/subject/3112503/">《Python 核心编程 第二版》</a>以及<a href="http://docs.python.org/2/library/re.html">Python re</a>，主要做一下总结和笔记。感兴趣的同学可以深入看一下这两本书最后再看一下标准。</p>
+
+<h2>Regex 中的特殊字符和规则</h2>
+
+<p>这里介绍的是Python 2.7支持的部分，有些工具会支持更多高级的用法</p>
+
+<h3>位置匹配</h3>
+
+<p>^   匹配行首</p>
+
+<p>$   匹配行末</p>
+
+<h3>贪婪匹配</h3>
+
+<p>.   匹配任何字符（换行符除外）</p>
+
+<p>*    匹配任意次或不匹配</p>
+
+<p>+    匹配至少一次</p>
+
+<p>?   匹配一次或不匹配</p>
+
+<p>{N} 匹配N次</p>
+
+<p>{M:N}   匹配M次到N次</p>
+
+<h3>非贪婪匹配</h3>
+
+<p>*?,+?,??,{M:N}?</p>
+
+<h3>多选结构</h3>
+
+<p>[...] 匹配出现任一字符</p>
+
+<p>[0-9a-zA-Z]   范围匹配</p>
+
+<p>[^...]    不匹配任一字符</p>
+
+<p>re1|re2 匹配任一表达式</p>
+
+<h3>分组</h3>
+
+<p>(...)   分组并捕获</p>
+
+<p>(?:...) 分组不捕获</p>
+
+<h3>环视</h3>
+
+<p>(?=...) 顺序肯定环视</p>
+
+<p>(?!...) 顺序否定环视</p>
+
+<p>(?&lt;=...)    逆序肯定环视</p>
+
+<p>(?&lt;!...)    逆序否定环视</p>
+
+<h3>特殊字符</h3>
+
+<p>\number 捕获分组匹配</p>
+
+<p>\b  匹配单词边界(\A,\Z)</p>
+
+<p>\d  匹配数字</p>
+
+<p>\D  匹配非数字</p>
+
+<p>\s  匹配任一空白</p>
+
+<p>\S  匹配非空白</p>
+
+<p>\w  匹配任何数字和字母</p>
+
+<p>\W  匹配任意非数字和字母</p>
+
+<h2>Python re库</h2>
+
+<p>compile 编译出re对象</p>
+
+<p>I   忽略大小写flag</p>
+
+<p>M   多行模式flag</p>
+
+<p>search(paattern,string,flag)    匹配并返回match对象</p>
+
+<p>split(pattern,string,maxsplit,flags)    按pattern分割，pattern加括号会将分隔符输出</p>
+
+<p>findall/finditer(pattern,string,flags)  返回匹配列表/迭代器</p>
+
+<p>sub/subn(pattern,repl,string,count,flag)    替换/替换并返回替换次数</p>
+
+<h2>Python match 对象</h2>
+
+<p>group([group1,...]) 返回捕获分组内容</p>
+
+<p>groups()    返回捕获内容列表</p>
+
+<p>groupdict() 返回列表名</p>
+
+<p>start、end([group])    返回匹配位置开始/结束</p>
+
+<p>re  匹配的re表达式</p>
+
+<p>string  源字符串</p>
+
+
+<hr>
+    <div>
+        <p>欢迎大家在讨论区有血性的争论、动手、拍砖、捅刀子，亮出你的看法来！本博客已经全文RSS输出，大家可以通过订阅oilbeater.com/atom.xml即可获得博客更新。或者关注我的微博<a href="http://weibo.com/oilbeater/">@oilbeater</a>在上面我会通知我的博客更新并且还会分享一些有意思的技术文章，欢迎大家关注。</p>
+    </div>
+    <div class="contact">
+        <a href="mailto:liumengxinfly@gmail.com">liumengxinfly@gmail.com</a>
+    </div>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1377168947699154" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    <br>
+    <nav class="article-previous fn-clear">
+        
+        <a class="prev" href="/生活感悟/2013/01/01/looking-to-2013.html" rel="bookmark">&laquo;&nbsp;展望2013</a>
+        
+        
+        <a class="next" href="/读书笔记/2013/04/10/note-of-CppPrimer.html" rel="bookmark">C++ Primer笔记&nbsp;&raquo;</a>
+        
+    </nav>
+    <div class="comment">
+        
+            
+            <div class="ds-thread"></div>
+            
+        
+    </div>
+</div>
+
+                </div>
+                <div class="aside">
+                    <div class="aside-item">
+                        <div>
+<iframe width="100%" height="500" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=500&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=0&isWeibo=1&isFans=0&uid=1300038410&verifier=1c853142&dpc=1"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Recent Posts</h4>
+                        <ul class="list">
+                            
+                                <li><a href="/博客/2015/05/15/whyleaveali.html" title="为啥我要从阿里离职" rel="bookmark">为啥我要从阿里离职</a></li>
+                            
+                                <li><a href="/system/2015/03/22/recovery-services.html" title="分布式系统断电自恢复" rel="bookmark">分布式系统断电自恢复</a></li>
+                            
+                                <li><a href="/博客/2015/01/12/the-summary-of-blog.html" title="oilbeater博客回顾2014篇" rel="bookmark">oilbeater博客回顾2014篇</a></li>
+                            
+                                <li><a href="/nginx/2014/12/29/nginx-conf-from-zero.html" title="nginx 配置从零开始" rel="bookmark">nginx 配置从零开始</a></li>
+                            
+                                <li><a href="/docker/2014/11/11/docker-libcontainer-reading.html" title="一次奇幻的 docker libcontainer 代码阅读之旅" rel="bookmark">一次奇幻的 docker libcontainer 代码阅读之旅</a></li>
+                            
+                                <li><a href="/Linux/2014/09/15/linux-performance-tools-2.html" title="Linux 系统性能分析工具图解读（二）" rel="bookmark">Linux 系统性能分析工具图解读（二）</a></li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Links</h4>
+                        <ul class="list">
+                            
+                                
+                                    
+                                    <li><a href="http://coolchar.com" title="CoolChar" target="_blank">CoolChar</a></li>
+                                    
+                                    <li><a href="http://www.tianjun.ml/" title="Tian Jun" target="_blank">Tian Jun</a></li>
+                                    
+                                    <li><a href="http://http//yabuhoo.com/" title="Yabuhoo" target="_blank">Yabuhoo</a></li>
+                                    
+                                    <li><a href="http://www.kthinker.com/" title="Kthinker" target="_blank">Kthinker</a></li>
+                                    
+                                    <li><a href="http://pinderpeng.org/" title="Pinder" target="_blank">Pinder</a></li>
+                                    
+                                    <li><a href="http://chansh518.github.io/index.html" title="Chansh" target="_blank">Chansh</a></li>
+                                    
+                                    <li><a href="http://maziang.com" title="Mark墨客" target="_blank">Mark墨客</a></li>
+                                    
+                                
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="foot">
+            <div class="footer">
+                <p>Copyright 2013. All rights reserved. Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>, Design by <a href="http://www.zhanxin.info" target="_blank">zhanxin.info</a>.</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://libs.useso.com/js/jquery/1.8.3/jquery.min.js"></script>
+        
+            
+                
+                <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"oilbeater"};
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = 'http://static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                        || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                
+            
+        
+    </body>
+</html>

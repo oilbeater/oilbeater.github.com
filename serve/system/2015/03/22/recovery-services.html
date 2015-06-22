@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+         **
+         * Auther:      掌心
+         * Contact:     http://www.zhanxin.info
+         * Create:      2013.08.10
+         * Theme Name:  Kunka
+         * Authorize:   BY-NC-SA
+         **
+        -->
+        <meta charset="utf-8">
+        <meta name="baidu-site-verification" content="iqhuonCLkd" />
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?0432ef76122f4980cc9591d92b64cfa8";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+        <title>分布式系统断电自恢复 - Oilbeater</title>
+        <!-- meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="generator" content="Jekyll" />
+        <meta name="author" content="Oilbeater" />
+        <meta name="description" content="Just another Jekyll theme design and code by zhanxin.info." />
+        <meta name="keywords" content="" />
+        <!-- atom -->
+        <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+        <link rel="shortcut icon" href="http://jekyllrb.com/favicon.png" type="image/x-icon" />
+        <!-- font-awesome -->
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+        <link href='http://fonts.useso.com/css?family=Spirax' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="/css/syntax.css">
+        <link rel="stylesheet" href="/css/main.css">
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-31254339-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0];
+                  s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        
+    </head>
+    <body>
+        <div class="head fn-clear">
+            <div class="header">
+                <h1 class="logo">
+                    <a href=""><i class="icon-anchor"></i></a>
+                </h1>
+                <nav class="nav">
+                    <ul>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/index.html">
+                                首页
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/categories.html">
+                                分类目录
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/archives.html">
+                                文章归档
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/contact.html">
+                                我是谁
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/links.html">
+                                友情链接
+                            </a>
+                            
+                        </li>
+                        
+                    </ul>
+                </nav>
+                <div class="follow">
+                    
+                    <a href="/atom.xml" target="_blank"><i class="icon-rss"></i></a>
+                    
+                    <a href="http://weibo.com/oilbeater" target="_blank"><i class="icon-weibo"></i></a>
+                    
+                    <a href="http://renren.com/231128018" target="_blank"><i class="icon-renren"></i></a>
+                    
+                    <a href="http://github.com/oilbeater" target="_blank"><i class="icon-github-alt"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="contain fn-clear">
+            <div class="container fn-clear">
+                <div class="main">
+                    <div class="article article-post">
+    <h2 class="title">分布式系统断电自恢复</h2>
+    <div class="info">
+        <span class="info-title"><i class="icon-calendar"></i> Published: </span>
+        <span class="info-date">22 Mar 2015</span>
+        <span class="info-title"><i class="icon-folder-open"></i> Category: </span>
+        <span class="info-link"><a href="/categories.html#system-ref" >system</a></span>
+    </div>
+    <p>机房断电后各种服务该怎么恢复呢？</p>
+
+<p>首先当然是恢复供电机器重启，但是上面的服务该怎么办，派人去手工重启么？</p>
+
+<p>一个服务还好，但是一个机房这么多服务敲命令要累死了，怎么办？写个脚本执行启动命令，放到开机启动脚本 rc.local 里好了。</p>
+
+<p>可是掉的不止你一个服务，可能你启动依赖的服务也掉了，启动的还比你晚，启动根本就起不来怎么办？</p>
+
+<p>一个简单粗暴的方式，不断重试就好了。在 cron.d 下面放个任务每分钟执行一次，一看服务进程不存在就尝试重启。一方面不考虑依赖问题，另一方面还顺道解决了服务 crash 后的自恢复。</p>
+
+<p>可实际中有的服务在依赖没启动时是可以起来的，但是工作会不正常，而且不能再依赖启动之后自动恢复，还是需要手动重启。严重的时候不正常的服务还会导致依赖它的服务异常，这该怎么办呢？</p>
+
+<p>看样子似乎是无法摆脱依赖顺序而随心所欲的启动程序。那么就只能所有的服务各自汇报自己的服务上下游给一个人，然后那个人画一个启动流程图，告诉大家先干这个，再干那个么？嗯，一个如果机房里业务固定还好，如果不固定，今天加一个新应用，明天减一个旧应用，那么图就要改一遍。应用改个依赖，图又要改一遍，而且要这个画图的人时刻了解服务依赖的变化，想想就头疼。那么就没有个自动化的方法么？</p>
+
+<p>可以先参考一个类似的问题，systemd 是如何解决单机上开机程序之间的依赖问题。程序之间的依赖本质上来讲就是需要进行进程间的通信，而开机程序的进程间通信主要是通过 socket 和 dbus 来完成。systemd 的做法是预先建立好这些 socket 和 dbus，这样当一个程序发起通信时即使依赖程序还没启动完成，至少 socket 是打开的，可以先把请求 queue 住。这样发起请求的程序就会等待，而等依赖就绪就会处理这个请求，源程序就可以继续运行。这样理论上讲大多数情况下我们都不需要考虑程序间依赖，只需要把所有程序启动起来就好了。</p>
+
+<p>实现一个分布式的 systemd 还是有些困难的，但是这种思想很有启发。我们可以脱离集中化控制的思想，把分布式系统的重启任务分布式的解决。分布式服务之间的依赖本质上也是进程间通信，而且绝大多数都是 tcp/udp 请求。简单的来说一个服务只需要判断他的上游服务是否 ready 来判断自己要不要启动，每个服务只需要在自己的机器上验证这个条件，不断地重试，整个服务就可以自动的按照顺序自发启动。</p>
+
+<p>这样的话我们就无需一个集中式的管理，每个服务自己梳理自己的依赖来进行自启动即可。除了简单的 tcp 探测也可以对 web 服务进行 http 的探测来进一步保证依赖的可用性。</p>
+
+<p>在 github 上新建了个项目可以简单的通过一个 yaml 配置文件描述进程名，依赖和启动脚本，即可自动生成自启动脚本，大家有兴趣的可以去尝试一下 <a href="https://github.com/oilbeater/Autoheal">https://github.com/oilbeater/Autoheal</a>。</p>
+
+<p>把 README 抄录入下</p>
+
+<h1>Autoheal</h1>
+
+<p>A simple script that auto restart distribute service from power cut or service crash.</p>
+
+<h1>Where it come?</h1>
+
+<p>All services will crash after a power cut.When power comes back, services recovery may face these problems:</p>
+
+<ol>
+<li>No auto restart and service will not work</li>
+<li>Service restarts before dependencies getting ready and restart may crash.</li>
+<li>Service restarts before dependencies getting ready and the service can not work correctly.</li>
+</ol>
+
+<p>What we want is ordered restart.But as more and more services connect together,it&#39;s complex to find and maintain a global order. What we provide here is a simple way to deal with th problem.</p>
+
+<h1>How it work?</h1>
+
+<p>A centralized restart system may hard to implement,but same effect can be achieved by other method.Let&#39;s have a look at how systemd deal with the process dependency at startup time.</p>
+
+<p>Processe dependency is caused by inter-process communication (IPC) in essence. Socket and dbus are two main way of IPC during startup time.What systemd dose are pre-create these sockets and dbus,parallelizd all process and queued the request before corresponding process get ready.The process will be blocked when dependency is not ready and continue work as dependency starts to work and finishes the request.By this way most time no order need to be explicitly pointed out.</p>
+
+<p>Inspired by systemd, we can deal with distribute services restart distributly.Every service checks its directly dependency and start as they are ready.No more global order is needed,different service can restart automatically.Most service are connected by tcp socket or an application layer http protocal,Linux command nc and curl can be used to check these services.</p>
+
+<p>This program Autoheal provide an easy way to generate a script combining checking process liveness,checking dependencies and restarting process together.</p>
+
+<h1>Running</h1>
+
+<ol>
+<li><p>Installing the pyyaml dependency</p>
+
+<pre><code>sudo pip install pyyaml
+</code></pre></li>
+<li><p>Writing conf.yaml as following example:</p>
+
+<pre><code>nginx:                                                                # process 1
+    pname: nginx                                                      # use progess name to check process exist
+    script: sudo -u admin /home/admin/cai/bin/nginx-proxy -s restart  # restart the process
+web_service:                                                          # process 2
+    pid_file: /home/admin/web_server/conf/.web_server.pid             # use pid file to check process exist
+    dep:
+        - name: nginx                                                 # check tcp dependency
+          host: 127.0.0.1
+          port: 80
+        - name: middleware                                            # check http dependency
+          url: http://middleware.host.com/check.htm
+    script: sudo -u admin /home/admin/web_server/bin/startup.sh
+</code></pre></li>
+<li><p>Generate the restart script:</p>
+
+<pre><code>sh generate.sh &gt;&gt; restart.sh
+</code></pre></li>
+<li><p>Add a cron task to run restart.sh regularly.You can create a file in /etc/cron.d like this</p>
+
+<pre><code>* * * * * root sh /home/admin/startup.sh &gt; /dev/null 2&gt;&amp;1
+</code></pre>
+
+<p>Note about the user privilege to start the process correctly.</p></li>
+</ol>
+
+
+<hr>
+    <div>
+        <p>欢迎大家在讨论区有血性的争论、动手、拍砖、捅刀子，亮出你的看法来！本博客已经全文RSS输出，大家可以通过订阅oilbeater.com/atom.xml即可获得博客更新。或者关注我的微博<a href="http://weibo.com/oilbeater/">@oilbeater</a>在上面我会通知我的博客更新并且还会分享一些有意思的技术文章，欢迎大家关注。</p>
+    </div>
+    <div class="contact">
+        <a href="mailto:liumengxinfly@gmail.com">liumengxinfly@gmail.com</a>
+    </div>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1377168947699154" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    <br>
+    <nav class="article-previous fn-clear">
+        
+        <a class="prev" href="/博客/2015/01/12/the-summary-of-blog.html" rel="bookmark">&laquo;&nbsp;oilbeater博客回顾2014篇</a>
+        
+        
+        <a class="next" href="/博客/2015/05/15/whyleaveali.html" rel="bookmark">为啥我要从阿里离职&nbsp;&raquo;</a>
+        
+    </nav>
+    <div class="comment">
+        
+            
+            <div class="ds-thread"></div>
+            
+        
+    </div>
+</div>
+
+                </div>
+                <div class="aside">
+                    <div class="aside-item">
+                        <div>
+<iframe width="100%" height="500" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=500&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=0&isWeibo=1&isFans=0&uid=1300038410&verifier=1c853142&dpc=1"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Recent Posts</h4>
+                        <ul class="list">
+                            
+                                <li><a href="/博客/2015/05/15/whyleaveali.html" title="为啥我要从阿里离职" rel="bookmark">为啥我要从阿里离职</a></li>
+                            
+                                <li><a href="/system/2015/03/22/recovery-services.html" title="分布式系统断电自恢复" rel="bookmark">分布式系统断电自恢复</a></li>
+                            
+                                <li><a href="/博客/2015/01/12/the-summary-of-blog.html" title="oilbeater博客回顾2014篇" rel="bookmark">oilbeater博客回顾2014篇</a></li>
+                            
+                                <li><a href="/nginx/2014/12/29/nginx-conf-from-zero.html" title="nginx 配置从零开始" rel="bookmark">nginx 配置从零开始</a></li>
+                            
+                                <li><a href="/docker/2014/11/11/docker-libcontainer-reading.html" title="一次奇幻的 docker libcontainer 代码阅读之旅" rel="bookmark">一次奇幻的 docker libcontainer 代码阅读之旅</a></li>
+                            
+                                <li><a href="/Linux/2014/09/15/linux-performance-tools-2.html" title="Linux 系统性能分析工具图解读（二）" rel="bookmark">Linux 系统性能分析工具图解读（二）</a></li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Links</h4>
+                        <ul class="list">
+                            
+                                
+                                    
+                                    <li><a href="http://coolchar.com" title="CoolChar" target="_blank">CoolChar</a></li>
+                                    
+                                    <li><a href="http://www.tianjun.ml/" title="Tian Jun" target="_blank">Tian Jun</a></li>
+                                    
+                                    <li><a href="http://http//yabuhoo.com/" title="Yabuhoo" target="_blank">Yabuhoo</a></li>
+                                    
+                                    <li><a href="http://www.kthinker.com/" title="Kthinker" target="_blank">Kthinker</a></li>
+                                    
+                                    <li><a href="http://pinderpeng.org/" title="Pinder" target="_blank">Pinder</a></li>
+                                    
+                                    <li><a href="http://chansh518.github.io/index.html" title="Chansh" target="_blank">Chansh</a></li>
+                                    
+                                    <li><a href="http://maziang.com" title="Mark墨客" target="_blank">Mark墨客</a></li>
+                                    
+                                
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="foot">
+            <div class="footer">
+                <p>Copyright 2013. All rights reserved. Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>, Design by <a href="http://www.zhanxin.info" target="_blank">zhanxin.info</a>.</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://libs.useso.com/js/jquery/1.8.3/jquery.min.js"></script>
+        
+            
+                
+                <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"oilbeater"};
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = 'http://static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                        || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                
+            
+        
+    </body>
+</html>

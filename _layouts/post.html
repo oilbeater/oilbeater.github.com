@@ -1,0 +1,52 @@
+---
+layout: default
+comment: true
+---
+<div class="article article-post">
+    <h2 class="title">{{ page.title }}</h2>
+    <div class="info">
+        <span class="info-title"><i class="icon-calendar"></i> Published: </span>
+        <span class="info-date">{{ page.date | date_to_string }}</span>
+        <span class="info-title"><i class="icon-folder-open"></i> Category: </span>
+        <span class="info-link"><a href="{{ site.url }}/categories.html#{{ page.category }}-ref" >{{ page.category }}</a></span>
+    </div>
+    {{ content }}
+
+<hr>
+    <div>
+        <p>欢迎大家在讨论区有血性的争论、动手、拍砖、捅刀子，亮出你的看法来！本博客已经全文RSS输出，大家可以通过订阅oilbeater.com/atom.xml即可获得博客更新。或者关注我的微博<a href="http://weibo.com/oilbeater/">@oilbeater</a>在上面我会通知我的博客更新并且还会分享一些有意思的技术文章，欢迎大家关注。</p>
+    </div>
+    <div class="contact">
+        <a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a>
+    </div>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1377168947699154" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    <br>
+    <nav class="article-previous fn-clear">
+        {% if page.previous %}
+        <a class="prev" href="{{ page.previous.url }}" rel="bookmark">&laquo;&nbsp;{{ page.previous.title | truncatewords:5 }}</a>
+        {% endif %}
+        {% if page.next %}
+        <a class="next" href="{{ page.next.url }}" rel="bookmark">{{ page.next.title | truncatewords:5 }}&nbsp;&raquo;</a>
+        {% endif %}
+    </nav>
+    <div class="comment">
+        {% if site.disqus.config %}
+        <div id="disqus_thread"></div>
+        {% else %}
+            {% if site.duoshuo.config %}
+            <div class="ds-thread"></div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,874 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+   <title>Oilbeater</title>
+   <link href="/atom.xml" rel="self" type="application/atom+xml"/>
+   <link href="" rel="alternate" type="text/html" />
+   <updated>2015-06-22T19:26:56+08:00</updated>
+   <id></id>
+   <author>
+     <name>Oilbeater</name>
+     <email>liumengxinfly@gmail.com</email>
+   </author>
+
+   
+   <entry>
+     <title>为啥我要从阿里离职</title>
+     <link href="/博客/2015/05/15/whyleaveali.html"/>
+     <updated>2015-05-15T22:30:55+08:00</updated>
+     <id>/博客/2015/05/15/whyleaveali</id>
+     <content type="html">&lt;h1&gt;为啥我要从阿里离职？&lt;/h1&gt;
+
+&lt;p&gt;本来想起个宽泛点的标题，这个标题感觉太像要爆大料了，但是关注我的人应该也知道我在哪个厂，所以也就无所谓了。相对比来说估计大多数人其实不太关注我而是关注阿里这个公司，那我就先说说我眼中的阿里好了。&lt;/p&gt;
+
+&lt;h2&gt;我眼中的阿里&lt;/h2&gt;
+
+&lt;p&gt;阿里没有在外面自己宣传中好的那么妖孽，也没有各种传言消息中坏的那么邪乎，总体来说还是个互联网大公司的模样，大家有的优点也都有，大家有的通病也少不了。在我接触的厂外人中既有把阿里当成天堂，无论如何什么岗位都非进不可的；也有黑起来黑的暗无天地，明天就要关门倒闭的。我想说的是没有必要过分神话或者黑化阿里，阿里是个普通的大公司，需要理智和清醒的看待。我也试着从不到一年的供职经历谈一下我的感受。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;阿里并不是一家技术导向型的公司&lt;/strong&gt;，这几年随着双十一以及引入的一批业界大牛，阿里的技术口碑传的神乎其神，但说到底这还是一家业务为主导向的公司。这点倒是没有什么问题，企业还是要靠业务吃饭的，而技术也只是解决业务问题的手段。而阿里的强点在我看是在销售、运营、公关以及整体战略方面，技术目前看还算不上核心优势。在阿里这个体量下技术的选择和使用也是趋于保守的，再加上诸多的历史遗留因素一些外面很火热的新技术以及新的技术管理工具在阿里内部推广还是有一定阻力的。毕竟很多情况下稳定是第一要素，技术选型以及使用上不会像小公司和创业公司那么灵活。在大数据和云计算领域，阿里有着很好的先发优势以及知名度，但是历史包袱也很多，现在要和国内一水的创业云计算公司竞争，技术角度的优势没有明显到可以秒杀的地步。当然这里面还是有各个领域大量的技术大牛在压场，技术优势还是有的，但是工程师文化和技术导向，在这里其实并没有广泛的提倡。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;阿里的福利待遇没有那么妖孽&lt;/strong&gt;，50个月工资什么的肯定不是普遍现象，很多关于薪资的新闻其实是抓眼球罢了。也有不熟悉的师弟师妹，上来就问我股票为什么不给了，薪水是不是低了点之类的。毕竟阿里上市了，很多机会窗口也关闭了。而且我印象里阿里一直是以抠门著称的，不知道为啥这几年都觉得阿里应该薪水高一个档次。阿里的工作强度和其他一线互联网公司应该也不分伯仲，同样薪水也差不了太多。不过阿里前几年的效益不错，所以奖金红包之类的比较丰厚，上市老员工又有一部分股票加持，但是对于现在大多数人来说想轻轻松松躺着赚大钱是不太现实了。话说回来，五道口一带的两个钱多活少的公司不是最近也关门了么，对于那些关门又去 IBM 的就只能祝好运了。而且在我看来尽管阿里待遇不妖孽，但是打工来说已经很不错了。至于免费水果零食、丰盛的工作餐、过年过节各种礼品什么的这个就不用想了，这个真没有，感觉阿里是把这部分钱省出来去发年终了。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;在阿里很开阔视野&lt;/strong&gt;，呆了一年技术和业务的视野都开阔了很多，毕竟阿里在国内电商、大数据和云计算还是处于领先的地位。以前想到大数据只知道个 hadoop、spark 在阿里有幸接触到了这个链路和生态，现在的认知已经完全不一样。以前想到的客户就是普通消费者，现在看到的都是 2C、2B、2医疗、2金融、2部委、2央企，看到了不同的类型，看到了更广阔的市场。一开始提到这些客户都感觉要死人了，之后感觉也就这么回事，这份经历恐怕只有在阿里这个平台才能让我体验。各种八卦、江湖流言、政治斗争、传奇故事也着实让人开眼。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;言论还是相对自由的&lt;/strong&gt;，我对言论自由的限度是可以自由表达观点但是不能有人身攻击和阴谋论的揣测，这点来看内网风气还是基本符合的，一些批评和建议都能得到很好的反馈。但是除了有几根高压线悬着的地方不能公开讨论外，内网总感觉笼罩在所谓的价值观阴影下有种自我阉割和自我审核的感觉。当初把知乎上传的沸沸扬扬的校招 hr 的事情转到内网，那个问题影响有多大学生们应该很清楚，在内网也热帖了很多天。这期间也没人来找我麻烦，还有负责校招的 hr 来承担责任。但是下面回帖的居然有质疑我价值观的，说我不该转发的我也是崩溃了，外面的事情都不能让内部人知道了，是要给阿里人也竖一道墙么，不带这么自我阉割的，这要是价值观也能扯上，这公司就不用呆了。传闻阿里对外的公关很厉害，由于总感觉在职期间公开讨论公司好坏不太合适，索性这一年阿里的好坏两方面消息我都不怎么宣传也就没啥机会体验这些公关。不过鉴于我这个小P也没啥影响力可能说了也不会有人来找我。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;hr 问题没有那么恐怖&lt;/strong&gt;，由于阿里十八罗汉中就有两位 hr，所以 hr 在公司中的位置还是很重的。阿里最近的风波在我看来是一个主管失误，hr失误，开发失误之后公关和管理又连续失误把一个雪球越滚越大，陈年旧账新仇旧恨全滚起来了，hr 的问题只是其中一环，整条链路都出现了问题。不过上市后这种全链路的问题出的太多了，加之阿里的任何事情现在都会有放大效应，就闹得感觉阿里人间地狱了。事情实际的真相、官方的真相、传言的真相以及每个人心里所希望的真相已经千差万别了。对我来说离职面谈和 hrg 感觉还是颇长见识，很后悔之前没有机会多聊一下，离职评语信息泄露的 bug 我也赶上了，至少对我的评语正常到让我都没看第二眼。过了快两周才通过这个风波发现原来那些评语是我不该看的……&lt;/p&gt;
+
+&lt;p&gt;总体来说，我的感受阿里并不在童话中，也不在地狱中，就是现实中的一个正常公司。如果有公关想改变我的文章倾向，那我告诉你我是有节操的人，你必须给大钱才行。&lt;/p&gt;
+
+&lt;h2&gt;我为啥要离职？&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;入错行当&lt;/strong&gt;，算是被当年招聘的职位给忽悠了，做的事情和想象中差距大了些，这是个主因。应届生校招总会有这个问题，就是对职位信息不了解，而校招时应届生对有份工作，有机会进个公司的饥渴度超过了一切，而忽视了职位和方向的信息。我见过有的人找我内推，先是说算法完了又研发，听说我在运维又问运维有没有坑，一副只要有机会进来就行的感觉。这种我都会让他再好好想想方向是比公司重要的，校招其实就是个入行的过程，只要行当和你路线相符之后有的是机会，公司待遇都是个次之的因素。这也是我为啥一年工作经验都没满就要转的原因，因为我已经感受到了之后求职的时候别人都会根据你前一份方向来划定你的范围，之后会越来越窄，所以宁可扔掉阿里的 title 和待遇也要再重新入一次行。So，如果是应届生选工作的话建议还是要更关注方向和做什么事情上，不要脑子里只挂着公司和待遇。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;兴趣使然&lt;/strong&gt;，一方面外企，国内互联网大公司都见识过了，也想看一下小公司是不是传说中的小而美，也算是一种新的体验。此外自己在 docker 这块关注了一年多，一直觉得这是个机会，尽管总会有下一个机会，但还是按耐不住要去试试。之前只是在外围看看代码写写文章，只是业余时间搞搞感觉和大家的水平越拉越大，现在既然有机会去玩真的就去真刀真枪试试，大不了回头再写个我为啥从小公司离职之类的拉流量。趁着年轻再出去闯闯，实在不行回来专攻博客写科普写软广讨口饭也行。&lt;/p&gt;
+
+&lt;p&gt;然后我要回帝都了，求帝都的大爷们包养收留，剩菜剩饭、不要的旧衣服、矿泉水瓶、纸盒子什么的留点给我。&lt;/p&gt;
+
+&lt;p&gt;欢迎大家理智的讨论，人身攻击或者阴谋论的我是会删的。&lt;/p&gt;
+
+&lt;p&gt;最后欢迎分享链接到微博朋友圈各种地方。转载要和我商量，要是不和我商量就拿走我是要去告你的。&lt;/p&gt;
+
+&lt;p&gt;最最后插个软广，我司在做 Docker 镜像构建挑战赛，学着写 dockerfile 还有奖品拿，还在等什么 &lt;a href=&quot;http://event.alauda.cn/&quot;&gt;http://event.alauda.cn/&lt;/a&gt;，现在报名还来得及。有意加入我司的也可以邮件联系我，你到底是要看浪还是要冲浪？&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>分布式系统断电自恢复</title>
+     <link href="/system/2015/03/22/recovery-services.html"/>
+     <updated>2015-03-22T23:40:55+08:00</updated>
+     <id>/system/2015/03/22/recovery-services</id>
+     <content type="html">&lt;p&gt;机房断电后各种服务该怎么恢复呢？&lt;/p&gt;
+
+&lt;p&gt;首先当然是恢复供电机器重启，但是上面的服务该怎么办，派人去手工重启么？&lt;/p&gt;
+
+&lt;p&gt;一个服务还好，但是一个机房这么多服务敲命令要累死了，怎么办？写个脚本执行启动命令，放到开机启动脚本 rc.local 里好了。&lt;/p&gt;
+
+&lt;p&gt;可是掉的不止你一个服务，可能你启动依赖的服务也掉了，启动的还比你晚，启动根本就起不来怎么办？&lt;/p&gt;
+
+&lt;p&gt;一个简单粗暴的方式，不断重试就好了。在 cron.d 下面放个任务每分钟执行一次，一看服务进程不存在就尝试重启。一方面不考虑依赖问题，另一方面还顺道解决了服务 crash 后的自恢复。&lt;/p&gt;
+
+&lt;p&gt;可实际中有的服务在依赖没启动时是可以起来的，但是工作会不正常，而且不能再依赖启动之后自动恢复，还是需要手动重启。严重的时候不正常的服务还会导致依赖它的服务异常，这该怎么办呢？&lt;/p&gt;
+
+&lt;p&gt;看样子似乎是无法摆脱依赖顺序而随心所欲的启动程序。那么就只能所有的服务各自汇报自己的服务上下游给一个人，然后那个人画一个启动流程图，告诉大家先干这个，再干那个么？嗯，一个如果机房里业务固定还好，如果不固定，今天加一个新应用，明天减一个旧应用，那么图就要改一遍。应用改个依赖，图又要改一遍，而且要这个画图的人时刻了解服务依赖的变化，想想就头疼。那么就没有个自动化的方法么？&lt;/p&gt;
+
+&lt;p&gt;可以先参考一个类似的问题，systemd 是如何解决单机上开机程序之间的依赖问题。程序之间的依赖本质上来讲就是需要进行进程间的通信，而开机程序的进程间通信主要是通过 socket 和 dbus 来完成。systemd 的做法是预先建立好这些 socket 和 dbus，这样当一个程序发起通信时即使依赖程序还没启动完成，至少 socket 是打开的，可以先把请求 queue 住。这样发起请求的程序就会等待，而等依赖就绪就会处理这个请求，源程序就可以继续运行。这样理论上讲大多数情况下我们都不需要考虑程序间依赖，只需要把所有程序启动起来就好了。&lt;/p&gt;
+
+&lt;p&gt;实现一个分布式的 systemd 还是有些困难的，但是这种思想很有启发。我们可以脱离集中化控制的思想，把分布式系统的重启任务分布式的解决。分布式服务之间的依赖本质上也是进程间通信，而且绝大多数都是 tcp/udp 请求。简单的来说一个服务只需要判断他的上游服务是否 ready 来判断自己要不要启动，每个服务只需要在自己的机器上验证这个条件，不断地重试，整个服务就可以自动的按照顺序自发启动。&lt;/p&gt;
+
+&lt;p&gt;这样的话我们就无需一个集中式的管理，每个服务自己梳理自己的依赖来进行自启动即可。除了简单的 tcp 探测也可以对 web 服务进行 http 的探测来进一步保证依赖的可用性。&lt;/p&gt;
+
+&lt;p&gt;在 github 上新建了个项目可以简单的通过一个 yaml 配置文件描述进程名，依赖和启动脚本，即可自动生成自启动脚本，大家有兴趣的可以去尝试一下 &lt;a href=&quot;https://github.com/oilbeater/Autoheal&quot;&gt;https://github.com/oilbeater/Autoheal&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;把 README 抄录入下&lt;/p&gt;
+
+&lt;h1&gt;Autoheal&lt;/h1&gt;
+
+&lt;p&gt;A simple script that auto restart distribute service from power cut or service crash.&lt;/p&gt;
+
+&lt;h1&gt;Where it come?&lt;/h1&gt;
+
+&lt;p&gt;All services will crash after a power cut.When power comes back, services recovery may face these problems:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;No auto restart and service will not work&lt;/li&gt;
+&lt;li&gt;Service restarts before dependencies getting ready and restart may crash.&lt;/li&gt;
+&lt;li&gt;Service restarts before dependencies getting ready and the service can not work correctly.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;What we want is ordered restart.But as more and more services connect together,it&amp;#39;s complex to find and maintain a global order. What we provide here is a simple way to deal with th problem.&lt;/p&gt;
+
+&lt;h1&gt;How it work?&lt;/h1&gt;
+
+&lt;p&gt;A centralized restart system may hard to implement,but same effect can be achieved by other method.Let&amp;#39;s have a look at how systemd deal with the process dependency at startup time.&lt;/p&gt;
+
+&lt;p&gt;Processe dependency is caused by inter-process communication (IPC) in essence. Socket and dbus are two main way of IPC during startup time.What systemd dose are pre-create these sockets and dbus,parallelizd all process and queued the request before corresponding process get ready.The process will be blocked when dependency is not ready and continue work as dependency starts to work and finishes the request.By this way most time no order need to be explicitly pointed out.&lt;/p&gt;
+
+&lt;p&gt;Inspired by systemd, we can deal with distribute services restart distributly.Every service checks its directly dependency and start as they are ready.No more global order is needed,different service can restart automatically.Most service are connected by tcp socket or an application layer http protocal,Linux command nc and curl can be used to check these services.&lt;/p&gt;
+
+&lt;p&gt;This program Autoheal provide an easy way to generate a script combining checking process liveness,checking dependencies and restarting process together.&lt;/p&gt;
+
+&lt;h1&gt;Running&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Installing the pyyaml dependency&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo pip install pyyaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Writing conf.yaml as following example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;nginx:                                                                # process 1
+    pname: nginx                                                      # use progess name to check process exist
+    script: sudo -u admin /home/admin/cai/bin/nginx-proxy -s restart  # restart the process
+web_service:                                                          # process 2
+    pid_file: /home/admin/web_server/conf/.web_server.pid             # use pid file to check process exist
+    dep:
+        - name: nginx                                                 # check tcp dependency
+          host: 127.0.0.1
+          port: 80
+        - name: middleware                                            # check http dependency
+          url: http://middleware.host.com/check.htm
+    script: sudo -u admin /home/admin/web_server/bin/startup.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Generate the restart script:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sh generate.sh &amp;gt;&amp;gt; restart.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Add a cron task to run restart.sh regularly.You can create a file in /etc/cron.d like this&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;* * * * * root sh /home/admin/startup.sh &amp;gt; /dev/null 2&amp;gt;&amp;amp;1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note about the user privilege to start the process correctly.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>oilbeater博客回顾2014篇</title>
+     <link href="/博客/2015/01/12/the-summary-of-blog.html"/>
+     <updated>2015-01-12T05:30:55+08:00</updated>
+     <id>/博客/2015/01/12/the-summary-of-blog</id>
+     <content type="html">&lt;p&gt;统计一下 2014 年博客的整体情况，顺便夹带写如何用第三方服务和推广的私货。虽说不能和知名博主们去比，不过能看到成长总是欣慰的。&lt;/p&gt;
+
+&lt;h2&gt;致谢&lt;/h2&gt;
+
+&lt;p&gt;首先要感谢这些为我的博客提供服务的兄弟们。&lt;/p&gt;
+
+&lt;p&gt;感谢 &lt;a href=&quot;http://gitcafe.com/&quot;&gt;Gitcafe&lt;/a&gt; 提供的 page 服务以及域名映射，你们的服务很优秀，尽管除了这神奇的土地上独有的问题，但是你们的应对使事情变得可控。&lt;/p&gt;
+
+&lt;p&gt;感谢&lt;a href=&quot;http://qiniu.com&quot;&gt;七牛&lt;/a&gt;提供的存储及图片外链服务，几经辗转终于在国内找到优秀靠谱的服务。&lt;/p&gt;
+
+&lt;p&gt;感谢 &lt;a href=&quot;http://www.google.com/analytics/&quot;&gt;Google Analytisc&lt;/a&gt; 为本片博文提供的数据，以及长久来的统计服务。&lt;/p&gt;
+
+&lt;p&gt;感谢 &lt;a href=&quot;http://www.dnspod.cn&quot;&gt;dnspod&lt;/a&gt; 的域名解析，你们的切换速度越来越快了。&lt;/p&gt;
+
+&lt;p&gt;还有 &lt;a href=&quot;http://godaddy.com&quot;&gt;Godaddy&lt;/a&gt; 的域名，已经打算继续打赏你们了。&lt;/p&gt;
+
+&lt;h2&gt;流量分布&lt;/h2&gt;
+
+&lt;p&gt;尽管用了百度统计插件做 backup，但由于是中途用的，全年完整的数据只在 Google Analytics 上有。通过两者的对比发现 Google 统计的数量要低一些，对此只能亲切问候长城作者了。 &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/pv.JPG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;由于今年有几篇投机取巧的文章，再加上恬不知耻的四处推文章，日均 pv 居然过百了。不过访问深度连 2 都没到，很多人都是点进来看了一下就走了，没有吸引人去看其他文章，可见博客的质量还有待提高。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/dazhou.JPG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;流量已经覆盖到了南极洲外的所有大洲，不过当然主要还在亚洲，不过看到有非洲的兄弟们还是很新奇。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/country.JPG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;流量来源最多的国家，当然是伟大的社会主义中国了。不过黑暗的资本主义国家已经能占据接近 14% 的流量了，尤其是万恶的美帝居然爬到了第二的位置。&lt;/p&gt;
+
+&lt;p&gt;下面再来看一下中国各个城市所占的比重，这也是我最喜欢的一张图能反映很多社会状况。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/chinamap.JPG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;可以看到北京这个超级点处于明显的统治地位，那里是互联网和 IT 人士最多的地方。接下来就是长三角区域以上海、杭州为首的大点，南京、苏州、合肥次之的中点，带着宁波、无锡、徐州等一众中小点密密麻麻的挤满了长三角。可见长三角区域是一个地域的整体发展而不是像北京那样的方圆百里唯我独尊。接下来就是珠三角区域了，如果把香港加进来的话，珠三角区域有着香港、深圳和广州三个大点，但是明显存在着断层，没有中点，直接就掉到中山、佛山、东莞这样的中小点了。&lt;/p&gt;
+
+&lt;p&gt;整体来看点在东部沿海比较密集，而中部地区就只有成都，西安和武汉三个中点也是各个地区的头牌城市了。在广阔的西部真的就是稀疏的可以忽略了。还好拉萨的兄弟给面子让我在这一年成功覆盖到了中国所有的省份、直辖市以及自治区。在 Google 的统计里，香港、澳门和台湾都属于地区和国家是并列统计的，所以不要再问我为什么台湾没点，和我没关系。&lt;/p&gt;
+
+&lt;h2&gt;流量来源&lt;/h2&gt;
+
+&lt;p&gt;下面是访问次数最多的页面&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/rank.JPG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;可以看到访问次数最多的是当时写的和阿里大数据竞赛相关的文章。由于我的好为人师加上投机取巧，拉住了一帮人来看，顺便带动了其他页面访问量的上升。而之后的&lt;a href=&quot;http://oilbeater.com/docker/2014/06/29/what-is-docker.html&quot;&gt;什么是 Docker&lt;/a&gt; 又借着 docker 的风口被吹了一把，还被 csdn，infoq 的转载。而&lt;a href=&quot;http://oilbeater.com/%E7%94%9F%E6%B4%BB%E6%84%9F%E6%82%9F/2014/06/05/summary-of-study.html&quot;&gt;这些年计算机学生路总结资料&lt;/a&gt;  以及&lt;a href=&quot;http://oilbeater.com/%E6%8A%80%E6%9C%AF%E7%9B%B8%E5%85%B3/2014/05/09/from-url-to-webpage.html&quot;&gt;从输入 URL 到页面加载完的过程中都发生了什么事情 &lt;/a&gt; 都算是我的呕心之作，虽然没站在风口上，也取得了不错的成绩。可见博客要想被人接受，要么站在风口上，要么就要呕心沥血出质量。&lt;/p&gt;
+
+&lt;p&gt;接下来就是很多有独立博客的人都关注的流量来源了&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/source.JPG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;排名第一的居然是 direct 的方式……这个是最让人头疼的，因为无法判断是怎么来的，我的猜测就只能是一个人看到后发现不错就把链接发给另一个人这样了，如果真是这样的话说明我还是有文章打动人的。&lt;/p&gt;
+
+&lt;p&gt;之后就是互联网交际花冯大辉的 startup news 了当然域名是奇怪的 news.dbanotes.net。尽管流量很高但是最近上面文章的质量实在是不敢恭维啊…… 下面 aliyun 论坛那个就是阿里大数据竞赛那一阵风吹得，以后估计就没了。 &lt;/p&gt;
+
+&lt;p&gt;在下面 I love Google。google 对我博客的收录和关键字 rank 都很友善。反观百度我就无力吐槽了，排名靠前的都是那些抄袭我文章的网站。不然的话很难想象国内为主的博客的搜索来源比重 google 居然是百度的近 4 倍。&lt;/p&gt;
+
+&lt;p&gt;在下面的 weibo 是今年中点发展的一个来源，在博客内加上微博秀后，微博的粉丝数从年初的 80 多到现在居然过 700 了，虽说现在的比重还不大，不过是个很好的让老用户再来关注的方法，如果能再多认识几个朋友那就心满意足了。&lt;/p&gt;
+
+&lt;p&gt;再往下就是往各个收录博客的网站去推了，主推的也就 csdn,jobbole 和 toutiao 了。其中居然又一次被码农周刊给推荐了让我不胜荣幸，当然后来发现过来的流量也不是很大……不过&lt;a href=&quot;http://weekly.manong.io/&quot;&gt;码农周刊&lt;/a&gt;还是很不错的博客资料聚合的网站，推荐大家关注。&lt;/p&gt;
+
+&lt;h2&gt;展望&lt;/h2&gt;
+
+&lt;p&gt;上面就是我这一年连蒙带骗赚流量的故事。这半年工作缠身没有太多精力来打点博客，接下来一年争取能做到一月一更到两更，希望新老读者有兴趣的可以持续关注。去年的文章还是有几篇偏水，不过你们要相信我会严格要求把控自己的，质量绝对是有保证的。方向的话有可能还是偏网络和系统方面的一些初内容。太深入的可能还欠火候，但是读过我之前文章的朋友应该知道我保证能要你读明白，不无聊而且有收获（求大牛们轻虐）。也希望能和大家进行更多的讨论和交流。&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>nginx 配置从零开始</title>
+     <link href="/nginx/2014/12/29/nginx-conf-from-zero.html"/>
+     <updated>2014-12-29T05:30:55+08:00</updated>
+     <id>/nginx/2014/12/29/nginx-conf-from-zero</id>
+     <content type="html">&lt;p&gt;作为一个 nginx 的初学者记录一下从零起步的点滴。&lt;/p&gt;
+
+&lt;h2&gt;基本概念&lt;/h2&gt;
+
+&lt;p&gt;Nginx 最常的用途是提供反向代理服务，那么什么反向代理呢？正向代理相信很多大陆同胞都在这片神奇的土地上用过了，原理大致如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/reverseproxy.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;代理服务器作为客户端这边的中介接受请求，隐藏掉真实的客户，向服务器获取资源。如果代理服务器在长城外的话还能顺便帮助我们实现翻越长城的目的。而反向代理顾名思义就是反过来代理服务器作为服务器的中介，隐藏掉真实提供服务的服务器，原理大致如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/proxy.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;这么做当然不是为了实现翻越长城，而是为了实现安全和负载均衡等一系列的功能。所谓安全指客户端的请求不会直接落到内网的服务器上而是通过代理做了一层转发，在这一层就可以实现安全过滤，流控，防 DDOS 等一系列策略。而负载均衡指我们可以水平扩展后端真正提供服务的服务器数量，代理按规则转发请求到各个服务器，使得各个服务器的负载接近均衡。&lt;/p&gt;
+
+&lt;p&gt;而 nginx 就是目前流行的这样一个反向代理服务。&lt;/p&gt;
+
+&lt;h2&gt;安装&lt;/h2&gt;
+
+&lt;p&gt;在 Ubuntu 下，可以舍去编译安装的过程，直接 apt-get&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install nginx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装好之后可以直接通过：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo service nginx start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;来启动 nginx 服务，nginx 默认设置了 80 端口的转发，我们可以再浏览器访问 http://locallhost 来进行检查。&lt;/p&gt;
+
+&lt;h2&gt;初始配置&lt;/h2&gt;
+
+&lt;p&gt;nginx 的默认配置文件位于&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/etc/nginx/nginx.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;学习配置最好的方式，就是从例子入手，我们先不看其他的配置，直接看和 nginx 默认页面相关的配置。在配置文件中有一行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;include /etc/nginx/sites-enabled/*;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这一行加载了一个外部的配置文件，sites-enabled 文件夹下只有一个 default 文件，这个外部的配置文件就是负责我们 nginx 的默认代理。将配置的内容缩水后，得到下面几行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server {
+    server_name localhost;
+    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+
+    root /usr/share/nginx/html;
+    index index.html index.htm;
+
+    location / {
+    try_files $uri $uri/ =404;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一个大型的网站通常会有很多下属的站点，有各自的服务器提供相应的服务，在 nginx 中我们可以通过一个叫虚拟主机的概念来将这些不同的服务配置隔离，这就是上面配置中的 server 的含义。举例来说 google 旗下有翻译和学术两款产品我们就可以在 nginx 的配置文件中配置两个 server，server&lt;em&gt;name 分别为 translate.google.com 和 scholar.google.com，这样的话不同的 url 请求就会对应到 nginx 相应的设置，转发到不同的后端服务器上。这里的 server&lt;/em&gt;name 是和客户端 http 请求中的 host 行进行匹配的。&lt;/p&gt;
+
+&lt;p&gt;本例中 server_name 为 localhost，这就是为什么我们可以在浏览器通过 localhost 访问到页面的配置。下面两个 listen 分别对应了 ipv4 和 ipv6 下的监听端口如果设为 8080，那么我们就只能通过 localhost：8080 来访问到默认页面了。&lt;/p&gt;
+
+&lt;p&gt;default_server 的含义是指如果有其他 http 请求的 host 在 nginx 中不存在设置的话那么就用这个 server 的配置来处理。比如我们去访问 127.0.0.1 那么也会落到这个 server 来处理。&lt;/p&gt;
+
+&lt;p&gt;每个 url 请求都会对应的一个服务，nginx 进行处理转发或者是本地的一个文件路径，或者是其他服务器的一个服务路径。而这个路径的匹配是通过 location 来进行的。我们可以将 server 当做对应一个域名进行的配置，而 location 是在一个域名下对更精细的路径进行配置。&lt;/p&gt;
+
+&lt;p&gt;在这里 location 匹配 / 开始的所有请求，即 localhost 下的 /xxx 或者 /yyy 都要走下面的配置,除了这种简单粗暴的匹配，nginx 也支持正则和完全相等及其他的精细匹配方式。而 try&lt;em&gt;files 意思是 nginx 会按照接下来的顺序去访问文件，将第一个匹配的返回。比如你去请求 localhost/test,他会去寻找 /test 文件，找不到再去找 /test/ 再找不到就返回一个 404。此外我们还可以在 location 的配置里用 proxy&lt;/em&gt;pass 实现反向代理和负载均衡，不过这个最简单的配置并没有涉及。&lt;/p&gt;
+
+&lt;p&gt;其中 root 是指将本地的一个文件夹作为所有 url 请求的根路径。比如用户请求了一个 localhost/test,那么 nginx 就会去需找 /usr/share/nginx/html 文件夹下的 test 文件返回。&lt;/p&gt;
+
+&lt;p&gt;而 index 就是默认的访问页面了，当我们访问 localhost 时，他会自动按顺序寻找 root 文件路径下的 index.html 和 index.htm 将第一个找到的结果返回。&lt;/p&gt;
+
+&lt;h2&gt;location 进阶配置&lt;/h2&gt;
+
+&lt;p&gt;上面的配置只是将用户的 url 映射到本地的文件，并没有实现传说中的反向代理和负载均衡（当然 nginx 做静态文件的分发也是想到的厉害），下面我们就来进一步配置 location 看看怎么实现。&lt;/p&gt;
+
+&lt;p&gt;配置起来很简单比如我要将所有的请求到转移到真正提供服务的一台机器的 8080 端口，只要这样：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;location / {
+    proxy_pass 123.34.56.67:8080;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样所有的请求就都被反向代理到 123.34.56.67 去了。这样我们反向代理的功能是实现了，可是就能代理到一台服务器上哪有什么负载均衡呀？这就要用到 nginx 的 upstream 模块了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;upstream backend {
+    ip_hash;    
+    server backend1.example.com;
+    server backend2.example.com;
+    server backend3.example.com;
+    server backend4.example.com;
+}
+location / {
+    proxy_pass http://backend;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我们在 upstream 中指定了一组机器，并将这个组命名为 backend，这样在 proxy&lt;em&gt;pass 中只要将请求转移到 backend 这个 upstream 中我们就实现了在四台机器的反向代理加负载均衡。其中的 ip&lt;/em&gt;hash 指明了我们均衡的方式是按照用户的 ip 地址进行分配。&lt;/p&gt;
+
+&lt;p&gt;要让配置生效，我们不必重启 nginx 只需要 reload 配置即可。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo service nginx reload
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;以上是最简单的通过 nginx 实现静态文件转发、反向代理和负载均衡的配置。在 nginx 中所有的功能都是通过模块来实现的，比如当我们配置 upstream 时是对 upstream 模块，而 server 和 location 是在 http core 模块，其他的还有流控的 limt 模块，邮件的 mail 模块，https 的 ssl 模块。他们的配置都是类似的可以再 nginx 的&lt;a href=&quot;http://wiki.nginx.org/Modules&quot;&gt;模块文档&lt;/a&gt;中找到详细的配置说明。&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>一次奇幻的 docker libcontainer 代码阅读之旅</title>
+     <link href="/docker/2014/11/11/docker-libcontainer-reading.html"/>
+     <updated>2014-11-11T20:30:55+08:00</updated>
+     <id>/docker/2014/11/11/docker-libcontainer-reading</id>
+     <content type="html">&lt;p&gt;一直对 docker 提供的容器感到好奇，不知道究竟是如何实现隔离和保证安全的，之前 docker 本来是用 lxc 来提供容器功能的，但是由于对内核代码有一丝恐惧没敢去看，后来听说 docker 为了实现跨平台兼容自己实现了一套 native 的容器就是 libcontainer 。既然是新项目那么代码量和复杂度应该都不会太高吧，抱着这个想法我就翻看 libcontainer 的代码读一读。&lt;/p&gt;
+
+&lt;h2&gt;准备工作&lt;/h2&gt;
+
+&lt;p&gt;首先自然要下到代码才能读，建议去下完整的 docker &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;源码&lt;/a&gt;，不要只下 libcontainer 的源码。不然就会像我一样读的时候碰到一个坑掉里面爬了半天。&lt;/p&gt;
+
+&lt;p&gt;接下来就要有一个代码阅读器了，由于 go 语言还是个比较新的语言，配套的工具还不是很完善，不过可以用 &lt;a href=&quot;https://code.google.com/p/golangide/downloads/list&quot;&gt;liteide&lt;/a&gt; （自备梯子）这个轻量级的 golang ide 来兼职一下。&lt;/p&gt;
+
+&lt;p&gt;打开之后可以看到 docker 的目录结构大致是这样的。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/liteide.PNG&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;那么我们所关注的 libcontainer 在哪里呢？藏得还挺深的在 \verdor\src\github.com\libcontainer\。进去之后就会发现有个显眼的 container.go 在向你招手，嗯第一个坑马上就要来了。&lt;/p&gt;
+
+&lt;h2&gt;container&lt;/h2&gt;
+
+&lt;p&gt;这段代码初看起来还是很浅显的。代码缩水后如下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type Container interface {
+    ID() string
+    RunState() (*RunState, Error)
+    Config() *Config
+    Start(config *ProcessConfig) (pid int, exitChan chan int, err Error)
+    Destroy() Error
+    Processes() ([]int, Error)
+    Stats() (*ContainerStats, Error)
+    Pause() Error
+    Resume() Error
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看出这段代码只是定义了一个接口，任何实现这些方法的对象就会变成一个 docker 认可的 container。其中比较关键的一个函数就是 Start 了，他是在 container 里启动进程的方法，可以看到接口的要求是传进一个所要启动进程相关的配置，返回一个进程 pid 和一个接受退出信息的 channel。&lt;/p&gt;
+
+&lt;p&gt;下一步自然就是去找这个接口的实现去看看究竟是怎么做的，然后一个坑就来了。由于 go 语言不要求对象向 java 那样显示的声明自己实现哪个接口，只要自己默默实现了对应的方法就默认变成了哪个接口类型的对象。所以没有什么直观的方法来找到哪些对象实现了这个接口，翻了一下 libcontainer 文件夹下的文件感觉哪个都不像。感觉有些不详的预兆，装了个 Cygwin 去 grep Start 这个函数，结果意外的发现没有，于是又在整个 docker 目录下去 grep 发现还是没有。&lt;/p&gt;
+
+&lt;p&gt;我就奇怪了，不是说 docker 1.2 之后就支持 native 的 container 了么，他连 libcontainer 里的 container 接口都没实现他是怎么调用 native 的 container 的。既然自底向上的找不到，那就只能自顶向下的从上层往下跟去找找怎么回事了。&lt;/p&gt;
+
+&lt;h2&gt;driver&lt;/h2&gt;
+
+&lt;p&gt;docker 支持 lxc 和 native 两套容器实现，是通过 driver 这个接口的两个实现来完成的。在 \daemon\execdriver 中可以看到有 lxc 和 native 两个文件夹，里面就是相关的代码。不过在 \daemon\ 目录下可以看到还有一个 container.go 里面是有个 container 对象，可是并没有实现 libcontainer 里对应的接口，难道 libcontainer 里的那个 interface 只是一个幌子？&lt;/p&gt;
+
+&lt;p&gt;先看一下 driver 这个接口&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type Driver interface {
+    Run(c *Command, pipes *Pipes, startCallback StartCallback) (int, error) // Run executes the process and blocks until the process exits and returns the exit code
+    // Exec executes the process in a running container, blocks until the process exits and returns the exit code
+    Exec(c *Command, processConfig *ProcessConfig, pipes *Pipes, startCallback StartCallback) (int, error)
+    Kill(c *Command, sig int) error
+    Pause(c *Command) error
+    Unpause(c *Command) error
+    Name() string // Driver name
+    Info(id string) Info  // &amp;quot;temporary&amp;quot; hack (until we move state from core to plugins)
+    GetPidsForContainer(id string) ([]int, error) // Returns a list of pids for the given container.
+    Terminate(c *Command) error   // kill it with fire
+    Clean(id string) error// clean all traces of container exec
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;有没有感觉名字虽说和上面的 container interface 不太一样，不过意思是差不多的。resume 变成了 unpause， destory 变成了 teminate，processes 变成了 getpidsforcontainer,start 也变成了 run 和 exec 两个函数。看到这不得不说 docker 的代码的一致性和可读性还是惨了点，codereview 需要更严格一些呀。&lt;/p&gt;
+
+&lt;p&gt;再进到 native 的 driver.go 就可以看到具体的实现了。在文件头部发现了一长串 import，其中有几个比较抓眼球：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import (
+    ....
+    &amp;quot;github.com/docker/libcontainer&amp;quot;
+    &amp;quot;github.com/docker/libcontainer/apparmor&amp;quot;
+    &amp;quot;github.com/docker/libcontainer/cgroups/fs&amp;quot;
+    &amp;quot;github.com/docker/libcontainer/cgroups/systemd&amp;quot;
+    consolepkg &amp;quot;github.com/docker/libcontainer/console&amp;quot;
+    &amp;quot;github.com/docker/libcontainer/namespaces&amp;quot;
+    _ &amp;quot;github.com/docker/libcontainer/namespaces/nsenter&amp;quot;
+    &amp;quot;github.com/docker/libcontainer/system&amp;quot;
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;从这里似乎可以看出一点端倪了。libcontainer 的目的是提供一个平台无关的原生容器，这需要包括资源隔离，权限控制等一系列通用组件，所以 libcontainer 就来提供这些通用组件，所以他叫 &amp;quot;lib&amp;quot;。而每个平台想实现自己的容器的话就可以借用这些组件，当然可以只用一部分而不全用， docker 就相当于用了包括 apparmor、cgroups、namespaces 等等组件，然后没用 libcontainer 的 container 接口和其他一些组件，自己写了其他部分完成的所谓 native 的容器。&lt;/p&gt;
+
+&lt;p&gt;还是看 run 函数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func (d *driver) Run(c *execdriver.Command, pipes *execdriver.Pipes, startCallback execdriver.StartCallback) (int, error) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中 execdriver.Pipes 是一个定义标准输入输出和错误指向的结构，startCallback 是在进程结束或者退出时调用的一个回调函数，最重要的结构是 execdriver.Command 他定义了容器内运行程序的各种环境和约束条件。可以在 daemon 下的 driver.go 中找到对应的定义。&lt;/p&gt;
+
+&lt;h2&gt;Command&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;type Command struct {
+    ID string   `json:&amp;quot;id&amp;quot;`
+    Rootfs string   `json:&amp;quot;rootfs&amp;quot;`   // root fs of the container
+    InitPath   string   `json:&amp;quot;initpath&amp;quot;` // dockerinit
+    WorkingDir string   `json:&amp;quot;working_dir&amp;quot;`
+    ConfigPath string   `json:&amp;quot;config_path&amp;quot;` // this should be able to be removed when the lxc template is moved into the driver
+    Network *Network  `json:&amp;quot;network&amp;quot;`
+    Resources  *Resources   `json:&amp;quot;resources&amp;quot;`
+    Mounts []Mount   `json:&amp;quot;mounts&amp;quot;`
+    AllowedDevices []*devices.Device `json:&amp;quot;allowed_devices&amp;quot;`
+    AutoCreatedDevices []*devices.Device `json:&amp;quot;autocreated_devices&amp;quot;`
+    CapAdd []string  `json:&amp;quot;cap_add&amp;quot;`
+    CapDrop[]string  `json:&amp;quot;cap_drop&amp;quot;`
+    ContainerPid   int   `json:&amp;quot;container_pid&amp;quot;`  // the pid for the process inside a container
+    ProcessConfig  ProcessConfig `json:&amp;quot;process_config&amp;quot;` // Describes the init process of the container.
+    ProcessLabel   string   `json:&amp;quot;process_label&amp;quot;`
+    MountLabel string   `json:&amp;quot;mount_label&amp;quot;`
+    LxcConfig  []string  `json:&amp;quot;lxc_config&amp;quot;`
+    AppArmorProfile string  `json:&amp;quot;apparmor_profile&amp;quot;`
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中和进程隔离相关的有 Resources 规定了 cpu 和 memory 的资源分配，可供 cgroups 将来调用。 CapAdd 和 CapDrop 这个和 linux Capability 相关来控制 root 的某些系统调用权限不会被容器内的程序使用。ProcessLabel 为容器内的进程打上一个 Lable 这样的话 seLinux 将来就可以通过这个 lable 来做权限控制。Apparomoprofile 指向 docker 默认的 apparmor profile 路径，一般为/etc/apparmor.d/docker，用来控制程序对文件系统的访问权限。&lt;/p&gt;
+
+&lt;p&gt;可以看到，docker 对容器的隔离策略并不是自己开发一套隔离机制而是把现有的能用的已有隔离机制全用上。甚至 AppArmor 和 seLinux 这两个类似并且人家两家还在相互竞争的机制也都一股脑不管三七二十一全加上，颇有拿来主义的风采。这样的话万一恶意程序突破了一层防护还有另外一层挡着，而且这几个隔离机制还相互保护要同时突破所有的防护才行。&lt;/p&gt;
+
+&lt;p&gt;而我们真正要在容器中执行的程序在 ProcessConfig 这个结构体中的 Entrypoint。由此可见所谓的容器就是一个穿着各种隔离外套的程序，用这些隔离外套保护这个程序可以活在自己的小天地里，不知有汉无论魏晋。&lt;/p&gt;
+
+&lt;h2&gt;Exec&lt;/h2&gt;
+
+&lt;p&gt;还是回到 run 里面看看究竟是怎么 run 的吧，看完了一系列的初始化和异常判断后终于到了真正运行的代码，只有一行，长得是这个样子的：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;return namespaces.Exec(container, c.ProcessConfig.Stdin, c.ProcessConfig.Stdout, c.ProcessConfig.Stderr, c.ProcessConfig.Console, dataPath, args, func(container *libcontainer.Config, console, dataPath, init string, child *os.File, args []string) *exec.Cmd {
+        c.ProcessConfig.Path = d.initPath
+        c.ProcessConfig.Args = append([]string{
+            DriverName,
+            &amp;quot;-console&amp;quot;, console,
+            &amp;quot;-pipe&amp;quot;, &amp;quot;3&amp;quot;,
+            &amp;quot;-root&amp;quot;, filepath.Join(d.root, c.ID),
+            &amp;quot;--&amp;quot;,
+        }, args...)
+
+        // set this to nil so that when we set the clone flags anything else is reset
+        c.ProcessConfig.SysProcAttr = &amp;amp;syscall.SysProcAttr{
+            Cloneflags: uintptr(namespaces.GetNamespaceFlags(container.Namespaces)),
+        }
+        c.ProcessConfig.ExtraFiles = []*os.File{child}
+
+        c.ProcessConfig.Env = container.Env
+        c.ProcessConfig.Dir = container.RootFs
+
+        return &amp;amp;c.ProcessConfig.Cmd
+    }, func() {
+        if startCallback != nil {
+            c.ContainerPid = c.ProcessConfig.Process.Pid
+            startCallback(&amp;amp;c.ProcessConfig, c.ContainerPid)
+        }
+    })
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;看到这里整个人都不好了，我觉得 docker 这个项目要是这样下去会出问题的，就算你喜欢匿名函数也不要这么偏执好么。我甚至怀疑 docker 在用什么黑科技来隐藏他的真实代码了。于是我决定放弃这行代码直接看 namespaces.Exec 去了。在\verdor\src\github.com\libcontainer\namespaces\exec.go里&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func Exec(container *libcontainer.Config, stdin io.Reader, stdout, stderr io.Writer, console, dataPath string, args []string, createCommand CreateCommand, startCallback func()) (int, error) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;不太确定一个函数 8 个参数真的好么，但是我更纳闷的是在主项目里既然都有 pipe 这个结构把 stdin，stdout，stderr 放在一起为啥到这里就要分开写了，6 个虽然也不少，但是比 8 个要好点。回过头来说一下 namespace ，这又是另一种隔离机制。顾名思义，隔离的是名字空间，这要的话本来属于全局可见的名字资源，如 pid，network，mountpoint 之类的资源虚拟出多份，每个 namespace 一份，每组进程占用一个 namespace。这样的话容器内程序都看不到外部其他进程，攻击的难度自然也就加大了。&lt;/p&gt;
+
+&lt;p&gt;然后这里面最关键的执行的一句倒是很简单了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if err := command.Start(); err != nil {
+    child.Close()
+    return -1, err
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中的 command 是系统调用类 exec.Cmd 的一个对象，而之前的关于程序的配置信息已经在那个一行的执行代码里都整合进 command 里了，在这里只要 start 一下程序就跑起来了。然后我就疑惑了，这个函数不是 namespaces 包下的么，咋没有 namespaces 设置的相关代码呢。其实你仔细看那一行的执行代码可以发现 namespaces 的设置也在里面了，换句话说这个 namespaces 包下的 exec 其实没有做什么和 namespaces 相关的事情，只是 start 了一下。这种代码逻辑结构可是给读代码的人带来了不小的困惑啊。&lt;/p&gt;
+
+&lt;h2&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;这次读代码的起点是想搞懂容器是如何做隔离和保证安全的。从代码来看 docker 并没有另起炉灶新开发机制，而是将现有经过考验的隔离安全机制能用的全用上，包括 cgroups，capability，namespaces，apparmor 和 seLinux。这样一套组合拳打出来的效果理论上看还是很好的，即使其中一个机制出了漏洞，但是要利用这个漏洞的方法很可能会被其他机制限制住，要找到一种同时绕过所有隔离机制的方法难度就要大多了。&lt;/p&gt;
+
+&lt;p&gt;但是从读代码的角度来看，docker 的代码的质量就让人很难恭维了，即使 libcontainer 是一个独立的部分，但本事同根生的名字都不一致，不知道之后会不会更混乱。而一些代码风格和逻辑上也实在让人读起来很费劲，代码质量要提高的地方还有很多。毕竟是开源的项目，即使功能很强大，但是大家如果发现代码质量有问题，恐怕也不大敢用在生产吧。&lt;/p&gt;
+
+&lt;p&gt;而至于 libcontainer 尽管从 docker 中独立出去发展，但是可以看出和主项目还有一些没有切分干净的地方，而且 docker 主项目目前也没有采用 libcontainer 中的 container 方式，只是在调用里面的一些机制方法，看样子目前还处于一个逐步替换的过程中。libcontainer 和一个独立完整的产品还有一段距离，诸位有兴趣的也可以参与进去，万一这就是下一个伟大的项目呢？&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>Linux 系统性能分析工具图解读（二）</title>
+     <link href="/Linux/2014/09/15/linux-performance-tools-2.html"/>
+     <updated>2014-09-15T03:19:55+08:00</updated>
+     <id>/Linux/2014/09/15/linux-performance-tools-2</id>
+     <content type="html">&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/linux_observability_tools.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;第一篇在&lt;a href=&quot;http://oilbeater.com/linux/2014/09/28/linux-performance-tools.html&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;第一篇讲了一些最基础的命令了，接下来在研究研究高级的命令：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;sar&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;netstat&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;pidstat&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;strace&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;tcpdump&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;blktrace&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;iotop&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;slabtop&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;sysctl&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;/proc&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;sar&lt;/h2&gt;
+
+&lt;p&gt;sar 是 System Activity Reporter 的意思，这是一个强大到发指的工具，在第一篇中提到的那些工具的功能（cpu、 mem、 disk、 net），基本上 sar 都可以覆盖到，不信的话可以试一下 sar -A 1 1 看一下它都统计了哪些东西。此外 sar 可以周期性的执行统计，很多系统级别的监控都是通过 sar 来做的。淘宝还专门自己开发了一个 &lt;a href=&quot;https://github.com/alibaba/tsar&quot;&gt;tsar&lt;/a&gt; 在原有的系统级别的监控上增加了对应用的监控。&lt;/p&gt;
+
+&lt;h2&gt;netstat&lt;/h2&gt;
+
+&lt;p&gt;这个命令也是和网络相关的，可以查看 socket 的连接信息，比如建立了哪些 TCP 连接，他们的状态是怎样的，一个进程有多少链接。通常这个命令后面都会跟着 grep 或者 awk 的命令进行进一步处理。以至于有的 awk 的教程都会以 netstat 的输出处理作为样例，比如耗子叔叔的 &lt;a href=&quot;http://coolshell.cn/articles/9070.html&quot;&gt;awk 简明教程&lt;/a&gt;。此外这个命令还有一个 -s 的参数可以统计不同的协议的数据包信息。&lt;/p&gt;
+
+&lt;h2&gt;pidstat&lt;/h2&gt;
+
+&lt;p&gt;其实要不是看到大神说有这个命令，我还以为这个命令是 ps 的全称。其实展示的东西也和 ps 类似，主要的区别在于 ps 只是一次提供系统进程状态的一个快照，pidstat# 可以指定进程提供定时多次的统计信息，相当于你可以更细粒度的 ps 了。这也是做监控的一个很好的工具，可以针对特殊进程特殊关照。&lt;/p&gt;
+
+&lt;h2&gt;strace&lt;/h2&gt;
+
+&lt;p&gt;其实感觉 strace 是一个更偏针对应用的性能工具，他可以统计出进程进行了哪些系统调用，处理了哪些信号。也因此 strace 是一个分析程序实现的一个很好的工具，比如说你想知道 pidstat 中的信息都是从哪里获得的就 strace pidstat |&amp;amp; grep open 就可以知道它是打开了哪些文件获取到信息的。由于 strace 会将输出打到标准错误中所以管道处理要记得加上 &amp;amp; 。这个命令是很强大，但问题是也及其消耗性能，一般情况下慢一个数量级还是会有的，所以只是分析的时候用一下，正常执行就不要了。&lt;/p&gt;
+
+&lt;h2&gt;tcpdump&lt;/h2&gt;
+
+&lt;p&gt;大名鼎鼎的 tcpdump 可以将经过网卡的数据包保存下来一份以供 wireshark 这类软件进一步进行分析。如果愿意的话开启网卡混杂模式也可以捕获同一网络上其他机器的数据包，也是黑客很喜欢的工具。和 strace 类似， tcpdump 的功能很强大，即使开了 filter 功能也很消耗性能，一般的生产机如果流量大的话开启 tcpdump还是吃不消的。当然有一些神秘的组织是需要获取网络包的完整备份的，他们大概是用专门的硬件完成的吧。&lt;/p&gt;
+
+&lt;h2&gt;blktrace&lt;/h2&gt;
+
+&lt;p&gt;其实这个命令用 btrace 展示会更好一些，看名字就知道是 strace 的 io 版，可以实时的展示每次磁盘 IO 请求的内容，耗时，发生位置等等很多东西，不过带 trace 的命令一般都比较耗性能。&lt;/p&gt;
+
+&lt;h2&gt;iotop&lt;/h2&gt;
+
+&lt;p&gt;和上个命令类似，一看就是 top 的 io 版，简洁明了，包括展示都和 top 很类似，试一下就知道是怎么回事了。&lt;/p&gt;
+
+&lt;h2&gt;slabtop&lt;/h2&gt;
+
+&lt;p&gt;其实只要知道 slab 是个什么东西，这个命令就很好理解了。slab 是对象缓冲池，将一些常用的小的对象结构再释放后缓存起来，而不是直接交给系统回收，这样可以避免频繁的小对象找系统申请内存造成性能下降，知道这个再看 这条命令就很轻松了。&lt;/p&gt;
+
+&lt;h2&gt;sysctl&lt;/h2&gt;
+
+&lt;p&gt;这里面是一些很有讲究的系统参数的设置，很多参数的设置都会对服务器的性能产生很大的影响。这也是个水很深的配置文件，比如 tcp&lt;em&gt;reuse、tcp&lt;/em&gt;recycle 这些服务器的重要配置都在这里面。这里面的配置估计也能讲上个几天几夜。还是先 sysctl -a 看一下感受感受吧。&lt;/p&gt;
+
+&lt;h2&gt;/proc&lt;/h2&gt;
+
+&lt;p&gt;其实上述诸多的工具都是从这个文件加下面读取文件做展示的，不过真要自己解析这里面的文件还是蛮耗功夫的，所以还是好好用一下上面的那些命令吧。不过如果你对那些命令是如何实现的可以配合着 strace 来探索这里面的奥秘。&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>Linux 系统性能分析工具图解读(一)</title>
+     <link href="/Linux/2014/09/08/linux-performance-tools.html"/>
+     <updated>2014-09-08T22:19:55+08:00</updated>
+     <id>/Linux/2014/09/08/linux-performance-tools</id>
+     <content type="html">&lt;p&gt;最近看了 Brendan Gregg 大神著名的 Linux Performance Observability Tools，这么好的资料不好好学习一下实在是浪费了，又找到了大神的&lt;a href=&quot;http://www.brendangregg.com/linuxperf.html&quot;&gt; ppt 和 演讲&lt;/a&gt;（需爬墙），于是把相关的命令和概念连预习，学习，复习走了一遍。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/linux_observability_tools.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;首先学习的是大神提出的 Basic Tool 有如下几个：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;uptime&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;top （htop）&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;mpstat&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;iostat&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;vmstat&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;free&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;ping&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;nicstat&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;dstat&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;uptime&lt;/h2&gt;
+
+&lt;p&gt;uptime 比较重要的能显示当前系统的负载状态，但是这个负载究竟是什么意思呢？查了一些资料负载指的是当前可运行的程序加上正在运行的程序再加上等待 IO 的程序，比如现在运行着一个，一个等待运行，还有一个等待 IO 那么负载就是3. uptime 后面三个数分别是 1min， 5min 和 15min 的负载平均值，由于内核用了一个指数平滑的平均算法，这个值不能直接反应当前等待的进程数。此外这个值没对多核进行 normalization 所以单核情况下当负载是 1 的时候说明 cpu 满载了，但是对于 4 核 cpu 刚到满负载的 25%。 一般情况下这个值越大就说明等待 CPU 的进程越多，如果大于核数就说明有进程在等待 CPU，需要看一下程序的问题或者考虑加机器了。另外即使负载过载了也不一定说明 CPU 的利用率高，因为很可能是大量的请求 IO 的进程在等待，像一些数据库服务，所以看完负载后还要针对应用场景综合考量。&lt;/p&gt;
+
+&lt;h2&gt;top &amp;amp; htop&lt;/h2&gt;
+
+&lt;p&gt;top 其实是一个相当全面的分析了还是事实的，其他很多命令能拿到的数据，top 一个命令就可以拿到。但是他的一个问题就是本身的 overhead 比较大，如果系统负载本身就很大那么可能就会卡住了。此外 top 可能会忽视掉那些生命周期很短的程序。top 的 manual 里详细介绍了每个指标的意义，翻看一下还是很有收获的。其中比较要关注的有 wa（io wait）,查看是不是你的 IO 是瓶颈，还有 st (time stolen from this vm by the hypervisor) 这个指标会出现在虚拟机里的系统中，表示的是你的虚拟机在等待真实物理机的 CPU 资源的时间。如果这个值很高的话说明你的服务提供商的 CPU 资源有限你没抢过别人，很有可能使服务商超卖了。碰到这种情况要么打客服投诉，或者多掏点银子找个靠谱的运营商吧。&lt;/p&gt;
+
+&lt;p&gt;htop 是 top 的改进版，带着各种颜色表示和百分比进度条，以及更丰富的功能，小伙伴们可以尝试一下。&lt;/p&gt;
+
+&lt;h2&gt;mpstat&lt;/h2&gt;
+
+&lt;p&gt;mpstat 可以显示出每个 CPU 核心的工作情况，其实也可以在 top 里输入 1 看到。通过这个命令我们可以观察是不是存在负载不均的现象，某个核心跑满了，另一个还在闲着，造成整体性能的下降。 &lt;/p&gt;
+
+&lt;h2&gt;iostat&lt;/h2&gt;
+
+&lt;p&gt;加上 -x 参数后可以看到几乎全部的 io 指标，包括 tps， 请求 queue 的平均长度，平均处理时间， 磁盘带宽利用率等等。每个指标 manual 中都有详细的解释。&lt;/p&gt;
+
+&lt;h2&gt;vmstat &amp;amp; free&lt;/h2&gt;
+
+&lt;p&gt;vmstat 是一个展示内存整体使用情况的命令，其中要关注一下 swpd 和 swap 的 in/out 。如果这一部分的数值过大，会频繁的 IO 造成性能下降，要么看看是不是程序内存泄露了，要么就加内存吧。 memory 里的 buffer 指的是写磁盘缓冲区， 而 cache 可以当成是读文件的缓冲区。free也是类似的功能，不过只展示内存部分的内容。&lt;/p&gt;
+
+&lt;h2&gt;ping&lt;/h2&gt;
+
+&lt;p&gt;这个相对来说简单一些，主要反映了主机间的延迟和连通性，很多时候也只能告诉我们这些了。可以尝试一下 hping 有着指定端口，高级 tracerout 的功能。&lt;/p&gt;
+
+&lt;h2&gt;nicstat&lt;/h2&gt;
+
+&lt;p&gt;一个和 iostat 类似，不过是针对网卡的命令。&lt;/p&gt;
+
+&lt;h2&gt;dstat&lt;/h2&gt;
+
+&lt;p&gt;一个综合了cpu、 memory、 IO、 network 的工具，可以事实展示当前的系统资源利用情况。&lt;/p&gt;
+
+&lt;p&gt;以上就是最基础的命令了，高级一些的命令有：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;sar&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;netstat&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;pidstat&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;strace&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;tcpdump&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;blktrace&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;iotop&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;slabtop&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;sysctl&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;/proc&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;等我研究研究再写总结。&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>什么是Docker？</title>
+     <link href="/Docker/2014/06/29/what-is-docker.html"/>
+     <updated>2014-06-29T05:19:55+08:00</updated>
+     <id>/Docker/2014/06/29/what-is-docker</id>
+     <content type="html">&lt;p&gt;尽管之前久闻Docker的大名了，但是天资愚钝，对其到底是个啥东西一直摸不清，最近花了一段时间整理了一下，算是整理出一点头绪来。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.docker.com/whatisdocker/&quot;&gt;官网&lt;/a&gt;的介绍是这样的：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Docker is an open platform for developers and sysadmins to build, ship, and run distributed applications....&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;其实看完这句话还是不明白究竟是啥的，下面就慢慢解释。不过长话短说的话，把他想象成一个用了一种新颖方式实现的超轻量虚拟机，在大概效果上也是正确的。当然在实现的原理和应用上还是和VM有巨大差别的，并且专业的叫法是应用容器（Application Container）。&lt;/p&gt;
+
+&lt;h2&gt;为啥要用容器？&lt;/h2&gt;
+
+&lt;p&gt;那么应用容器长什么样子呢，一个做好的应用容器长得就好像一个装好了一组特定应用的虚拟机一样。比如我现在想用Mysql那我就找个装好Mysql的容器，运行起来，那么我就可以使用 Mysql 了。&lt;/p&gt;
+
+&lt;p&gt;那么我直接装个 Mysql 不就好了，何必还需要这个容器这么诡异的概念？话是这么说，可是你要真装Mysql的话可能要再装一堆依赖库，根据你的操作系统平台和版本进行设置，有时候还要从源代码编译报出一堆莫名其妙的错误，可不是这么好装。而且万一你机器挂了，所有的东西都要重新来，可能还要把配置在重新弄一遍。但是有了容器，你就相当于有了一个可以运行起来的虚拟机，只要你能运行容器，Mysql 的配置就全省了。而且一旦你想换台机器，直接把这个容器端起来，再放到另一个机器就好了。硬件，操作系统，运行环境什么的都不需要考虑了。&lt;/p&gt;
+
+&lt;p&gt;在公司中的一个很大的用途就是可以保证线下的开发环境、测试环境和线上的生产环境一致。当年在 Baidu 经常碰到这样的事情，开发把东西做好了给测试去测，一般会给一坨代码和一个介绍上线步骤的上线单。结果代码在测试机跑不起来，开发就跑来跑去看问题，一会儿啊这个配置文件忘了提交了，一会儿啊这个上线命令写错了。找到了一个 bug 提上去，开发一看，啊我怎么又忘了把这个命令写在上线单上了。类似的事情在上线的时候还会发生，变成啊你这个软件的版本和我机器上的不一样……在 Amazon 的时候，由于一个开发直接担任上述三个职位，而且有一套自动化部署的机制所以问题会少一点，但是上线的时候大家还是胆战心惊。&lt;/p&gt;
+
+&lt;p&gt;若果利用容器的话，那么开发直接在容器里开发，提测的时候把整个容器给测试，测好了把改动改在容器里再上线就好了。通过容器，整个开发、测试和生产环境可以保持高度的一致。&lt;/p&gt;
+
+&lt;p&gt;此外容器也和VM一样具有着一定的隔离性，各个容器之间的数据和内存空间相互隔离，可以保证一定的安全性。&lt;/p&gt;
+
+&lt;h2&gt;那为啥不用VM？&lt;/h2&gt;
+
+&lt;p&gt;那么既然容器和 VM 这么类似为啥不直接用 VM 还要整出个容器这么个概念来呢？Docker 容器相对于 VM 有以下几个优点：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;启动速度快，容器通常在一秒内可以启动，而 VM 通常要更久&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;资源利用率高，一台普通 PC 可以跑上千个容器，你跑上千个 VM 试试&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;性能开销小， VM 通常需要额外的 CPU 和内存来完成 OS 的功能，这一部分占据了额外的资源&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;为啥相似的功能在性能上会有如此巨大的差距呢，其实这和他们的设计的理念是相关的。 VM 的设计图如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/vm.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;VM 的 Hypervisor 需要实现对硬件的虚拟化，并且还要搭载自己的操作系统，自然在启动速度和资源利用率以及性能上有比较大的开销。而 Docker 的设计图是这样的：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://oilbeater.qiniudn.com/docker.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Docker 几乎就没有什么虚拟化的东西，并且直接复用了 Host 主机的 OS，在 Docker Engine 层面实现了调度和隔离重量一下子就降低了好几个档次。 Docker 的容器利用了 &lt;a href=&quot;https://linuxcontainers.org/&quot;&gt;LXC&lt;/a&gt;，管理利用了 &lt;a href=&quot;http://blog.dotcloud.com/under-the-hood-linux-kernels-on-dotcloud-part&quot;&gt;namespaces&lt;/a&gt; 来做权限的控制和隔离， &lt;a href=&quot;http://blog.dotcloud.com/kernel-secrets-from-the-paas-garage-part-24-c&quot;&gt;cgroups&lt;/a&gt; 来进行资源的配置，并且还通过 &lt;a href=&quot;http://blog.dotcloud.com/kernel-secrets-from-the-paas-garage-part-34-a&quot;&gt;aufs&lt;/a&gt; 来进一步提高文件系统的资源利用率。&lt;/p&gt;
+
+&lt;p&gt;其中的 aufs 是个很有意思的东西，是 &lt;a href=&quot;http://en.wikipedia.org/wiki/Unionfs&quot;&gt;UnionFS&lt;/a&gt; 的一种。他的思想和 git 有些类似，可以把对文件系统的改动当成一次 commit 一层层的叠加。这样的话多个容器之间就可以共享他们的文件系统层次，每个容器下面都是共享的文件系统层次，上面再是各自对文件系统改动的层次，这样的话极大的节省了对存储的需求，并且也能加速容器的启动。&lt;/p&gt;
+
+&lt;h2&gt;下一步&lt;/h2&gt;
+
+&lt;p&gt;有了前面的这些介绍，应该对 Docker 到底是啥有些了解了吧， Docker 是 用 Go 语言编写的，源代码托管在 github 而且居然只有 1W 行就完成了这些功能。如果想尝试一下的话可以看&lt;a href=&quot;https://docs.docker.com/introduction/understanding-docker/&quot;&gt;官方介绍&lt;/a&gt;了，应该上手会容易一些了。博主也是新手，如有错误欢迎拍砖指正。&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>[译]为什么你应该关注 Docker</title>
+     <link href="/Docker/2014/06/13/why-you-should-care-about-docker.html"/>
+     <updated>2014-06-13T17:31:55+08:00</updated>
+     <id>/Docker/2014/06/13/why-you-should-care-about-docker</id>
+     <content type="html">&lt;blockquote&gt;
+&lt;p&gt;注：该文原文为 &lt;a href=&quot;http://thenewstack.io/why-you-should-care-about-docker/&quot;&gt;Why You Should Care About Docker&lt;/a&gt; ，由 CHRIS DAWSON 编写。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;当我在 &lt;a href=&quot;http://dockercon.com/&quot;&gt;Dockercon&lt;/a&gt; 上陶醉于那些令人激动地议题时，我想到了一个问题：我该如何向在波特兰家中的妻子去解释 Docker 呢？我的妻子这时正在照料我们只有18个月大的生病的孩子。是什么让 Docker 这么有吸引力，以至于让我在 30 岁高龄时依旧奔波了 600 英里去参加这个大会？&lt;/p&gt;
+
+&lt;p&gt;现在会议中大多数关于 Docker 的新闻都需要你了解诸如 cgroup、systemd 和 LXC 这样复杂的技术。如果你在 Stack Overflow 或者 Server Fault 这种网站的排名低于 1000 的话，去参加这样一场会议会让你很快赶到绝望。我希望能够跳过那些技术，直接告诉你为什么 Docker 会让你赶到兴奋。为什么 Docker 能够让你的工作更简单，能够简化商业应用的流程，能够让一个公司更强大。&lt;/p&gt;
+
+&lt;h2&gt;Docker 可以加速新技术的采用，即使是在那些保守的企业&lt;/h2&gt;
+
+&lt;p&gt;昨天吃中午饭的时候，我和两个在财富 500 强的金融服务公司工作的程序员聊天。他们向我讲述了在他们公司使用新的技术是一件多么困难的事情。公司里的安全专家只会对那些新技术说 “no” ，他们与那些更激进的想要使用新技术的程序员们的斗争已经成为了一种常态。&lt;/p&gt;
+
+&lt;p&gt;Docker 作为一种标准的交付系统，把资源分配以及安全隔离的责任从操作人员和安全人员手中的责任清单中转移到了容器中。尽管这并不是银弹，但是如果安全团队只用负责验证 Docker 容器进程的安全性的话，他们会更可能同意使用新技术。这改变了游戏的规则。&lt;/p&gt;
+
+&lt;h2&gt;Docker 让维护旧的系统和代码更简单&lt;/h2&gt;
+
+&lt;p&gt;无论你在运行那个版本的 Linux，Docker 都会让维护系统变得简单。就像上面提到的，很多大型的企业都必须支持大量旧的系统和代码，而创业公司通常不会有这些问题。当我问来自 Heroku 的 &lt;a href=&quot;http://fabiokung.com/&quot;&gt;Fabio Kung &lt;/a&gt; 和 &lt;a href=&quot;http://www.grokpodcast.com/&quot;&gt;Rafael Rosa&lt;/a&gt; 他们是如何解决这个问题的时候 Fabio 告诉我 Docker 使得他们维护旧系统和代码变得简单。你不需要用真实的物理主机去跑这些系统，也不需要用一个重量级的虚拟机（如果你的旧系统在一个 Linux 版本上运行）， Docker 给你提供了一个新的选择。 Docker 可以降低你维护旧系统的代价，甚至可以将你在上面的操作记录下来形成一个带版本控制的 “Dockerfile”。&lt;/p&gt;
+
+&lt;h2&gt;Docker 可以快速降低部署的痛苦&lt;/h2&gt;
+
+&lt;p&gt;管理者们通常会忽视持续集成、单元测试和敏捷开发这样的开发实践，但是他们会真切地关注一件事情，那就是开发的最后一个环节——部署。讽刺的是，尽管有上述和更多工具的支持，部署依然是一件令开发者十分头疼的工作。就像 Spotify 的工程师 &lt;a href=&quot;https://twitter.com/rohansingh&quot;&gt;Rohan Singh&lt;/a&gt; 昨天和我强调的那样，在提交最终版经过测试的代码和代码在生产服务器上运行之间还存在很大的距离。 Docker 可以极大的简化这最后一步，这对管理者和程序员们来说很重要，并且这样可以更快的让最新的产品呈现在用户面前。&lt;/p&gt;
+
+&lt;h2&gt;Docker 可以为财富500强的企业和创业公司解决问题&lt;/h2&gt;
+
+&lt;p&gt;在大会上，那些大公司通过使用 Docker 获得了巨大的提升的事情深深的吸引了我。 Docker 现在正在经历着高速的发展，可以预料到只有那些创业公司和使用者可以持续的跟进他。 Docker 已经展示了他和大企业和小企业之间都有很强的关联性。&lt;/p&gt;
+
+&lt;p&gt;随着更多的公司采用并且改进 Docker，Docker 正在变得越来越好。参加 DockerCon 2014 是一段令人兴奋的经历。&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>这些年计算机学生路总结资料</title>
+     <link href="/生活感悟/2014/06/05/summary-of-study.html"/>
+     <updated>2014-06-05T17:31:55+08:00</updated>
+     <id>/生活感悟/2014/06/05/summary-of-study</id>
+     <content type="html">&lt;p&gt;四年的本科，三年的研究生算是过来了，在计算机学习这条路上也走了很多的弯路。总结了一下好的资料、信息和方法，不敢说有什么指导意义，只是给还没毕业的学生做个参考。&lt;/p&gt;
+
+&lt;p&gt;博主属于路子铺的比较广的那种，玩过开发板、研究过系统内核、改过浏览器内核、写过网站、弄过机器学习毕设又转过头去做网络了，所以没有什么特别精通的方向。不过好在基础面铺的比较广，各个方面都能和人聊两句，所以这里也就给一些打基础的参考。&lt;/p&gt;
+
+&lt;h2&gt;参考书&lt;/h2&gt;
+
+&lt;p&gt;过来人都知道，学计算机只靠上课那些内容是远不够的，而有些网站推荐的&lt;a href=&quot;http://stackoverflow.com/questions/1711/what-is-the-single-most-influential-book-every-programmer-should-read&quot;&gt;程序员必读系列&lt;/a&gt;感觉有点坑，而且没有什么针对性，纯粹是别人说好我也来捧的感觉。博主这里推荐的都是看完过，而且确实有实际作用的书，尽量去除掉神话光环。&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;以下是基础篇&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://book.douban.com/subject/5333562/&quot;&gt;《深入理解计算机系统》&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;这本书来回读了三遍，每次都有很大收获。说到底这只是一本导论性质的书，不像坊间流传的那么传奇，毕竟也只是CMU本科生的一门计算机基础性质的课。不过看完后确实能对整个计算机系统从底层编码到上层开发产生一个清晰的脉络，课后的习题每道都很有意义，作为一部教材，确实让人读起来赏心悦目。北大这边已经将这本书作为必修课的教材，当时知道的时候我还是很为学生们开心的，当然学生们普遍反映很虐。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://book.douban.com/subject/4178907/&quot;&gt;《算法引论》&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;博主从前是个算法渣，当然现在也强不到哪去。但是我一直感觉推荐&lt;a href=&quot;http://book.douban.com/subject/1885170/&quot;&gt;《算法导论》&lt;/a&gt;甚至&lt;a href=&quot;http://book.douban.com/subject/1418402/&quot;&gt;《TAOCP&amp;gt;&lt;/a&gt;是毫无诚意的做法。上述两本书一本是字典性质的，另一本就是辞海性质了，看字典和辞海是要闹哪样。《算法引论》这本书主要讲的是如何设计算法，开篇介绍了高中学的数学归纳法，然后通过归纳法告诉你其他的算法是怎么设计出来的。读了这本书很多原来不熟悉的算法都能推导出来了，尤其是动态规划类的题归纳法简直是大杀器。博主之前看过两遍算法导论都是迷迷糊糊，看完算法引论后感觉突然算法开窍了，再看其他算法都清晰了很多。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://book.douban.com/subject/2243615/&quot;&gt;《Head First 设计模式》&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;虽说博主是所谓软件工程国家重点实验室的人，但是真正和软工领域相关的书只有两本能读下来且觉得有意义。（另一本是&lt;a href=&quot;http://book.douban.com/subject/2230248/&quot;&gt;《人月神话》&lt;/a&gt;也推荐大家读一下）软工的书很容易写的无聊，这本书的优点就是不无聊。个人感觉设计模式主要是针对对面向对象编程尤其是Java的，能够构建出比较高质量的代码，在面电商的时候几乎都碰到设计模式类的问题了。而且真正看下去，感觉这个东西确实是有意义的。很多人推荐另一本书&lt;a href=&quot;http://book.douban.com/subject/1052241/&quot;&gt;《设计模式：可复用面向对象软件的基础》&lt;/a&gt;，但是由于读了几次都没读下去就不推荐了，感兴趣的同学可以试一下。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://book.douban.com/subject/4889838/&quot;&gt;《鸟哥的Linux私房菜.基础学习篇》&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;这是一本实用的Linux入门基础教程，尽管里面作者的一些观点有些偏激而且说话太啰嗦了……，但是教的东西都是实打实的。可以减少很多自己摸索的痛苦，对命令行不那么恐惧，不过要注意的就是有些东西已经过时了。&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;以下是C++篇&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://book.douban.com/subject/1767741/&quot;&gt;《C++ Primer》&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;不夸张的说是看完这本书才会写程序的，很多人觉得上手用这本书太难，我当时是课上学过C来看的，感觉讲的比较基础难度没有很大。外国书没那么多tricky类的问题，中规中矩介绍语言，并且融合了软工的一些内容，看完了对编码的帮助还是很大的。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://book.douban.com/subject/5387403/&quot;&gt;《Effective C++》&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;是我看过的C++相关收获最大的一本书。很多人根据有没有读过这本书来把C++程序员划分为两类，这点我就觉得有点过了。这本书很大的一个作用就是扫雷，把C++的雷坑一个个挖出来给你看，告诉你应该怎么绕过去，读之前我都不知道居然有这么多坑。此外也提供了很多软工方面的建议，通过这些建议来帮助程序员写更好的代码掉更少的坑。这本书还有续集&lt;a href=&quot;http://book.douban.com/subject/5908727/&quot;&gt;《More Effective C++》&lt;/a&gt;,续集偏设计模式一些了，感觉没有上一代那么有启发意义，不过还是值得一看。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://book.douban.com/subject/10427315/&quot;&gt;《深度探索C++对象模型》&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;由于C++的坑太多了，就专门有一本探坑的书，这本书介绍了C++的具体实现告诉大家坑是怎么来的，这本书也被誉为是C++进阶级程序员必读。但这本书本身也是个大坑，原作挖了一堆坑，侯捷老爷子翻译的时候填坑也没填完还又挖了新坑。看这本书很有意思的一点就是看到批注里有老爷子指出原作者哪里又错了。这本书确实对理解C++有着一剂猛药的作用，看完了再看C++感觉都不太一样了，面试时问到的奇葩问题也都能和面试官侃了。但是有一个问题是C++的标准里并没有规定实现标准，所以这本书里介绍的实现模型其实在不同编译器里是不一样的，而且这本书里介绍的一些实现和现在已经不一样了，所以这本书还是个大坑。可以眺，但也不要太认真。&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;以下是Python篇&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.python.org/2/tutorial/index.html&quot;&gt;Python Tutorial&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.python.org/2/howto/index.html&quot;&gt;Python HOWTOs&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Python相关的书看过一些，但是都乏善可陈，而且内容都比较陈旧，官方的文档反而写的很不错，尤其是HOWTOs部分，看得很过瘾。本来想把&lt;a href=&quot;https://docs.python.org/2/library/index.html&quot;&gt;Library&lt;/a&gt;部分加上的，但是鉴于我还没读完，就算了。有余力的同学可以看一下Library部分的文档，你会发现很多Python不优雅，不直观的地方。而且看Library的过程中还能顺便把计算机的基础知识都过一遍。如果是完全没有什么编程经验的同学直接看文档可能会有些苦难，（后方夹带私货，高能预警）可以看我做的一个&lt;a href=&quot;http://www.fenby.com/courses/pythonyu-yan-ji-chu-ke-cheng/&quot;&gt;Python基础教程&lt;/a&gt;。&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;以下是其他杂项&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://book.douban.com/subject/1929984/&quot;&gt;《数据库系统概念》&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;已经出第六版了，虽说比较厚，但是内容都很扎实，前面是数据库基础知识包括SQL，后面是数据库系统的设计实现，讲的很全面，用数据库开发数据库都能获得收获。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://book.douban.com/subject/24737674/&quot;&gt;《图解TCP/IP》&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;广度还不错的一本书，图真的很多，不过深度略差。主要好在内容比较新，无线，IPV6等最新技术都有涉猎。谁让《TCP/IP 详解》系列还是94年的东西，内容太陈旧了呢。不过最近貌似出第二版了，但是没有看过，有兴趣的同学可以去看看。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://book.douban.com/subject/2154713/&quot;&gt;《精通正则表达式》&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;另一种视角来看字符串处理，还是很颠覆原来思想的。&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;为了不让书单太长就不加了，博主看过的书可以参考&lt;a href=&quot;http://book.douban.com/people/oilbeater/collect&quot;&gt;豆瓣书单&lt;/a&gt;里面大部分的书都是上了研究生后才开始看的（本科四年荒废过去了）。所以告诉大家这些书还是能看完的，可能一开始看会很慢，比如我最初看《深入理解计算机系统》就看了两个多月，不过之后基础好了再看别的书会很快的，只要能保持看书的习惯，看完还是没那么痛苦的。当然这些书也只是个基础，不要指望他们能让你功成名就。&lt;/p&gt;
+
+&lt;h2&gt;视频网站&lt;/h2&gt;
+
+&lt;p&gt;上面的书很多都是偏理论的，而且内容比较老，这几年的一些新技术其实主要还是靠看博客和看视频来学习的。视频网站主要推荐两个：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.coursera.org/&quot;&gt;Coursera&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;大名鼎鼎的Coursera，里面的东西也相对偏理论，不过好处是都是很新，前沿的理论，老师的教学质量很好（发现最近有些新课程质量在下滑，不过北美名校的质量还不错）。博主数据挖掘，机器学习，统计类的知识都是在这上面学到的。不过真正完整拿到结业的只有Machine Learning 和 Critical Thinking。因为很多学的时候并没有当期的课，不过学完后和一些高数据挖掘的同学聊天发现居然都能听懂。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.lynda.com/&quot;&gt;Lynda&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;这个就是纯技术应用的视频网站了，手把手教你做网站，P图，搞设计，开发应用。教学质量高的吓人，看过几个课程完全就被专业的教学震惊了，当然课程是收费的。在中国你是能找到一些免费的，不过课程都比较老了。如果几个人共用一个账号的话，我感觉这些钱还是相当值的。&lt;/p&gt;
+
+&lt;h2&gt;资讯类&lt;/h2&gt;
+
+&lt;p&gt;干IT这行，最新的咨询流是很必要的，但是过多的信息又容易让人烦躁，所以如何管理好自己的Timeline就很重要了。关于Timeline的管理可以参考&lt;a href=&quot;http://www.zhihu.com/question/20379741&quot;&gt;如何“修剪”知乎上的 timeline？&lt;/a&gt;。连知乎这样曾经高质量的社区都水了，可以想象没有不水的地方了，不过我们还是能做到让自己的Timeline不水的。下面是我关注的一些新闻源和博客，都是可以RSS订阅的：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://news.dbanotes.net/&quot;&gt;StartupNews&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://CoolShell.cn&quot;&gt;CoolShell&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://blog.jobbole.com/&quot;&gt;博客- 伯乐在线&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://tech.uc.cn/&quot;&gt;UC技术博客&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://googleblog.blogspot.com/&quot;&gt;The Official Google Blog&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://oilbeater.com&quot;&gt;Oilbeater&lt;/a&gt; (夹带私货，高能预警)&lt;/p&gt;
+
+&lt;p&gt;前面提到的每天都不会有很多，而且干货比较多，质量还不错。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.reddit.com/&quot;&gt;reddit&lt;/a&gt;重点提一下reddit，是我主要的外文资源的获取地，可以去里面搜索你感兴趣的专题，然后订阅那个专题的咨询，我现在就订阅了python和django两个。如果你不是很确定的话可以试一下programming板块，每天会有将近100的量，空闲时间很多的话可以挑战一下。如果还是能看完的话就试一下&lt;a href=&quot;https://news.ycombinator.com/&quot;&gt;HackNews&lt;/a&gt;吧。&lt;/p&gt;
+
+&lt;p&gt;如果大家有什么好的资讯或者博客源的话希望也能赏我几个。&lt;/p&gt;
+
+&lt;p&gt;微博上多关注几个大牛也能获得很多新鲜的知识，推荐几个（当然也可先关注&lt;a href=&quot;http://weibo.com/oilbeater&quot;&gt;Oilbeater&lt;/a&gt;，再顺着我的关注走，我的关注还是比较少的）：
+&lt;a href=&quot;http://weibo.com/infoqchina&quot;&gt;InfoQ&lt;/a&gt;，&lt;a href=&quot;http://weibo.com/52mlnet&quot;&gt;我爱机器学习&lt;/a&gt;，&lt;a href=&quot;http://weibo.com/blogread&quot;&gt;IT技术博客大学习&lt;/a&gt;，&lt;a href=&quot;http://weibo.com/kingoi&quot;&gt;DataScientist&lt;/a&gt;,&lt;a href=&quot;http://weibo.com/huailinchen&quot;&gt;湾区评论&lt;/a&gt;,&lt;a href=&quot;http://weibo.com/u/2216172320&quot;&gt;何_登成&lt;/a&gt;,&lt;a href=&quot;http://weibo.com/u/2093492691&quot;&gt;程序员的那些事&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;在强调清洗Timeline的重要性，取消关注一定取消，绝对不能手软，不然到最后Timeline里就全是男默女泪、不转不是中国人、成功人士的n个方法的鸡汤聚集地。同时要警惕那些只知道站队没有实际内容的人，现在越来越不喜欢知乎的一个原因就是发现不管什么问题站队的回答总能顶到最高，实际的回答反而被忽视。所以要让自己的Timeline少一些站队的消息。&lt;/p&gt;
+
+&lt;h2&gt;关于项目和实习&lt;/h2&gt;
+
+&lt;p&gt;其实很多人夸大了实习和项目的作用，我的感觉项目和实习的名头不是那么重要，重要的是你做了什么事情，能不能拿出一个让人看到觉得还可以的东西。博主去大公司实习过感觉大公司学到的更多的是流程管理类的东西，真正做出来的东西可能并不是那么重要。所以如果不是直接找工作的实习的话推荐去个小公司，或者创业公司，至少能做出一个像样的东西。项目也是类似的，重要的是做出一个能拿出手的东西，论文专利什么的其实都是比较虚的东西。自己做出一些东西改变一下这个世界一点点，感觉还是很好的,比如说写博客。&lt;/p&gt;
+
+&lt;h2&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;打好基础，清理Timeline，做有用的东西，仅供参考，欢迎拍砖。&lt;/p&gt;
+</content>
+   </entry>
+   
+
+</feed>

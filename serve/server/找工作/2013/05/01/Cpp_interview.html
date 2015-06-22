@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+         **
+         * Auther:      掌心
+         * Contact:     http://www.zhanxin.info
+         * Create:      2013.08.10
+         * Theme Name:  Kunka
+         * Authorize:   BY-NC-SA
+         **
+        -->
+        <meta charset="utf-8">
+        <meta name="baidu-site-verification" content="iqhuonCLkd" />
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?0432ef76122f4980cc9591d92b64cfa8";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+        <title>C++面试题——const 和 static - Oilbeater</title>
+        <!-- meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="generator" content="Jekyll" />
+        <meta name="author" content="Oilbeater" />
+        <meta name="description" content="虽说不太喜欢这种问语言特性的题目，但是国内好多公司貌似就喜欢问这个，还觉得问这个很高端，就把他们常问的一些东西写下来做个总结，有的东西还是有些意思的，有些东西其实都没个固定的答案。" />
+        <meta name="keywords" content="" />
+        <!-- atom -->
+        <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+        <link rel="shortcut icon" href="http://jekyllrb.com/favicon.png" type="image/x-icon" />
+        <!-- font-awesome -->
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+        <link href='http://fonts.useso.com/css?family=Spirax' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="/css/syntax.css">
+        <link rel="stylesheet" href="/css/main.css">
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-31254339-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0];
+                  s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        
+    </head>
+    <body>
+        <div class="head fn-clear">
+            <div class="header">
+                <h1 class="logo">
+                    <a href=""><i class="icon-anchor"></i></a>
+                </h1>
+                <nav class="nav">
+                    <ul>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/index.html">
+                                首页
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/categories.html">
+                                分类目录
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/archives.html">
+                                文章归档
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/contact.html">
+                                我是谁
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/links.html">
+                                友情链接
+                            </a>
+                            
+                        </li>
+                        
+                    </ul>
+                </nav>
+                <div class="follow">
+                    
+                    <a href="/atom.xml" target="_blank"><i class="icon-rss"></i></a>
+                    
+                    <a href="http://weibo.com/oilbeater" target="_blank"><i class="icon-weibo"></i></a>
+                    
+                    <a href="http://renren.com/231128018" target="_blank"><i class="icon-renren"></i></a>
+                    
+                    <a href="http://github.com/oilbeater" target="_blank"><i class="icon-github-alt"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="contain fn-clear">
+            <div class="container fn-clear">
+                <div class="main">
+                    <div class="article article-post">
+    <h2 class="title">C++面试题——const 和 static</h2>
+    <div class="info">
+        <span class="info-title"><i class="icon-calendar"></i> Published: </span>
+        <span class="info-date">01 May 2013</span>
+        <span class="info-title"><i class="icon-folder-open"></i> Category: </span>
+        <span class="info-link"><a href="/categories.html#找工作-ref" >找工作</a></span>
+    </div>
+    <h1>C++面试题——const 和 static</h1>
+
+<p>虽说不太喜欢这种问语言特性的题目，但是国内好多公司貌似就喜欢问这个，还觉得问这个很高端，就把他们常问的一些东西写下来做个总结，有的东西还是有些意思的，有些东西其实都没个固定的答案。不出意外将会写一个系列包括：</p>
+
+<ul>
+<li>const和static的区别</li>
+<li>iterator和引用的实现以及与指针的区别</li>
+<li>从dynamic_cast说C++的虚机制和对象内存布局</li>
+</ul>
+
+<p>当然也保不齐出意外就不写了。这里面不会讨论具体的C++语法问题，更多的是设计实现机制的东西，其实这些实现机制不是标准里要求的，每种编译器的实现机制可能都不一样，有的书像《深度探索C++对象模型》是这方面比较有名的一本书，但是由于年代比较久远了，在我的实验中这本书的很多细节已经和当今的编译器不一样了。而许多介绍这方面东西的博客也不见得和最新的编译器实现一样所以如果有兴趣的话还是自己动手探索一下，不要过于相信书和别人写的，本来这些东西就没有标准答案。</p>
+
+<p>先从个简单的问题开始，const和static的区别。这其实是个很不好的题目，从语言的层面上讲，这两个东西不是个横向可比的东西，他们的功能集合几乎是正交的，不像所谓的引用和指针，迭代器和指针那样有相关性，但是就是有面试官喜欢问。</p>
+
+<p>由于这个问题实在不回答，就把static和const分别是怎么做到的说一说。</p>
+
+<p>static的特性主要有两个，连接期被分配到了data段，即使是在函数调用中定义也不会在栈中产生，而是在程序加载期就被加入了内存。第二点就是编译生成的目标文件中不会将static变量加入到export表中，也就是说其他模块是不会访问到这个static变量的。</p>
+
+<p>具体来可以写一个实验程序，定义几个全局的普通变量和全局的静态变量，再在main函数里定义几个普通变量和静态变量，打开调试模式观察这些变量的地址，我是用VS2010调试的，不同编译器结果可能会有差别。可以发现全局的静态变量，局部的静态变量和全局普通变量的地址是相互靠近的，main函数中的普通变量是在相隔较远的另一个位置。由此可证明static变量是在和全局变量相互靠近的区域，也就是程序的data端，而不是在栈空间内，这样就保证这个变量不会随着函数调用和返回的入栈出栈把static变量抹掉。</p>
+
+<p>static第二个特点有点像private关键字，规定这个变量只能在本文件中使用而不会被其他文件使用，即便你在别的文件中加入extern关键字也找不到这个变量。以为extern的实现机制是在链接时期通过程序依赖的目标文件的符号导出表寻找相应的符号，static变量不会加入符号表，别的文件也就看不到这个符号。</p>
+
+<p>const表面含义貌似是个常量，但实际上还是占据一个内存位置的变量，但是它的值一般实在编译时期就决定了，所以很多情况下就被编译优化用一个常量代替了，根本没有这个变量的踪影。除非有这个变量的引用或者指针暗示这个所谓的常量可能会被修改才会占用一个内存空间。</p>
+
+<p>换句话说就是C++所谓的const只是在语言层面上提供一个无法修改的保障，这个保障就是说你直接修改这个变量编译无法通过。而不是通过把这个变量放入只读区域或者把存有这个变量的内存标成只读来实现的。所以要突破这层保护是很容易的，包括C++自己也提供了const_cast，我们自己也可以通过指针来修改这个所谓const变量的值。</p>
+
+<pre><code>int main()
+{
+    volatile const int a = 10;
+    int *c =(int*) &amp;a;
+    *c = 5;
+    cout&lt;&lt;a&lt;&lt;endl;
+    return 0;
+}
+</code></pre>
+
+<p>可以通过这个简单的程序自己测试一下。</p>
+
+
+<hr>
+    <div>
+        <p>欢迎大家在讨论区有血性的争论、动手、拍砖、捅刀子，亮出你的看法来！本博客已经全文RSS输出，大家可以通过订阅oilbeater.com/atom.xml即可获得博客更新。或者关注我的微博<a href="http://weibo.com/oilbeater/">@oilbeater</a>在上面我会通知我的博客更新并且还会分享一些有意思的技术文章，欢迎大家关注。</p>
+    </div>
+    <div class="contact">
+        <a href="mailto:liumengxinfly@gmail.com">liumengxinfly@gmail.com</a>
+    </div>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1377168947699154" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    <br>
+    <nav class="article-previous fn-clear">
+        
+        <a class="prev" href="/读书笔记/2013/04/10/note-of-CppPrimer.html" rel="bookmark">&laquo;&nbsp;C++ Primer笔记</a>
+        
+        
+        <a class="next" href="/找工作/2013/05/19/interview.html" rel="bookmark">小弱找实习&nbsp;&raquo;</a>
+        
+    </nav>
+    <div class="comment">
+        
+            
+            <div class="ds-thread"></div>
+            
+        
+    </div>
+</div>
+
+                </div>
+                <div class="aside">
+                    <div class="aside-item">
+                        <div>
+<iframe width="100%" height="500" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=500&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=0&isWeibo=1&isFans=0&uid=1300038410&verifier=1c853142&dpc=1"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Recent Posts</h4>
+                        <ul class="list">
+                            
+                                <li><a href="/博客/2015/05/15/whyleaveali.html" title="为啥我要从阿里离职" rel="bookmark">为啥我要从阿里离职</a></li>
+                            
+                                <li><a href="/system/2015/03/22/recovery-services.html" title="分布式系统断电自恢复" rel="bookmark">分布式系统断电自恢复</a></li>
+                            
+                                <li><a href="/博客/2015/01/12/the-summary-of-blog.html" title="oilbeater博客回顾2014篇" rel="bookmark">oilbeater博客回顾2014篇</a></li>
+                            
+                                <li><a href="/nginx/2014/12/29/nginx-conf-from-zero.html" title="nginx 配置从零开始" rel="bookmark">nginx 配置从零开始</a></li>
+                            
+                                <li><a href="/docker/2014/11/11/docker-libcontainer-reading.html" title="一次奇幻的 docker libcontainer 代码阅读之旅" rel="bookmark">一次奇幻的 docker libcontainer 代码阅读之旅</a></li>
+                            
+                                <li><a href="/Linux/2014/09/15/linux-performance-tools-2.html" title="Linux 系统性能分析工具图解读（二）" rel="bookmark">Linux 系统性能分析工具图解读（二）</a></li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Links</h4>
+                        <ul class="list">
+                            
+                                
+                                    
+                                    <li><a href="http://coolchar.com" title="CoolChar" target="_blank">CoolChar</a></li>
+                                    
+                                    <li><a href="http://www.tianjun.ml/" title="Tian Jun" target="_blank">Tian Jun</a></li>
+                                    
+                                    <li><a href="http://http//yabuhoo.com/" title="Yabuhoo" target="_blank">Yabuhoo</a></li>
+                                    
+                                    <li><a href="http://www.kthinker.com/" title="Kthinker" target="_blank">Kthinker</a></li>
+                                    
+                                    <li><a href="http://pinderpeng.org/" title="Pinder" target="_blank">Pinder</a></li>
+                                    
+                                    <li><a href="http://chansh518.github.io/index.html" title="Chansh" target="_blank">Chansh</a></li>
+                                    
+                                    <li><a href="http://maziang.com" title="Mark墨客" target="_blank">Mark墨客</a></li>
+                                    
+                                
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="foot">
+            <div class="footer">
+                <p>Copyright 2013. All rights reserved. Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>, Design by <a href="http://www.zhanxin.info" target="_blank">zhanxin.info</a>.</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://libs.useso.com/js/jquery/1.8.3/jquery.min.js"></script>
+        
+            
+                
+                <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"oilbeater"};
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = 'http://static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                        || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                
+            
+        
+    </body>
+</html>

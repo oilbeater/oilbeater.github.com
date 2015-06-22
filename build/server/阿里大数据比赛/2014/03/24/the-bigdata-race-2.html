@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+         **
+         * Auther:      掌心
+         * Contact:     http://www.zhanxin.info
+         * Create:      2013.08.10
+         * Theme Name:  Kunka
+         * Authorize:   BY-NC-SA
+         **
+        -->
+        <meta charset="utf-8">
+        <meta name="baidu-site-verification" content="iqhuonCLkd" />
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?0432ef76122f4980cc9591d92b64cfa8";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+        <title>阿里大数据竞赛非官方指南第二弹 - Oilbeater</title>
+        <!-- meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="generator" content="Jekyll" />
+        <meta name="author" content="Oilbeater" />
+        <meta name="description" content="博主由于各种deadline最近没那么多时间搞这个，结果第二周勉强还在前500。这两周估计更没什么时间了，前500估计更悬了，不过好在本来我也是来写博客的，求粉求关注。" />
+        <meta name="keywords" content="" />
+        <!-- atom -->
+        <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+        <link rel="shortcut icon" href="http://jekyllrb.com/favicon.png" type="image/x-icon" />
+        <!-- font-awesome -->
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+        <link href='http://fonts.useso.com/css?family=Spirax' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="/css/syntax.css">
+        <link rel="stylesheet" href="/css/main.css">
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-31254339-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0];
+                  s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        
+    </head>
+    <body>
+        <div class="head fn-clear">
+            <div class="header">
+                <h1 class="logo">
+                    <a href=""><i class="icon-anchor"></i></a>
+                </h1>
+                <nav class="nav">
+                    <ul>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/index.html">
+                                首页
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/categories.html">
+                                分类目录
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/archives.html">
+                                文章归档
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/contact.html">
+                                我是谁
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/links.html">
+                                友情链接
+                            </a>
+                            
+                        </li>
+                        
+                    </ul>
+                </nav>
+                <div class="follow">
+                    
+                    <a href="/atom.xml" target="_blank"><i class="icon-rss"></i></a>
+                    
+                    <a href="http://weibo.com/oilbeater" target="_blank"><i class="icon-weibo"></i></a>
+                    
+                    <a href="http://renren.com/231128018" target="_blank"><i class="icon-renren"></i></a>
+                    
+                    <a href="http://github.com/oilbeater" target="_blank"><i class="icon-github-alt"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="contain fn-clear">
+            <div class="container fn-clear">
+                <div class="main">
+                    <div class="article article-post">
+    <h2 class="title">阿里大数据竞赛非官方指南第二弹</h2>
+    <div class="info">
+        <span class="info-title"><i class="icon-calendar"></i> Published: </span>
+        <span class="info-date">24 Mar 2014</span>
+        <span class="info-title"><i class="icon-folder-open"></i> Category: </span>
+        <span class="info-link"><a href="/categories.html#阿里大数据比赛-ref" >阿里大数据比赛</a></span>
+    </div>
+    <p>第一弹在<a href="http://oilbeater.com/2014/03/16/the-setup-of-bigdata-race/">这里</a>.</p>
+
+<p>第一弹由于时间匆忙代码里面有很多小bug，感谢k39ec的指正，最新的代码第一弹里面已经更新了。</p>
+
+<p>博主由于各种deadline最近没那么多时间搞这个，结果第二周勉强还在前500。这两周估计更没什么时间了，前500估计更悬了，不过好在本来我也是来写博客的，求粉求关注。</p>
+
+<p>已经有很多人的成绩比我好了，我就简单说一下我的算法思路，大家可以借鉴一下，代码就先不贴了，实在没时间再整理代码把可读性弄好了。</p>
+
+<h3>我的策略</h3>
+
+<h4>周期性物品</h4>
+
+<p>大家应该都发现有些商品是会重复购买的，不妨就把那些可能会周期购买的物品如果这个用户之前买过，就让他再买一次。</p>
+
+<p>具体思路就是看每个用户每个月都买了那些物品，如果有一个用户（或者可以自己改阈值）在任意两个月内购买了同一物品，那么就把这个物品标志位周期性物品。遍历完所有用户找到所有的周期性物品。如果用户购买过某个周期性物品的话就让他下个月再买一遍好了。</p>
+
+<h4>热门物品</h4>
+
+<p>找到上个月卖的最好的10个物品，如果某个用户上个月对这个物品产生了交互，点击、收藏、购物车，如果有购买没有买的太多的话下个月就让他买</p>
+
+<h4>关联物品</h4>
+
+<p>之前了解一点<a href="http://en.wikipedia.org/wiki/Apriori_algorithm">Apriori </a>这种关联算法，时间有限没有按照原算法实现，做了个化简版本的。指导思想就是看用户买过一个物品后更可能会买什么其他物品。</p>
+
+<p>大致算法是首先获取用户的购买序列去掉重复部分比如原来是[a,b,a,c]，变成[a,b,c]。</p>
+
+<p>列出所有的二元组，表示买过一个物品后又买过另一个物品，即变成(a, b), (a, c), (b, c)</p>
+
+<p>对所用用户的购买序列进行这种操作，得到所有的二元组并统计每个二元组出现的次数。比如所有二元组是(a, b), (a, c), (b, c)，(a, c), (b, c),  (b, c)，得到的结果就是{(a, b) : 1, (a, c) : 2, (b, c) : 3}。现在就得到了买过每种物品后续又买了哪个物品的次数。</p>
+
+<p>这个统计有一个问题即，如果b是热门物品的话，很多人都买过，会导致和他关联的物品次数增高。比如淘宝只有10个用户，只有三种产品——衣服，ipad，ipad套，所有人都会买衣服，有3个人买了ipad，这三个人都买了ipad套，还有两个人买了ipad套送人，那么二元组的统计就是(衣服， ipad套) ：5, (ipad, ipad套) ：3。但是明显ipad和ipad套的关联应该更强，衣服和ipad套的次数多只是因为衣服太热了。</p>
+
+<p>解决方案就是统计每个商品被多少个用户购买过，然后用每个二元组出现的次数除他们中第一个物品被几个用户购买，得出每个二元组的一个分数。比如上面的例子中，(衣服， ipad套) 得分是0.5，(ipad, ipad套) 得分是1。</p>
+
+<p>然后根据每个用户之前的购买情况，统计每个可能会购买的物品分数，比如买过衣服又买过ipad那么他买ipad套的分数就是1.5。当分数大于某个值的时候就让用户下个月购买。</p>
+
+<h3>其他的建议</h3>
+
+<p>这些想法我都没有具体验证，大家可以参考。</p>
+
+<h4>最后一个月</h4>
+
+<p>感觉最后一个月的数据其实是最重要的，因为用户还是倾向于购买新的产品，而不会把三个月前不买的东西再翻出来买了。可以尝试一下多观察某个用户两个月的数据找找规律。因为cf之类的传统算法貌似经证实不太好用，所以靠谱的方法还是多观察数据。</p>
+
+<h4>关于数据清洗</h4>
+
+<p>看到有些人把某些成交量很小的商品给去掉了，问题是有可能这些物品是数据集最后几天加入的，根据上一条的思想，他们的权重可能会很大，没准正好是上了一款新品下个月大卖。所以清理数据的时候要注意一下时间点。</p>
+
+<h4>LR可能会出奇迹</h4>
+
+<p>这只是个人感觉了，最近没什么精力搞，只是感觉很合适。</p>
+
+<p>希望人品保佑能进Season 2 有机会接着写非官方指南。</p>
+
+
+<hr>
+    <div>
+        <p>欢迎大家在讨论区有血性的争论、动手、拍砖、捅刀子，亮出你的看法来！本博客已经全文RSS输出，大家可以通过订阅oilbeater.com/atom.xml即可获得博客更新。或者关注我的微博<a href="http://weibo.com/oilbeater/">@oilbeater</a>在上面我会通知我的博客更新并且还会分享一些有意思的技术文章，欢迎大家关注。</p>
+    </div>
+    <div class="contact">
+        <a href="mailto:liumengxinfly@gmail.com">liumengxinfly@gmail.com</a>
+    </div>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1377168947699154" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    <br>
+    <nav class="article-previous fn-clear">
+        
+        <a class="prev" href="/阿里大数据比赛/2014/03/16/the-setup-of-bigdata-race.html" rel="bookmark">&laquo;&nbsp;阿里大数据竞赛非官方指南</a>
+        
+        
+        <a class="next" href="/阿里大数据比赛/2014/04/04/the-bigdata-race-3.html" rel="bookmark">阿里大数据竞赛非官方指南第三弹-- LR入门&nbsp;&raquo;</a>
+        
+    </nav>
+    <div class="comment">
+        
+            
+            <div class="ds-thread"></div>
+            
+        
+    </div>
+</div>
+
+                </div>
+                <div class="aside">
+                    <div class="aside-item">
+                        <div>
+<iframe width="100%" height="500" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=500&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=0&isWeibo=1&isFans=0&uid=1300038410&verifier=1c853142&dpc=1"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Recent Posts</h4>
+                        <ul class="list">
+                            
+                                <li><a href="/博客/2015/05/15/whyleaveali.html" title="为啥我要从阿里离职" rel="bookmark">为啥我要从阿里离职</a></li>
+                            
+                                <li><a href="/system/2015/03/22/recovery-services.html" title="分布式系统断电自恢复" rel="bookmark">分布式系统断电自恢复</a></li>
+                            
+                                <li><a href="/博客/2015/01/12/the-summary-of-blog.html" title="oilbeater博客回顾2014篇" rel="bookmark">oilbeater博客回顾2014篇</a></li>
+                            
+                                <li><a href="/nginx/2014/12/29/nginx-conf-from-zero.html" title="nginx 配置从零开始" rel="bookmark">nginx 配置从零开始</a></li>
+                            
+                                <li><a href="/docker/2014/11/11/docker-libcontainer-reading.html" title="一次奇幻的 docker libcontainer 代码阅读之旅" rel="bookmark">一次奇幻的 docker libcontainer 代码阅读之旅</a></li>
+                            
+                                <li><a href="/Linux/2014/09/15/linux-performance-tools-2.html" title="Linux 系统性能分析工具图解读（二）" rel="bookmark">Linux 系统性能分析工具图解读（二）</a></li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Links</h4>
+                        <ul class="list">
+                            
+                                
+                                    
+                                    <li><a href="http://coolchar.com" title="CoolChar" target="_blank">CoolChar</a></li>
+                                    
+                                    <li><a href="http://www.tianjun.ml/" title="Tian Jun" target="_blank">Tian Jun</a></li>
+                                    
+                                    <li><a href="http://http//yabuhoo.com/" title="Yabuhoo" target="_blank">Yabuhoo</a></li>
+                                    
+                                    <li><a href="http://www.kthinker.com/" title="Kthinker" target="_blank">Kthinker</a></li>
+                                    
+                                    <li><a href="http://pinderpeng.org/" title="Pinder" target="_blank">Pinder</a></li>
+                                    
+                                    <li><a href="http://chansh518.github.io/index.html" title="Chansh" target="_blank">Chansh</a></li>
+                                    
+                                    <li><a href="http://maziang.com" title="Mark墨客" target="_blank">Mark墨客</a></li>
+                                    
+                                
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="foot">
+            <div class="footer">
+                <p>Copyright 2013. All rights reserved. Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>, Design by <a href="http://www.zhanxin.info" target="_blank">zhanxin.info</a>.</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://libs.useso.com/js/jquery/1.8.3/jquery.min.js"></script>
+        
+            
+                
+                <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"oilbeater"};
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = 'http://static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                        || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                
+            
+        
+    </body>
+</html>

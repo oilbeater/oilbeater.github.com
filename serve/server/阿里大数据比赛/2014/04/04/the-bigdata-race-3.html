@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+         **
+         * Auther:      掌心
+         * Contact:     http://www.zhanxin.info
+         * Create:      2013.08.10
+         * Theme Name:  Kunka
+         * Authorize:   BY-NC-SA
+         **
+        -->
+        <meta charset="utf-8">
+        <meta name="baidu-site-verification" content="iqhuonCLkd" />
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?0432ef76122f4980cc9591d92b64cfa8";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+        <title>阿里大数据竞赛非官方指南第三弹-- LR入门 - Oilbeater</title>
+        <!-- meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="generator" content="Jekyll" />
+        <meta name="author" content="Oilbeater" />
+        <meta name="description" content="最近忙着赶global comm的deadline无暇比赛，当有功夫回过头来看的时候发现比赛已经夹杂了很多非技术的因素在里面了，就连我这个本来是写博客拉粉丝的也有点小不爽。本着我的初心是写博客拉粉丝，我还是再写一弹。" />
+        <meta name="keywords" content="" />
+        <!-- atom -->
+        <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+        <link rel="shortcut icon" href="http://jekyllrb.com/favicon.png" type="image/x-icon" />
+        <!-- font-awesome -->
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+        <link href='http://fonts.useso.com/css?family=Spirax' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="/css/syntax.css">
+        <link rel="stylesheet" href="/css/main.css">
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-31254339-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0];
+                  s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        
+    </head>
+    <body>
+        <div class="head fn-clear">
+            <div class="header">
+                <h1 class="logo">
+                    <a href=""><i class="icon-anchor"></i></a>
+                </h1>
+                <nav class="nav">
+                    <ul>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/index.html">
+                                首页
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/categories.html">
+                                分类目录
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/archives.html">
+                                文章归档
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/contact.html">
+                                我是谁
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/links.html">
+                                友情链接
+                            </a>
+                            
+                        </li>
+                        
+                    </ul>
+                </nav>
+                <div class="follow">
+                    
+                    <a href="/atom.xml" target="_blank"><i class="icon-rss"></i></a>
+                    
+                    <a href="http://weibo.com/oilbeater" target="_blank"><i class="icon-weibo"></i></a>
+                    
+                    <a href="http://renren.com/231128018" target="_blank"><i class="icon-renren"></i></a>
+                    
+                    <a href="http://github.com/oilbeater" target="_blank"><i class="icon-github-alt"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="contain fn-clear">
+            <div class="container fn-clear">
+                <div class="main">
+                    <div class="article article-post">
+    <h2 class="title">阿里大数据竞赛非官方指南第三弹-- LR入门</h2>
+    <div class="info">
+        <span class="info-title"><i class="icon-calendar"></i> Published: </span>
+        <span class="info-date">04 Apr 2014</span>
+        <span class="info-title"><i class="icon-folder-open"></i> Category: </span>
+        <span class="info-link"><a href="/categories.html#阿里大数据比赛-ref" >阿里大数据比赛</a></span>
+    </div>
+    <p>最近忙着赶global comm的deadline无暇比赛，当有功夫回过头来看的时候发现比赛已经夹杂了很多非技术的因素在里面了，就连我这个本来是写博客拉粉丝的也有点小不爽。本着我的初心是写博客拉粉丝，我还是再写一弹。</p>
+
+<p>鉴于我一直感觉LR会出奇迹，这两天开始转型LR，这里介绍一下最基本的LR思路，可以帮助不懂LR的同学上个手，只靠这个指南肯定不会有什么好成绩，不过可以为未来的扩展打下一个基础。用的是最naive的做法，了解的大神们可以绕道了。</p>
+
+<p>LR其实可以指两种算法<a href="http://en.wikipedia.org/wiki/Linear_regression">linear regression</a>和<a href="http://en.wikipedia.org/wiki/Logistic_regression">logistic regression</a>,其实两者本质上都是线性模型。前者一般用来做数值预测比如房价会涨到多少，明天股票指数是多少；后者一般用来做分类，比如肿瘤是良性还是恶性，明天会不会下雨。尽管机器学习领域还有很多神奇的算法，但是很多情况下这两个LR就可以大杀四方了。一些论文很花哨深度学习现在也很热，但很多时候，工业界用的还是这种简单的模型。</p>
+
+<p>具体到这个比赛上，很明显这是一个分类问题，我们要对每个商家根据用户四个月的行为判断用户下个月到底是买还是不买，就要用到logistic regression。这里简要介绍一下LR的工作形式，输入是一组特征和特征对应的target，得到的结果是特征和最后target的关系，即一组系数。</p>
+
+<p>举个栗子来说：我选取了两个特征，分别是前三个月用户对这个商家的浏览数和购买数，那我的target就是下个月我有没有买这个商家的东西。如果一个人，浏览了5次，购买了2次，下个月买了，就是[5, 2, 1]；如果没有买就是[5, 2, 0]。我们给LR算法输入的训练集就是这样一些东西，而LR输出的就是一组浏览和购买与买或不买之间的系数关系。这样再给一个浏览4购买3的行为你就可以对他是否会买这个东西利用lr的公式得出一个在0和1之间的一个分数，越接近1说明买的概率越大。</p>
+
+<p>其实LR的目的就是<strong>自动求出特征和结果之间的系数关系</strong>，你所专注的应该是找模型以及和模型匹配的特征而不是人工的去找系数关系，这个系数寻找的过程其实才是所有机器学习的模型中算法要干的事情。如果你只是一味的手工调参数的话可以说你根本没用机器学习的方法。</p>
+
+<p>到具体的LR的实现上，主要分为三步。第一步构建训练集合，也就是标记一部分正样本和负样本数据，针对这个比赛来说就是找到一批前几个月和用户与之发生交互，并且下一个月购买了的行为作为正样本（一定要发生过交互），再找一批发生交互但下一个月没有购买的行为作为负样本（注意控制正负样本的比例）。第二步将这些采样的样本放入logistic regression 的计算模型中得到浏览和购买对用户下个月行为的系数关系，这一步可以用现成的库去实现。第三步就是用这些系数关系来预测那些没有标记的行为会不会产生购买行为。</p>
+
+<p>理想情况下可以针对每个商家每个用户各自构建模型，但是出于入门的目的，暂且用一套模型来处理所用用户和商家。</p>
+
+<p>简单的写一下第二和第三部分的代码，其实真到用机器学习算法这一部分是很简单的，并不像有些同学想象的那样难。博主继续用python需要安装pandas和statsmodels两个库可能还需要用到numpy，linux下用pip或者apt-get都可以装上，安装的步骤就自行google了。</p>
+
+<pre><code>import pandas as pd
+import statsmodels.api as sm  #这就是要安装的两个库，import进来
+
+train = pd.read_csv(&quot;sample.csv&quot;)    #sample的格式是target,view_num,buy_num即你标记好的训练集，记得第一行一定要是标题
+train_cols = train.columns[1:]       #以第一列以后的列，即二三列作为训练特征，就是以view_num和buy_num为训练特征
+logit = sm.Logit(train[&#39;target&#39;], train[train_cols]) #表示以后两列作为训练特征，target列为标记值进行逻辑回归
+result = logit.fit()              #要是开心的话可以用result.summary()看一下回归结果
+
+combos = pd.read_csv(&quot;vectors.csv&quot;)   #vectors是未标记的特征向量，也就是我们要预测的，格式为uid,bid,view_num,buy_num
+train_cols = combos.columns[2:]
+combos[&#39;prediction&#39;] = result.predict(combos[train_cols])  #为每组特征进行预测打分，存储在一个新的prediction列，这里是第五列
+
+predicts = defaultdict(set)
+for term in combos.values:
+    uid, bid, prediction = str(int(term[0])), str(int(term[1])), term[4]
+if prediction &gt; POINT:      #可以通过调节POINT的大小来控制最后结果的个数，当然你也可以取分数topN
+    predicts[uid].add(bid)
+</code></pre>
+
+<p>上面的代码主要是参考了<a href="http://blog.yhathq.com/posts/logistic-regression-and-python.html">Logistic Regression in Python</a>这篇博客进行了化简。更多的用法可以参考这篇博客。</p>
+
+<p>可以看到算法的具体使用还是很简单的，所以麻烦的不是算法本身，麻烦的其实是考察每个算法模型，并对每个算法模型构建合适的特征去采样构建训练集。我构建训练集的代码可要比这个长的多的多了。大部分的分类算法的形式都是类似的，基本上都是上述的三个步骤，大家一个跑通了后其他的算法应该就会轻车熟路了。</p>
+
+<p>用着两个最基本特征训练的结果虽说离进榜还比较远，不过成绩在我看来还是不错的，LR的威力果然很大，毕竟我们采用两个特征，购物车收藏夹也没考虑时间因素也没考虑，大家可以自己尝试着加上去，应该会有不错的结果。或者还能考虑把用户聚类或者把商家聚类，对每一类建立一个模型，结果肯定也会比现在好。LR的扩展性还是很好的，剩下的就看大家怎么挖掘特征了。不过算法的最好效果怎样就不好说了，因为训练的数据太少了，特征加多了很容易over fitting。</p>
+
+<p>PS：LR真的是大杀器，建议如果是想通过比赛来进入机器学习这个领域的同学可以把比赛放一放好好研究一下NG的<a href="https://www.coursera.org/course/ml">machine learning</a>基本上看完logistic regression就会对这个算法有个比较直观的了解。嗯我是NG老师的脑残粉，但是NG老师讲完LR后会说你凭借LR就可以秒掉硅谷大部分的data analyst这件事你不要太当真。</p>
+
+<ul>
+<li><a href="http://oilbeater.com/2014/03/16/the-setup-of-bigdata-race/">非官方指南第一弹在这里</a></li>
+<li><a href="http://oilbeater.com/2014/03/24/the-bigdata-race-2/">非官方指南第二弹在这里</a></li>
+</ul>
+
+
+<hr>
+    <div>
+        <p>欢迎大家在讨论区有血性的争论、动手、拍砖、捅刀子，亮出你的看法来！本博客已经全文RSS输出，大家可以通过订阅oilbeater.com/atom.xml即可获得博客更新。或者关注我的微博<a href="http://weibo.com/oilbeater/">@oilbeater</a>在上面我会通知我的博客更新并且还会分享一些有意思的技术文章，欢迎大家关注。</p>
+    </div>
+    <div class="contact">
+        <a href="mailto:liumengxinfly@gmail.com">liumengxinfly@gmail.com</a>
+    </div>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1377168947699154" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    <br>
+    <nav class="article-previous fn-clear">
+        
+        <a class="prev" href="/阿里大数据比赛/2014/03/24/the-bigdata-race-2.html" rel="bookmark">&laquo;&nbsp;阿里大数据竞赛非官方指南第二弹</a>
+        
+        
+        <a class="next" href="/阿里大数据比赛/2014/04/17/the-endof-season.html" rel="bookmark">阿里大数据竞赛非官方指南第一季终结篇&nbsp;&raquo;</a>
+        
+    </nav>
+    <div class="comment">
+        
+            
+            <div class="ds-thread"></div>
+            
+        
+    </div>
+</div>
+
+                </div>
+                <div class="aside">
+                    <div class="aside-item">
+                        <div>
+<iframe width="100%" height="500" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=500&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=0&isWeibo=1&isFans=0&uid=1300038410&verifier=1c853142&dpc=1"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Recent Posts</h4>
+                        <ul class="list">
+                            
+                                <li><a href="/博客/2015/05/15/whyleaveali.html" title="为啥我要从阿里离职" rel="bookmark">为啥我要从阿里离职</a></li>
+                            
+                                <li><a href="/system/2015/03/22/recovery-services.html" title="分布式系统断电自恢复" rel="bookmark">分布式系统断电自恢复</a></li>
+                            
+                                <li><a href="/博客/2015/01/12/the-summary-of-blog.html" title="oilbeater博客回顾2014篇" rel="bookmark">oilbeater博客回顾2014篇</a></li>
+                            
+                                <li><a href="/nginx/2014/12/29/nginx-conf-from-zero.html" title="nginx 配置从零开始" rel="bookmark">nginx 配置从零开始</a></li>
+                            
+                                <li><a href="/docker/2014/11/11/docker-libcontainer-reading.html" title="一次奇幻的 docker libcontainer 代码阅读之旅" rel="bookmark">一次奇幻的 docker libcontainer 代码阅读之旅</a></li>
+                            
+                                <li><a href="/Linux/2014/09/15/linux-performance-tools-2.html" title="Linux 系统性能分析工具图解读（二）" rel="bookmark">Linux 系统性能分析工具图解读（二）</a></li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Links</h4>
+                        <ul class="list">
+                            
+                                
+                                    
+                                    <li><a href="http://coolchar.com" title="CoolChar" target="_blank">CoolChar</a></li>
+                                    
+                                    <li><a href="http://www.tianjun.ml/" title="Tian Jun" target="_blank">Tian Jun</a></li>
+                                    
+                                    <li><a href="http://http//yabuhoo.com/" title="Yabuhoo" target="_blank">Yabuhoo</a></li>
+                                    
+                                    <li><a href="http://www.kthinker.com/" title="Kthinker" target="_blank">Kthinker</a></li>
+                                    
+                                    <li><a href="http://pinderpeng.org/" title="Pinder" target="_blank">Pinder</a></li>
+                                    
+                                    <li><a href="http://chansh518.github.io/index.html" title="Chansh" target="_blank">Chansh</a></li>
+                                    
+                                    <li><a href="http://maziang.com" title="Mark墨客" target="_blank">Mark墨客</a></li>
+                                    
+                                
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="foot">
+            <div class="footer">
+                <p>Copyright 2013. All rights reserved. Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>, Design by <a href="http://www.zhanxin.info" target="_blank">zhanxin.info</a>.</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://libs.useso.com/js/jquery/1.8.3/jquery.min.js"></script>
+        
+            
+                
+                <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"oilbeater"};
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = 'http://static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                        || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                
+            
+        
+    </body>
+</html>

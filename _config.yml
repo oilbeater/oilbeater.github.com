@@ -1,0 +1,94 @@
+markdown: redcarpet
+pygments: true
+paginate: 8
+
+safe:  false
+
+#Site config
+title: Oilbeater 
+description: Just another Jekyll theme design and code by zhanxin.info.
+keywords: Jekyll Theme
+#url: http://pizn.github.io/kunka
+feed: /atom.xml
+favicon: http://jekyllrb.com/favicon.png
+
+#Nav config
+nav:
+  - text: 首页
+    url: /index.html
+  - text: 分类目录 
+    url: /categories.html
+  - text: 文章归档
+    url: /archives.html
+  - text: 我是谁
+    url: /contact.html
+  - text: 友情链接
+    url: /links.html
+
+#Author config
+author:
+    name: Oilbeater
+    email: liumengxinfly@gmail.com
+    imageLink: http://tp3.sinaimg.cn/1300038410/180/5607563087/1 
+    simpleIntro: 一个什么都写一点的程序员。
+    detailIntro:
+      <p>乡亲们好，我是<a href="http://weibo.com/oilbeater" target="_blank"><strong>@Oilbeater</strong></a>，欢迎来到我的部落。</p>
+      <p>我现在在<a href="http://www.alauda.cn/" target="_blank">灵雀云</a>这家创业公司搞 Docker,曾经在阿里巴巴和 Amazon 公司送快递,再之前在北大 OS 实验室挖坑。</p>
+      <p>如果想赞助域名服务器或者请博主喝汽水的话，就扫码打赏点碎银子吧。</p>
+      <img src='/images/alipay.png' />
+
+#Follow me, you can choose your icon by http://fortawesome.github.io/Font-Awesome/icons/#brand
+follow:
+  - class: icon-rss
+    url: /atom.xml
+  - class: icon-weibo
+    url: http://weibo.com/oilbeater
+  - class: icon-renren
+    url: http://renren.com/231128018
+  - class: icon-github-alt
+    url: http://github.com/oilbeater
+  #- class: icon-twitter
+  #  url: http://twitter.com/piznlin
+  #- class: icon-google-plus
+  #  url: http://google.com
+
+#Links
+customLinks:
+  - item:
+    - text: CoolChar
+      url: http://coolchar.com
+    - text: Tian Jun
+      url: http://www.tianjun.ml/
+    - text: Yabuhoo
+      url: http://http//yabuhoo.com/
+    - text: Kthinker
+      url: http://www.kthinker.com/
+    - text: Pinder
+      url: http://pinderpeng.org/
+    - text: Chansh
+      url: http://chansh518.github.io/index.html
+    - text: Mark墨客
+      url: http://maziang.com
+    message: Friends
+  #- item:
+  #  - text: Font Awesome
+  #    url: http://fortawesome.github.io/Font-Awesome/
+  #  - text: Google Font
+  #    url: http://www.google.com/fonts/
+  #  - text: jQuery
+  #    url: http://jquery.com/
+  #  message: 其他相关链接
+
+#googleAnaly, your id link UA-12345678-X
+googleAnaly:
+  config: true
+  id: UA-31254339-1
+
+#comment config
+disqus:
+  config: false
+  id: oilbeatercom
+
+duoshuo:
+  config: true
+  id: oilbeater

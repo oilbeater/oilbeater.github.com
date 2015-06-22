@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+         **
+         * Auther:      掌心
+         * Contact:     http://www.zhanxin.info
+         * Create:      2013.08.10
+         * Theme Name:  Kunka
+         * Authorize:   BY-NC-SA
+         **
+        -->
+        <meta charset="utf-8">
+        <meta name="baidu-site-verification" content="iqhuonCLkd" />
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?0432ef76122f4980cc9591d92b64cfa8";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+        <title>Gemfile入门介绍 - Oilbeater</title>
+        <!-- meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="generator" content="Jekyll" />
+        <meta name="author" content="Oilbeater" />
+        <meta name="description" content="第一次接触ruby这门语言路上碰到的障碍还是要记录一下的。" />
+        <meta name="keywords" content="" />
+        <!-- atom -->
+        <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+        <link rel="shortcut icon" href="http://jekyllrb.com/favicon.png" type="image/x-icon" />
+        <!-- font-awesome -->
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+        <link href='http://fonts.useso.com/css?family=Spirax' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="/css/syntax.css">
+        <link rel="stylesheet" href="/css/main.css">
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-31254339-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0];
+                  s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        
+    </head>
+    <body>
+        <div class="head fn-clear">
+            <div class="header">
+                <h1 class="logo">
+                    <a href=""><i class="icon-anchor"></i></a>
+                </h1>
+                <nav class="nav">
+                    <ul>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/index.html">
+                                首页
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/categories.html">
+                                分类目录
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/archives.html">
+                                文章归档
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/contact.html">
+                                我是谁
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/links.html">
+                                友情链接
+                            </a>
+                            
+                        </li>
+                        
+                    </ul>
+                </nav>
+                <div class="follow">
+                    
+                    <a href="/atom.xml" target="_blank"><i class="icon-rss"></i></a>
+                    
+                    <a href="http://weibo.com/oilbeater" target="_blank"><i class="icon-weibo"></i></a>
+                    
+                    <a href="http://renren.com/231128018" target="_blank"><i class="icon-renren"></i></a>
+                    
+                    <a href="http://github.com/oilbeater" target="_blank"><i class="icon-github-alt"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="contain fn-clear">
+            <div class="container fn-clear">
+                <div class="main">
+                    <div class="article article-post">
+    <h2 class="title">Gemfile入门介绍</h2>
+    <div class="info">
+        <span class="info-title"><i class="icon-calendar"></i> Published: </span>
+        <span class="info-date">13 Jun 2013</span>
+        <span class="info-title"><i class="icon-folder-open"></i> Category: </span>
+        <span class="info-link"><a href="/categories.html#-ref" ></a></span>
+    </div>
+    <p>主要翻译自<a href="http://gembundler.com/v1.3/man/gemfile.5.html">gemfile manual</a></p>
+
+<p>Gemfile主要是用来管理ruby程序所依赖的gem，下面逐一介绍主要的配置。</p>
+
+<h3>source</h3>
+
+<p>gem的下载源例如</p>
+
+<pre><code>source &quot;https://rubygems.org&quot;
+source &quot;http://gems.github.com&quot;
+source &quot;http://ruby.taobao.com&quot;
+</code></pre>
+
+<p>优先级为越靠下的越高，鉴于国内的情况推荐使用第三个大淘宝的源。</p>
+
+<h3>ruby</h3>
+
+<p>如果程序需要特定版本的ruby或ruby引擎，就需要指明一下例如</p>
+
+<pre><code>ruby &quot;1.8.7&quot;, :engine =&gt; &quot;jruby&quot;, :engine_version =&gt; &quot;1.6.7&quot;
+</code></pre>
+
+<p>其中engine和engine_version是可选的。</p>
+
+<h3>gem</h3>
+
+<p>程序所依赖的gem及其版本组别等等信息，也是参数最复杂的一个关键字，下面将从简单到复杂逐一介绍。</p>
+
+<h5>name</h5>
+
+<p>唯一一个必选项，指明程序需要哪个gem，例如：</p>
+
+<pre><code>gem &quot;nokogiri&quot;
+</code></pre>
+
+<p>其它选项均为可选项</p>
+
+<h5>version</h5>
+
+<p>制定所需gem版本例如：</p>
+
+<pre><code>gem &#39;rails&#39;, &#39;3.0.0.beta3&#39;
+gem &#39;rack&#39;,  &#39;&gt;=1.0&#39;
+gem &#39;thin&#39;,  &#39;~&gt;1.1&#39;
+</code></pre>
+
+<p>‘>=’表示大于当前版本的最新版本。</p>
+
+<p>那么第三个~>1.1是啥意思呢，就是>=1.1且小于2.0的最新版本。~> 2.0.3就是>=2.03且小于2.1的最新版本即控制gem的版本在一个发行区间内。</p>
+
+<h5>require</h5>
+
+<p>如果gem的main file名字和gem 的name不同需要通过require 指定，例如：</p>
+
+<pre><code>gem &#39;rspec&#39;, :require =&gt; &#39;spec&#39;
+</code></pre>
+
+<p>如果require指定为false表示在程序运行时不会自动require该gem</p>
+
+<pre><code>gem &quot;webmock&quot;, :require =&gt; false
+</code></pre>
+
+<h5>group</h5>
+
+<p>有些gem只是开发环境下需要如wirble，有些只是测试环境需要如rspec，而有的是线上系统需要，为了节省空间和时间可以把gem分组，例如</p>
+
+<pre><code>gem &quot;rspec&quot;, :group =&gt; :test
+gem &quot;wirble&quot;, :groups =&gt; [:development, :test]
+</code></pre>
+
+<p>这样在bundle install 时可以加入without选项指明不安装那些gem，例如</p>
+
+<pre><code>bundle install --without development test
+</code></pre>
+
+<h5>git,github,path</h5>
+
+<p>这几个选项都是用来指定从哪里安装gem通常是一些特殊版本或者特殊的gem，source里没有的。例如</p>
+
+<pre><code>gem &#39;nokogiri&#39;, :git =&gt; &#39;git://github.com/tenderlove/nokogiri.git&#39;, :branch =&gt; &#39;1.4&#39;
+gem &#39;nokogiri&#39;, :path =&gt; &#39;~/sw/gems/nokogiri&#39;
+gem &quot;rails&quot;, :github =&gt; &quot;rails/rails&quot;
+</code></pre>
+
+<p>其中path通常指本地一个路径，git和github可以指定一个git库并通过branch，tag，和ref指定版本库中的一个特定版本。</p>
+
+<h5>platform</h5>
+
+<p>指定平台相关的tem，通常是某个操作系统或某个ruby引擎下的特有gem例如：</p>
+
+<pre><code>gem &quot;weakling&quot;,   :platforms =&gt; :jruby
+gem &quot;ruby-debug&quot;, :platforms =&gt; :mri_18
+gem &quot;nokogiri&quot;,   :platforms =&gt; [:mri_18, :jruby]
+</code></pre>
+
+<h3>块控制语句</h3>
+
+<p>如group，git，path和path这类语句可以一次控制很多gem，例如：</p>
+
+<pre><code>git &quot;git://github.com/rails/rails.git&quot; do
+  gem &quot;activesupport&quot;
+  gem &quot;actionpack&quot;
+end
+
+platforms :ruby do
+  gem &quot;ruby-debug&quot;
+  gem &quot;sqlite3&quot;
+end
+
+group :development do
+  gem &quot;wirble&quot;
+  gem &quot;faker&quot;
+end
+</code></pre>
+
+
+<hr>
+    <div>
+        <p>欢迎大家在讨论区有血性的争论、动手、拍砖、捅刀子，亮出你的看法来！本博客已经全文RSS输出，大家可以通过订阅oilbeater.com/atom.xml即可获得博客更新。或者关注我的微博<a href="http://weibo.com/oilbeater/">@oilbeater</a>在上面我会通知我的博客更新并且还会分享一些有意思的技术文章，欢迎大家关注。</p>
+    </div>
+    <div class="contact">
+        <a href="mailto:liumengxinfly@gmail.com">liumengxinfly@gmail.com</a>
+    </div>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1377168947699154" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    <br>
+    <nav class="article-previous fn-clear">
+        
+        <a class="prev" href="/2013/06/11/ruby_on_rail_from_scratch.html" rel="bookmark">&laquo;&nbsp;Ruby on Rails Ubuntu下从零开始到在线网站</a>
+        
+        
+        <a class="next" href="/工作心得/2013/09/15/the-experience-in-Amazon.html" rel="bookmark">Amazon FBA 实习经历小结&nbsp;&raquo;</a>
+        
+    </nav>
+    <div class="comment">
+        
+            
+            <div class="ds-thread"></div>
+            
+        
+    </div>
+</div>
+
+                </div>
+                <div class="aside">
+                    <div class="aside-item">
+                        <div>
+<iframe width="100%" height="500" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=500&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=0&isWeibo=1&isFans=0&uid=1300038410&verifier=1c853142&dpc=1"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Recent Posts</h4>
+                        <ul class="list">
+                            
+                                <li><a href="/博客/2015/05/15/whyleaveali.html" title="为啥我要从阿里离职" rel="bookmark">为啥我要从阿里离职</a></li>
+                            
+                                <li><a href="/system/2015/03/22/recovery-services.html" title="分布式系统断电自恢复" rel="bookmark">分布式系统断电自恢复</a></li>
+                            
+                                <li><a href="/博客/2015/01/12/the-summary-of-blog.html" title="oilbeater博客回顾2014篇" rel="bookmark">oilbeater博客回顾2014篇</a></li>
+                            
+                                <li><a href="/nginx/2014/12/29/nginx-conf-from-zero.html" title="nginx 配置从零开始" rel="bookmark">nginx 配置从零开始</a></li>
+                            
+                                <li><a href="/docker/2014/11/11/docker-libcontainer-reading.html" title="一次奇幻的 docker libcontainer 代码阅读之旅" rel="bookmark">一次奇幻的 docker libcontainer 代码阅读之旅</a></li>
+                            
+                                <li><a href="/Linux/2014/09/15/linux-performance-tools-2.html" title="Linux 系统性能分析工具图解读（二）" rel="bookmark">Linux 系统性能分析工具图解读（二）</a></li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Links</h4>
+                        <ul class="list">
+                            
+                                
+                                    
+                                    <li><a href="http://coolchar.com" title="CoolChar" target="_blank">CoolChar</a></li>
+                                    
+                                    <li><a href="http://www.tianjun.ml/" title="Tian Jun" target="_blank">Tian Jun</a></li>
+                                    
+                                    <li><a href="http://http//yabuhoo.com/" title="Yabuhoo" target="_blank">Yabuhoo</a></li>
+                                    
+                                    <li><a href="http://www.kthinker.com/" title="Kthinker" target="_blank">Kthinker</a></li>
+                                    
+                                    <li><a href="http://pinderpeng.org/" title="Pinder" target="_blank">Pinder</a></li>
+                                    
+                                    <li><a href="http://chansh518.github.io/index.html" title="Chansh" target="_blank">Chansh</a></li>
+                                    
+                                    <li><a href="http://maziang.com" title="Mark墨客" target="_blank">Mark墨客</a></li>
+                                    
+                                
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="foot">
+            <div class="footer">
+                <p>Copyright 2013. All rights reserved. Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>, Design by <a href="http://www.zhanxin.info" target="_blank">zhanxin.info</a>.</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://libs.useso.com/js/jquery/1.8.3/jquery.min.js"></script>
+        
+            
+                
+                <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"oilbeater"};
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = 'http://static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                        || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                
+            
+        
+    </body>
+</html>

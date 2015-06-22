@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+         **
+         * Auther:      掌心
+         * Contact:     http://www.zhanxin.info
+         * Create:      2013.08.10
+         * Theme Name:  Kunka
+         * Authorize:   BY-NC-SA
+         **
+        -->
+        <meta charset="utf-8">
+        <meta name="baidu-site-verification" content="iqhuonCLkd" />
+        <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?0432ef76122f4980cc9591d92b64cfa8";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+        <title>VS2008编译Qtwebkit - Oilbeater</title>
+        <!-- meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="generator" content="Jekyll" />
+        <meta name="author" content="Oilbeater" />
+        <meta name="description" content="为了证明自己这一个月没有打酱油，不过一个月写出这么个环境搭建的东西也只能证明我打酱油了，也为了回去能把环境搭起来，还是写那么两笔吧。" />
+        <meta name="keywords" content="" />
+        <!-- atom -->
+        <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+        <link rel="shortcut icon" href="http://jekyllrb.com/favicon.png" type="image/x-icon" />
+        <!-- font-awesome -->
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+        <link href='http://fonts.useso.com/css?family=Spirax' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="/css/syntax.css">
+        <link rel="stylesheet" href="/css/main.css">
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-31254339-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0];
+                  s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        
+    </head>
+    <body>
+        <div class="head fn-clear">
+            <div class="header">
+                <h1 class="logo">
+                    <a href=""><i class="icon-anchor"></i></a>
+                </h1>
+                <nav class="nav">
+                    <ul>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/index.html">
+                                首页
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/categories.html">
+                                分类目录
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/archives.html">
+                                文章归档
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/contact.html">
+                                我是谁
+                            </a>
+                            
+                        </li>
+                        
+                        
+                        
+                        <li class="nav-item ">
+                            <a href="/links.html">
+                                友情链接
+                            </a>
+                            
+                        </li>
+                        
+                    </ul>
+                </nav>
+                <div class="follow">
+                    
+                    <a href="/atom.xml" target="_blank"><i class="icon-rss"></i></a>
+                    
+                    <a href="http://weibo.com/oilbeater" target="_blank"><i class="icon-weibo"></i></a>
+                    
+                    <a href="http://renren.com/231128018" target="_blank"><i class="icon-renren"></i></a>
+                    
+                    <a href="http://github.com/oilbeater" target="_blank"><i class="icon-github-alt"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="contain fn-clear">
+            <div class="container fn-clear">
+                <div class="main">
+                    <div class="article article-post">
+    <h2 class="title">VS2008编译Qtwebkit</h2>
+    <div class="info">
+        <span class="info-title"><i class="icon-calendar"></i> Published: </span>
+        <span class="info-date">21 Aug 2012</span>
+        <span class="info-title"><i class="icon-folder-open"></i> Category: </span>
+        <span class="info-link"><a href="/categories.html#Webkit-ref" >Webkit</a></span>
+    </div>
+    <p>为了证明自己这一个月没有打酱油，不过一个月写出这么个环境搭建的东西也只能证明我打酱油了，也为了回去能把环境搭起来，还是写那么两笔吧。官方的安装指导在<a href="http://trac.webkit.org/wiki/BuildingQtOnWindows">这里</a>但是按照这个指导是肯定编译不过去的，所以还是看我的吧。安装环境的过程其实一点也不麻烦</p>
+
+<h3>安装VS2008</h3>
+
+<p>官方链接在<a href="http://www.microsoft.com/zh-cn/download/details.aspx?id=3713">这里</a>第一次找的时候不知道为什么脑抽筋直接下了一个MSDN，装完后还傻傻的找启动程序在那里？在哪里？</p>
+
+<h3>安装Qt for VS2008</h3>
+
+<p>网上很多教程都说要自己从编译Qt，实践证明直接用安装包就好了，链接在<a href="http://qt.nokia.com/downloads/windows-cpp-vs2008">这里</a>安装好后记得要在环境变量PATH里把qt安装目录下面的bin路径加入到PATH中，因为vs编译的时候需要找到qmake的路径。</p>
+
+<h3>下载qtwebkit源码</h3>
+
+<p>官网的nightly版本是编译不出qt版的所以还是用<a href="http://get.qt.nokia.com/qtwebkit/QtWebKit-2.2.0.tar.gz">这个</a>吧。</p>
+
+<h3>下载pthread</h3>
+
+<p>不知道为什么里面会用到pthread这种和平台相关的库，不过好在pthread现在也有windows平台的了，链接在<a href="ftp://sourceware.org/pub/pthreads-win32/pthreads-w32-2-9-1-release.zip">这里</a>
+将 pthreadVC2.lib  pthreadVC2.lib 和pthread.h （看一下是x86版还是x64版）扔到qt安装目录下的lib中</p>
+
+<h3>下载WebKit Support Library</h3>
+
+<p>一个水果公司提供的库文件去<a href="https://developer.apple.com/opensource/internet/webkit_sptlib_agree.html">这里</a>下载，<strong>不用解压</strong>，直接放到webkit源码目录下即可</p>
+
+<h3>安装GUN 工具包</h3>
+
+<p><strong>记住安装路径中不能有空格</strong> 
+由于某些众所周知的原因下面的链接可能打不开</p>
+
+<ul>
+<li><a href="http://gnuwin32.sourceforge.net/downlinks/bison.php">Bison</a></li>
+<li><a href="http://gnuwin32.sourceforge.net/downlinks/gperf.php">GPerf</a></li>
+<li><a href="http://gnuwin32.sourceforge.net/downlinks/grep.php">Grep</a></li>
+<li><a href="http://gnuwin32.sourceforge.net/downlinks/flex.php">Flex</a></li>
+<li><a href="http://gnuwin32.sourceforge.net/downlinks/libiconv.php">Libiconv</a></li>
+</ul>
+
+<p>然后记得在PATH中加入他们的bin文件夹路径</p>
+
+<h3>安装Python 和 Perl</h3>
+
+<p>由于编译的时候要执行许多脚本生成代码，又由于他们不是用一个语言写的所以这两个都要装。
+Perl在<a href="http://www.activestate.com/activeperl/downloads">这里</a>
+Python 需要2.x版，链接在<a href="http://www.python.org/download/">这里</a>由于某些众所周知的原因你可能打不开。然后再把python的安装路径和perl的bin路径加到PATH中就不需要再安装别的东西了。需要安装的东西一点也不多。</p>
+
+<h3>修改代码bug</h3>
+
+<p>像这么光荣伟大正确的开源工程release出来的代码怎么可能会有问题能，绝对不可能有问题，一定是下载程序出错了。
+打开QtWebKit-2.2.0/Source/JavaScriptCore/JavaScriptCore.pri 把95行的LIBS += -lwinmm 改为LIBS += -lwinmm -lAdvapi32。不然的话链接时会出错，这一定是下载程序偷懒少下造成的。然后还有一个错误，具体在哪里我给忘了，不过是个编译的时候看一眼就知道怎么改的bug还是先编译吧。</p>
+
+<h3>编译Qtwebkit</h3>
+
+<p>在源码文件夹里新建WebkitBuild文件夹，在里面再新建Debug和Release两个文件夹，注意大小写。
+在开始菜单里打开“Visual Studio 2008 命令提示”cd到源码文件夹然后敲入“perl Tool\Scripts\build-webkit --qt --debug --minimal”就可以开始漫长的编译了。编译的时候会提示一个错误中断，什么错误文件末尾一类的错误。打开提示错误的代码发现那一行是由于有两个中文引号造成的，根据上下文初步估计他是想写转义后的双引号，改成转义后的双引号后就可以编译通过了。这一定是有人挖webkit的墙角才会在release版里有这么弱智的问题。
+经过很短的编译时间，大概两个小时吧，就可以在\QtWebKit-2.2.0\Source\WebKit\win\WebKit.vcproj下面找到VS工程文件了。在QtWebKit-2.2.0\WebkitBuild\Debug\bin下可以找到编译好的可执行文件QtTestBrowser了。打开QtTestBrowser然后再用VS的调试attach上去就可以加断点调试了。
+Qtwebkit的环境搭建真的好容易啊好容易。</p>
+
+
+<hr>
+    <div>
+        <p>欢迎大家在讨论区有血性的争论、动手、拍砖、捅刀子，亮出你的看法来！本博客已经全文RSS输出，大家可以通过订阅oilbeater.com/atom.xml即可获得博客更新。或者关注我的微博<a href="http://weibo.com/oilbeater/">@oilbeater</a>在上面我会通知我的博客更新并且还会分享一些有意思的技术文章，欢迎大家关注。</p>
+    </div>
+    <div class="contact">
+        <a href="mailto:liumengxinfly@gmail.com">liumengxinfly@gmail.com</a>
+    </div>
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style_24x24">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1377168947699154" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    <br>
+    <nav class="article-previous fn-clear">
+        
+        <a class="prev" href="/生活感悟/2012/07/20/the-youth.html" rel="bookmark">&laquo;&nbsp;青春</a>
+        
+        
+        <a class="next" href="/照片游记/2012/09/09/impressions-of-hangzhou.html" rel="bookmark">印象杭州&nbsp;&raquo;</a>
+        
+    </nav>
+    <div class="comment">
+        
+            
+            <div class="ds-thread"></div>
+            
+        
+    </div>
+</div>
+
+                </div>
+                <div class="aside">
+                    <div class="aside-item">
+                        <div>
+<iframe width="100%" height="500" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=500&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=0&isWeibo=1&isFans=0&uid=1300038410&verifier=1c853142&dpc=1"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Recent Posts</h4>
+                        <ul class="list">
+                            
+                                <li><a href="/博客/2015/05/15/whyleaveali.html" title="为啥我要从阿里离职" rel="bookmark">为啥我要从阿里离职</a></li>
+                            
+                                <li><a href="/system/2015/03/22/recovery-services.html" title="分布式系统断电自恢复" rel="bookmark">分布式系统断电自恢复</a></li>
+                            
+                                <li><a href="/博客/2015/01/12/the-summary-of-blog.html" title="oilbeater博客回顾2014篇" rel="bookmark">oilbeater博客回顾2014篇</a></li>
+                            
+                                <li><a href="/nginx/2014/12/29/nginx-conf-from-zero.html" title="nginx 配置从零开始" rel="bookmark">nginx 配置从零开始</a></li>
+                            
+                                <li><a href="/docker/2014/11/11/docker-libcontainer-reading.html" title="一次奇幻的 docker libcontainer 代码阅读之旅" rel="bookmark">一次奇幻的 docker libcontainer 代码阅读之旅</a></li>
+                            
+                                <li><a href="/Linux/2014/09/15/linux-performance-tools-2.html" title="Linux 系统性能分析工具图解读（二）" rel="bookmark">Linux 系统性能分析工具图解读（二）</a></li>
+                            
+                        </ul>
+                    </div>
+
+                    <div class="aside-item">
+                        <h4 class="title">Links</h4>
+                        <ul class="list">
+                            
+                                
+                                    
+                                    <li><a href="http://coolchar.com" title="CoolChar" target="_blank">CoolChar</a></li>
+                                    
+                                    <li><a href="http://www.tianjun.ml/" title="Tian Jun" target="_blank">Tian Jun</a></li>
+                                    
+                                    <li><a href="http://http//yabuhoo.com/" title="Yabuhoo" target="_blank">Yabuhoo</a></li>
+                                    
+                                    <li><a href="http://www.kthinker.com/" title="Kthinker" target="_blank">Kthinker</a></li>
+                                    
+                                    <li><a href="http://pinderpeng.org/" title="Pinder" target="_blank">Pinder</a></li>
+                                    
+                                    <li><a href="http://chansh518.github.io/index.html" title="Chansh" target="_blank">Chansh</a></li>
+                                    
+                                    <li><a href="http://maziang.com" title="Mark墨客" target="_blank">Mark墨客</a></li>
+                                    
+                                
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="foot">
+            <div class="footer">
+                <p>Copyright 2013. All rights reserved. Powered by <a href="http://jekyllrb.com" target="_blank">Jekyll</a>, Design by <a href="http://www.zhanxin.info" target="_blank">zhanxin.info</a>.</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://libs.useso.com/js/jquery/1.8.3/jquery.min.js"></script>
+        
+            
+                
+                <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"oilbeater"};
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = 'http://static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                        || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                
+            
+        
+    </body>
+</html>
