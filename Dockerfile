@@ -6,6 +6,5 @@ RUN apt-get update && apt-get install -y node python-pygments
 EXPOSE 4000
 
 WORKDIR /src
-ENTRYPOINT ["jekyll"]
-CMD ["serve"]
+CMD jekyll serve -H 0.0.0.0
 ADD . /src
