@@ -1,4 +1,4 @@
-ROM ruby
+FROM ruby
 MAINTAINER liumengxinfly@gmail.com
 
 RUN gem install jekyll rdiscount kramdown
