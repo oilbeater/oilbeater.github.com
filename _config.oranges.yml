@@ -166,12 +166,12 @@ footer:
     #   name: weibo
     #   icon: weibo
     #   path:
-    # -
+    -
     #   # rss需安装 hexo-generator-feed 插件
     #   # 具体参照https://github.com/hexojs/hexo-generator-feed
-    #   name: rss
-    #   icon: rss
-    #   path: /atom.xml
+      name: rss
+      icon: rss
+      path: /atom.xml
 
   more:
     # 支持变量显示，可自定义扩展，具体见主题/layout/_partial/footer.ejs
