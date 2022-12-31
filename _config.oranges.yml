@@ -17,7 +17,7 @@
   # codeBlock: 代码块配置
 
 # enable: 是否开启相应功能，可选true || false
-
+language: zh-CN
 # 网站图标
 favicon:
   enable: false 
@@ -26,7 +26,7 @@ favicon:
 
 # 用户头像与昵称
 avatar:
-  author_photo: /images/avatar.png
+  author_photo: /images/oilbeater.png
   author_nickname: Oilbeater
   path: /
 
