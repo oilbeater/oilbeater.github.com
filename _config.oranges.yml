@@ -158,6 +158,10 @@ footer:
       name: twitter
       icon: twitter
       path: https://twitter.com/liumengxinfly
+    -
+      name: linkedin
+      icon: linkedin
+      path: https://www.linkedin.com/in/oilbeater/
     # -
     #   name: wechat
     #   icon: wechat
