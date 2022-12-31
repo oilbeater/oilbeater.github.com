@@ -146,10 +146,10 @@ footer:
       name: github
       icon: github
       path: https://github.com/oilbeater
-    # -
-    #   name: email
-    #   icon: envelope
-    #   path: 
+    -
+      name: email
+      icon: envelope
+      path: mailto:liumengxinfly@gmail.com
     # -
     #   name: facebook
     #   icon: facebooksquare
