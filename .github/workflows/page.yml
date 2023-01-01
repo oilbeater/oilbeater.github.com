@@ -26,8 +26,13 @@ jobs:
             ${{ runner.OS }}-npm-cache
       - name: Install Dependencies
         run: npm install
+
+      - Copy customized header
+        run mv themes/header.ejs themes/oranges/layout/_partial/header.ejs
+
       - name: Build
         run: npm run build
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:

@@ -35,24 +35,24 @@ avatar:
 # 注册Google分析账号，在管理/创建媒体资源/选择网站/填写相关信息后得到跟踪Id，一般格式为UA-xxxxxxx-x
 # 如之前已有注册账号，在管理/跟踪信息/跟踪代码/找到跟踪ID，一般格式为UA-xxxxxxx-x
 gtag:
-  enable: false
-  gtagkey: UA-xxxxxxx-x
+  enable: true
+  gtagkey: UA-31254339-1
 
 # 文章评论系统
 comments:
-  enable: false 
+  enable: true
   # 目前仅支持gitalk, valine, disqus评论，选择喜欢的一种开启即可
 
   gitalk:
     # https://github.com/gitalk/gitalk#usage查看官方教程
-    enable: false
-    clientID:
-    clientSecret:
-    repo:
-    owner:
-    admin:
+    enable: true
+    clientID: fa956f38daf8cc1f8222
+    clientSecret: 8e37dcda7dc6d86518fc00b06f8d7008ef8542c6
+    repo: oilbeater.github.com
+    owner: oilbeater
+    admin: oilbeater
     id: location.pathname
-    distractionFreeMode: false
+    distractionFreeMode: true
 
   valine:
     # https://valine.js.org/quickstart.html#%E8%8E%B7%E5%8F%96APP-ID-%E5%92%8C-APP-Key
