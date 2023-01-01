@@ -52,7 +52,7 @@ comments:
     owner: oilbeater
     admin: oilbeater
     id: location.pathname
-    distractionFreeMode: true
+    distractionFreeMode: false
 
   valine:
     # https://valine.js.org/quickstart.html#%E8%8E%B7%E5%8F%96APP-ID-%E5%92%8C-APP-Key
