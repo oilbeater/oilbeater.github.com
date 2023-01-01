@@ -27,8 +27,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - Copy customized header
-        run mv themes/header.ejs themes/oranges/layout/_partial/header.ejs
+      - name: Copy customized header
+        run: mv themes/header.ejs themes/oranges/layout/_partial/header.ejs
 
       - name: Build
         run: npm run build
