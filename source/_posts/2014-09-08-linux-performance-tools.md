@@ -2,7 +2,10 @@
 layout:	post
 title:	"Linux 系统性能分析工具图解读(一)"
 date:	2014-09-08 14:19:55
-category:	"Linux"
+tags:
+- 技术
+- linux
+- 性能
 ---
 
 最近看了 Brendan Gregg 大神著名的 Linux Performance Observability Tools，这么好的资料不好好学习一下实在是浪费了，又找到了大神的[ ppt 和 演讲](http://www.brendangregg.com/linuxperf.html)（需爬墙），于是把相关的命令和概念连预习，学习，复习走了一遍。

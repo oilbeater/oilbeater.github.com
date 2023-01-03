@@ -2,7 +2,10 @@
 layout:	post
 title:	"一次奇幻的 docker libcontainer 代码阅读之旅"
 date:	2014-11-11 12:30:55
-category:	"docker"
+tags:
+- 技术
+- docker
+- 源码阅读
 ---
 
 一直对 docker 提供的容器感到好奇，不知道究竟是如何实现隔离和保证安全的，之前 docker 本来是用 lxc 来提供容器功能的，但是由于对内核代码有一丝恐惧没敢去看，后来听说 docker 为了实现跨平台兼容自己实现了一套 native 的容器就是 libcontainer 。既然是新项目那么代码量和复杂度应该都不会太高吧，抱着这个想法我就翻看 libcontainer 的代码读一读。

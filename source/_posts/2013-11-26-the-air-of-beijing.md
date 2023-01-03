@@ -4,7 +4,7 @@ title: "基于twitter数据的美帝PM2.5分析"
 description: "数据来源是twitter上的BeijingAir每小时公布的美国驻北京大使馆pm2.5情况。物理上来讲大使馆是和北京比较近，但逻辑上来讲大使馆属于美国领土一部分，所以测量出来的应该是美国领土的pm2.5情况，就让我为生活在水深火热的万恶资本主义国家的人民揭示一下他们悲惨的命运吧。"
 category: "小工具"
 tagline: " Enjoy life!"
-tags: [life , thinking]
+tags: [生活 , 随想]
 img: "http://lh5.googleusercontent.com/-78iIVZ1OVj4/UpQwxHvWCEI/AAAAAAAAAeg/2erFkL5e3pA/w676-h422-no/hour_summary.png "
 ---
 

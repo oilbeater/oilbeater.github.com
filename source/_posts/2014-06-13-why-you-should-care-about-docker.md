@@ -2,7 +2,10 @@
 layout:	post
 title:	"[译]为什么你应该关注 Docker"
 date:	2014-06-13 9:31:55
-category:	"Docker"
+tags:
+- 技术
+- docker
+- 翻译
 ---
 
 >注：该文原文为 [Why You Should Care About Docker](http://thenewstack.io/why-you-should-care-about-docker/) ，由 CHRIS DAWSON 编写。

@@ -2,7 +2,9 @@
 layout:	post
 title:	"最惊心动魄的上线是怎样的?"
 date:	2016-10-07 21:03:34
-category:	"博客"
+tags:
+- 工作
+- 随想
 ---
 
 ![](http://7xl5hp.com1.z0.glb.clouddn.com/spacex.jpg)

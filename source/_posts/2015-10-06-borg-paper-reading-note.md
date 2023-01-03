@@ -2,7 +2,10 @@
 layout:	post
 title:	"Borg 论文阅读笔记"
 date:	2015-10-06 14:30:55
-category:	"docker"
+tags:
+- 技术
+- 论文阅读
+- Google
 ---
 
 Borg 是在传说中流传已久的 Google 内部集群管理系统，现在火热的 Mesos 和 Kubnetes 都是源自于 Borg。今年 Google 把论文放出来了，第一遍读感觉通篇细节没有什么太多值得玩味的，在这个行当干了一阵再读发现细节是魔鬼，每个细节都对应这一个实际中难解的问题，再读第三遍，不得不做一些笔记了。

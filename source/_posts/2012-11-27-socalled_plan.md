@@ -5,7 +5,7 @@ title: "所谓计划"
 img: "http://lh4.googleusercontent.com/-f6nyBgpTqqY/Ui06S-Uu9XI/AAAAAAAAAZI/sRhONYgiTOU/w251-h213-no/original_NS8z_299400002812118f.jpg"
 description: "定年度计划这种事情本来是不屑弄的，弄了也觉得实现不了，直到有一天看了偶像的一条微博，受了刺激，就业开始定所谓的年度计划了。"
 category: "生活感悟" 
-tags: [life]
+tags: [生活]
 ---
 
 定年度计划这种事情本来是不屑弄的，弄了也觉得实现不了，直到有一天看了偶像的一条微博，受了刺激，就也开始定所谓的年度计划了。偶像的微博是这样的

@@ -2,7 +2,9 @@
 layout:	post
 title:	"来鸟公司的一年"
 date:	2016-09-24 14:30:55
-category:	"博客"
+tags:
+- 总结
+- 工作
 ---
 
 一年前装自信的挖了个坑 [为啥我要从阿里离职](http://oilbeater.com/%E5%8D%9A%E5%AE%A2/2015/05/15/whyleaveali.html) 今年来填一下坑。

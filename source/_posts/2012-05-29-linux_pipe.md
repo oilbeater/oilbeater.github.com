@@ -4,7 +4,7 @@ title: "linux管道机制简介"
 description: "管道是linux提供的一种常见的进程通信工具，也是很多shell命令能够灵活组合产生强大用途的一个重要工具。本文就八卦一下它是怎么实现的。"
 category: "Linux" 
 tagline: "Hack the life!"
-tags: [linux , 源码阅读]
+tags: [技术, 源码阅读]
 img: "http://lh6.googleusercontent.com/-vRXcYw7V7fg/T69fVsIkNaI/AAAAAAAAAIw/Y3KgmC33VbI/s512/linux.jpg"
 ---
 <div>

@@ -2,7 +2,9 @@
 layout:	post
 title:	"nginx 配置从零开始"
 date:	2014-12-28 21:30:55
-category:	"nginx"
+tags:
+- 技术
+- nginx
 ---
 
 作为一个 nginx 的初学者记录一下从零起步的点滴。

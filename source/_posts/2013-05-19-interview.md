@@ -4,7 +4,7 @@ title: "小弱找实习"
 description: "折腾了这么久的实习，终于也差不多尘埃落定了，把走过的路和经验教训总结一下。"
 category: "找工作" 
 tagline: " Hack the life！"
-tags: [C++ , life]
+tags: [C++ , 生活]
 img: "http://lh3.googleusercontent.com/-Pk9i1edhukA/Ui06TiMrMSI/AAAAAAAAAZY/VWWuPwAKO_w/s512-no/original_Ok3m_603f00014afd125d.jpg"
 ---
 

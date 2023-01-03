@@ -4,7 +4,7 @@ title: "C++ Primer笔记"
 description: "又看了一遍，这是第三遍了，这次是真看，还是有很多没懂，记下摘得句子，加点自己的感悟。。"
 category: "读书笔记"
 tagline: "Hack the life"
-tags: [C++ , reading]
+tags: [C++ , 读书笔记]
 img: "http://lh4.googleusercontent.com/-HE4oOBFE5xQ/Ui06RkyfmaI/AAAAAAAAAYw/UZdarMLw5uI/s500-no/original_CR1l_435a00014a9d125b.jpG"
 published: true
 ---

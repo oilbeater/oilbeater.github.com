@@ -2,7 +2,8 @@
 layout:	post
 title:	"分布式系统断电自恢复"
 date:	2015-03-22 15:40:55
-category:	"system"
+tags:
+- 技术
 ---
 
 机房断电后各种服务该怎么恢复呢？

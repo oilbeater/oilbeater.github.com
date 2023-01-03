@@ -4,7 +4,7 @@ title: "历史的忧思"
 description: "算是对《近距离看美国》系列的一个读书笔记，其实一开始不想写了，因为就看第一本的时候比较有感触，再往后看就产生了世界本来不就该是这个样子么的幻觉，就觉得也没什么意思了。"
 img: http://lh5.googleusercontent.com/-5ksozs-C1b0/T_PCZ1bmfZI/AAAAAAAAAUc/t1Rnu1XvwiE/s447/s1688308.jpg
 category: "读书笔记" 
-tags: [reading , thinking]
+tags: [读书笔记 , 随想]
 ---
 <img src="http://lh5.googleusercontent.com/-5ksozs-C1b0/T_PCZ1bmfZI/AAAAAAAAAUc/t1Rnu1XvwiE/s447/s1688308.jpg" alt="" style="height:327px;width:216px">
 <p>

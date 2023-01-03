@@ -4,7 +4,7 @@ title: "我这阵子读的书-Top5"
 description: "如果书籍是人类进步的阶梯的话，那么kindle就是人类进步的电梯。自打发现kindle看书还是蛮舒服的，就开始了不可控制的刷书岁月。"
 category: "读书笔记" 
 tagline: " Keep reading!"
-tags: [reading]
+tags: [读书笔记, 资源推荐]
 img: "http://lh3.googleusercontent.com/-igbGFN1vP90/T69fVh8FbPI/AAAAAAAAAIw/83h5H4ELBew/s243/reading.jpg"
 ---
 <img src="http://lh3.googleusercontent.com/-igbGFN1vP90/T69fVh8FbPI/AAAAAAAAAIw/83h5H4ELBew/s243/reading.jpg" alt="reading" style="float:right;margin-left:10px">

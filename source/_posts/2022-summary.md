@@ -2,8 +2,9 @@
 title: 2022 年终总结
 date: 2022-12-30 06:21:07
 tags:
-  - summary
-  - annual
+  - 总结
+  - 生活
+  - 工作
 ---
 
 作为六年没有更新博客的僵尸博主，在看了 [Ce Gao](https://twitter.com/gaocegege) 连续九年的[年终总结](http://gaocegege.com/Blog/%E9%9A%8F%E7%AC%94/newyear2022)后 DNA 动了。收拾收拾博客，就有了这篇六年更的年度总结。

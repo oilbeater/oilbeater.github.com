@@ -2,7 +2,9 @@
 layout:	post
 title:	"什么是Docker？"
 date:	2014-06-28 21:19:55
-category:	"Docker"
+tags:
+- 技术
+- docker
 ---
 
 尽管之前久闻Docker的大名了，但是天资愚钝，对其到底是个啥东西一直摸不清，最近花了一段时间整理了一下，算是整理出一点头绪来。

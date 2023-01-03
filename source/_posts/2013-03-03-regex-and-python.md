@@ -4,7 +4,7 @@ title: "正则 in Python"
 description: "简单说一下为什么要用正则表达式，因为可以用简洁的方式处理几乎所有的字符串查找和匹配，节省生命，节省脑子。"
 category: "Python"
 tagline: "Hack the life"
-tags: [python , re]
+tags: [python , 正则]
 img: "http://lh6.googleusercontent.com/-vQcn-f1J1Cg/Ui06Xx3NPhI/AAAAAAAAAa4/1B9jH_ing7o/w314-h160-no/original_pot5_38e700011e971190.jpg"
 published: true
 ---

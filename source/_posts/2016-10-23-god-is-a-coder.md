@@ -2,7 +2,8 @@
 layout:	post
 title:	"上帝是个程序员"
 date:	2016-10-23 21:03:34
-category:	"博客"
+tags:
+- 随想
 ---
 
 ![](http://7xl5hp.com1.z0.glb.clouddn.com/dna.png)

@@ -4,7 +4,7 @@ title: "皇城根儿下的偷拍"
 description: "开学时计划去钟鼓楼看看，结果一个学期过去了，要么有事要么没心情。趁着今天闲赶紧过去慰问一下在皇城根下过着水深火热生活的帝都人民。"
 img: "http://lh4.googleusercontent.com/-1cylQw_rQs8/T8B-7MoX1FI/AAAAAAAAAQc/nFedDDOYNNE/s640/%25E9%25BC%2593%25E6%25A5%25BC%25E4%25B8%2580%25E8%25A7%2592.JPG"
 category: "照片游记" 
-tags: [photo , 游记]
+tags: [照片, 游记]
 ---
 <div class="photo">
 	<p>开学时计划去钟鼓楼看看，结果一个学期过去了，要么有事要么没心情。趁着今天闲赶紧过去慰问一下在皇城根下过着水深火热生活的帝都人民。</p>

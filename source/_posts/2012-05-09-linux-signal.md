@@ -5,7 +5,7 @@ description: "鉴于后面把进程的形象给彻底毁掉了，我提前声明
 tagline: "Hack the life!"
 category: "Linux" 
 img: "http://lh6.googleusercontent.com/-vRXcYw7V7fg/T69fVsIkNaI/AAAAAAAAAIw/Y3KgmC33VbI/s512/linux.jpg"
-tags: [linux , 源码阅读]
+tags: [技术, linux, 源码阅读]
 ---
 <div>
 <p>

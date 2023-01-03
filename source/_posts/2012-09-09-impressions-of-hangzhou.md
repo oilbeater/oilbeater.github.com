@@ -4,7 +4,7 @@ title: "印象杭州"
 img: "http://lh4.googleusercontent.com/HMBXrr2Y-8iehVFfV4TXk0DMBfEWGA4glD6ROUgdszI=w1024-h768-no"
 description: "虽说之前由于迫不及待已经把照片都发出去了，不过照片后的故事基本都没说过，今天就讲讲照片后的故事。"
 category: "照片游记" 
-tags: [游记  , photo]
+tags: [游记  , 照片]
 ---
 <p>
 	虽说之前由于迫不及待已经把照片都发出去了，不过照片后的故事基本都没说过，今天就讲讲照片后的故事。

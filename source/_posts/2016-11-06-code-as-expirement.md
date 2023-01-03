@@ -2,7 +2,8 @@
 layout:	post
 title:	"做科研一样做产品"
 date:	2016-10-30 21:03:34
-category:	"博客"
+tags:
+- 随想
 ---
 
 ![](http://7xl5hp.com1.z0.glb.clouddn.com/blind.jpg)

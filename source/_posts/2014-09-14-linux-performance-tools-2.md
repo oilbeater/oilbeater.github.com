@@ -2,7 +2,10 @@
 layout:	post
 title:	"Linux 系统性能分析工具图解读（二）"
 date:	2014-09-14 19:19:55
-category:	"Linux"
+tags:
+- 技术
+- linux
+- 性能
 ---
 
  ![](http://oilbeater.qiniudn.com/linux_observability_tools.png)

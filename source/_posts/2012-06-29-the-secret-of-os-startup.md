@@ -4,7 +4,7 @@ title: "操作系统启动之谜"
 description: "在我小的时候一直纳闷一台电脑是怎么从给它个电就能自动跑出一个五颜六色的界面的，相信很多人也有和我一样的疑问吧。"
 category: "Linux" 
 img: "http://lh6.googleusercontent.com/-vRXcYw7V7fg/T69fVsIkNaI/AAAAAAAAAIw/Y3KgmC33VbI/s512/linux.jpg"
-tags: [linux , 源码阅读]
+tags: [技术, linux , 源码阅读]
 ---
 <img src="http://lh6.googleusercontent.com/-vRXcYw7V7fg/T69fVsIkNaI/AAAAAAAAAIw/Y3KgmC33VbI/s512/linux.jpg" alt="" style="float:left;width:243px;height:208px">
 <p>

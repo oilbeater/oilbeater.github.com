@@ -4,7 +4,7 @@ title: "Amazon FBA 实习经历小结"
 description: "又一段的实习经历结束了，小小的总结一下。"
 category: "工作心得"
 tagline: " Enjoy life!"
-tags: [life , thinking]
+tags: [工作 , 随想]
 img: "http://lh3.googleusercontent.com/-GYpdcEzGc6k/UjW0vV3FJQI/AAAAAAAAAcE/lSBuVVkdz7I/s160-no/amazon.jpg"
 ---
 

@@ -2,7 +2,10 @@
 layout:	post
 title:	"技术好就不需要测试了...吗？"
 date:	2016-10-07 21:03:34
-category:	"博客"
+tags:
+- 技术
+- 测试
+- 软件工程
 ---
 
 ![](http://7xl5hp.com1.z0.glb.clouddn.com/qa.jpg)

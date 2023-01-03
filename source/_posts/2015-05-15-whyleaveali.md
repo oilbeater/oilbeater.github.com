@@ -2,7 +2,8 @@
 layout:	post
 title:	"为啥我要从阿里离职"
 date:	2015-05-15 14:30:55
-category:	"博客"
+tags:
+- 工作
 ---
 
 # 为啥我要从阿里离职？

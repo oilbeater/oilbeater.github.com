@@ -5,7 +5,7 @@ description: "之所以想写这个东西是因为在我年幼无知的时候以
 tagline: "Hack the life"
 category: "安全" 
 img: http://lh4.googleusercontent.com/-um7AnWJx3Is/T9cH3NM4QXI/AAAAAAAAASc/mR1biDySqMo/s480/Stack_4.jpg
-tags: [security]
+tags: [技术, 安全]
 ---
 <img src="http://lh4.googleusercontent.com/-um7AnWJx3Is/T9cH3NM4QXI/AAAAAAAAASc/mR1biDySqMo/s480/Stack_4.jpg" alt="" style="width:150px;height:170px;">
 <p>
