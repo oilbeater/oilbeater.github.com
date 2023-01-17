@@ -10,14 +10,14 @@
   <meta name="twitter:creator" content="Oilbeater">
   <meta name="twitter:title" content="<%= page.title %> | <%= config.title%>" />
   <meta name="twitter:description" content="<%= page.description %>" />
-  <meta name="twitter:image" content="<%= page.thumbnail %>" />
+  <meta name="twitter:image" content="<%- theme.favicon.icon %>" />
 
   <meta property="og:site_name" content="<%= config.title %>">
   <meta property="og:title" content="<%= page.title %> | <%= config.title %>" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="<%= config.language %>" />
   <meta property="og:description" content="<%= page.description %>" />
-  <meta property="og:image" content="<%= page.thumbnail %>" />
+  <meta property="og:image" content="<%- theme.favicon.icon %>" />
 
   <% if(is_home() && page.current > 1){ %>
     <meta name="robots" content="noindex" />
