@@ -176,6 +176,7 @@ footer:
       name: rss
       icon: rss
       path: /atom.xml
+      content: true
 
   more:
     # 支持变量显示，可自定义扩展，具体见主题/layout/_partial/footer.ejs
