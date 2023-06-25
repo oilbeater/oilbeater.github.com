@@ -69,11 +69,12 @@ int main(int argc, char* argv[]){
 3. 重新构建二进制，并使用 2 中收集的 Profile 信息进行构建优化。
 4. 回到 2，持续迭代。
 
-但是 PGO 也存在一些自己的问题：
+Google 通过 [AutoFDO](https://research.google/pubs/pub45290/) 实现了持续的 PGO，同时也介绍了 PGO 存在的问题：
 
-1. 需要配合 pprof 信息，生产环境可能会带来性能下降。
-2. 需要随着代码动态调整 Profile 不是个一次性的优化。
-3. 整体性能提升有限，Google 通过 [AutoFDO](https://research.google/pubs/pub45290/) 实现了持续的 PGO，整体性能优化在 10% 左右。
+1. 需要配合 pprof 信息，生产环境完整的 Profile 会带来性能下降，通常使用 Sample 的方式牺牲一定精度，开销在 1%。
+2. 需要随着代码动态调整 Profile，不是个一次性的优化，Profile 信息可能会有泄密隐患，如何构建完整流程是个挑战。
+3. 整体性能提升有限，整体性能优化在 10% 左右。
+4. 二进制体积增加。
 
 # PGO in Golang
 
