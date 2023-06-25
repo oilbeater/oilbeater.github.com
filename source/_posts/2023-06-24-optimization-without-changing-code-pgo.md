@@ -12,7 +12,7 @@ tags: [性能, golang, PGO, Linux, Kernel]
 - [总结](#总结)
 
 
-Golang 在 1.20 引入了 [PGO(Profile-guided optimization)](https://go.dev/doc/pgo) 的优化，根据官方博客的介绍可以在不更改代码的情况下达到 2%~7% 的性能提升。在 1.21 的 [Release Note](https://tip.golang.org/doc/go1.21) 中，Golang 将该功能升级到 GA 并在自己的构建中开启了 PGO，将 Golang 自身编译器的性能提升了 2%~4%。PGO 本身是个编译器的优化方法，并不和特定语言相关，Golang 目前也只是很初步的应用了 PGO，这篇文章将会以 Golang 为例介绍 PGO 的工作原理，可能的优化方向和一个应用 PGO 优化 Linux Kernel 的例子。
+Golang 在 1.20 引入了 [PGO(Profile-guided optimization)](https://go.dev/doc/pgo) 的优化，根据官方博客的介绍可以在不更改代码的情况下达到 2%-7% 的性能提升。在 1.21 的 [Release Note](https://tip.golang.org/doc/go1.21) 中，Golang 将该功能升级到 GA 并在自己的构建中开启了 PGO，将 Golang 自身编译器的性能提升了 2%-4%。PGO 本身是个编译器的优化方法，并不和特定语言相关，Golang 目前也只是很初步的应用了 PGO，这篇文章将会以 Golang 为例介绍 PGO 的工作原理，可能的优化方向和一个应用 PGO 优化 Linux Kernel 的例子。
 
 # PGO in General
 
