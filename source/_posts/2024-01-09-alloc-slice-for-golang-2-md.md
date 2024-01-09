@@ -15,7 +15,7 @@ tags: [性能, golang]
 
 # 基础性能测试
 
-最初的 BenchMark 代码，只考虑了 Slic 是否初始化分配空间的情况，具体的代码如下：
+最初的 BenchMark 代码，只考虑了 Slice 是否初始化分配空间的情况，具体的代码如下：
 
 ```go
 package prealloc_test
