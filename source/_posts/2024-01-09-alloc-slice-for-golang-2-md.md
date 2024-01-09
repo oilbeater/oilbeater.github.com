@@ -4,6 +4,13 @@ date: 2024-01-09 08:16:22
 tags: [性能, golang]
 ---
 
+- [基础性能测试](#基础性能测试)
+- [整个 Slice Append](#整个-slice-append)
+- [复用 Slice](#复用-slice)
+- [sync.Pool](#syncpool)
+- [bytebufferpool](#bytebufferpool)
+- [总结](#总结)
+
 之前写了一篇 [Golang 中预分配 slice 内存对性能的影响](2023-07-19-pre-alloc-slice-for-golang.md)，探讨了一下再 Slice 中预分配内存对性能的影响，之前考虑的场景比较简单，最近又做了一些其他测试，补充一下进一步的信息。包括整个 Slice append，sync.Pool 对性能的影响。
 
 # 基础性能测试
