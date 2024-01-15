@@ -11,7 +11,7 @@ tags: [性能, golang]
 - [bytebufferpool](#bytebufferpool)
 - [总结](#总结)
 
-之前写了一篇 [Golang 中预分配 slice 内存对性能的影响](https://oilbeater.com/2023/07/19/pre-alloc-slice-for-golang/)，探讨了一下再 Slice 中预分配内存对性能的影响，之前考虑的场景比较简单，最近又做了一些其他测试，补充一下进一步的信息。包括整个 Slice append，sync.Pool 对性能的影响。
+之前写了一篇 [Golang 中预分配 slice 内存对性能的影响](https://oilbeater.com/2023/07/19/pre-alloc-slice-for-golang/)，探讨了一下在 Slice 中预分配内存对性能的影响，之前考虑的场景比较简单，最近又做了一些其他测试，补充一下进一步的信息。包括整个 Slice append，sync.Pool 对性能的影响。
 
 # 基础性能测试
 
@@ -210,6 +210,6 @@ type Pool struct {
 
 - Slice 初始化尽可能指定 capacity
 - 避免在循环中初始化 Slice
-- 性能敏感路径考虑使用 sync.pool
+- 性能敏感路径考虑使用 sync.Pool
 - 内存分配的性能开销可能远大于业务逻辑
 - bytebuffer 的复用可以考虑看下 bytebufferpool
