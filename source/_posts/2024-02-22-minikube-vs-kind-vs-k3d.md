@@ -45,8 +45,9 @@ minikube 社区有一些[性能测试报告](https://minikube.sigs.k8s.io/docs/b
 
 1. minikube 采用 Docker Driver，因为真要测启动速度还用虚拟机的 Driver 就没什么意义了。
 2. 所有测试都是镜像已经下载到本地的结果，不会涉及网络下载时间。
-3. 都只启动最基本的组件，不安装其他插件，但是基础 CNI 和 CoreDNS 以及 CSI 都是有的，保证应用的基本运行。
-4. 使用 `docker image` 命令查看镜像大小，使用 `docker stat` 查看内存用量。
+3. 测试的每个软件都是当前的最新版，但是他们支持的 Kubernetes 版本不一致，不是很严谨，但是定性分析应该够了。
+4. 都只启动最基本的组件，不安装其他插件，但是基础 CNI 和 CoreDNS 以及 CSI 都是有的，保证应用的基本运行。
+5. 使用 `docker image` 命令查看镜像大小，使用 `docker stat` 查看内存用量。
 
 测试的命令如下：
 
