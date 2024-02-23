@@ -29,7 +29,7 @@ tags: [kubernetes, ci]
 
 ## kind
 
-[kind](https://kind.sigs.k8s.io/) 是近几年流行起来的一个本地部署 Kubernetes 的工具，他的主要特点就是用 Docker 容器模拟节点，并且基本只专注在 Kubernetes 标准部署这一个事情上，其他社区组件都需要额外自己去安装。优点就是启动速度很快，熟悉 Docker 的人用起来也很顺手。缺点是用了容器模拟缺乏操作系统级别的隔离，而且和宿主机共享内核，一些操作系统相关的测试就不好测试了。我之前在测一个内核模块的时候就因为宿主机加了一些 netfilter 功能，结果 kind 里的 Kubernetes 集群挂了。
+[kind](https://kind.sigs.k8s.io/) 是近几年流行起来的一个本地部署 Kubernetes 的工具，他的主要特点就是用 Docker 容器模拟节点，并且基本只专注在 Kubernetes 标准部署这一个事情上，其他社区组件都需要额外自己去安装。目前 Kubernetes 本身的 CI 也是通过 kind 来跑的。优点就是启动速度很快，熟悉 Docker 的人用起来也很顺手。缺点是用了容器模拟缺乏操作系统级别的隔离，而且和宿主机共享内核，一些操作系统相关的测试就不好测试了。我之前在测一个内核模块的时候就因为宿主机加了一些 netfilter 功能，结果 kind 里的 Kubernetes 集群挂了。
 
 ## k3d
 
