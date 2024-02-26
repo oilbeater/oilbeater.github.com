@@ -20,9 +20,9 @@
 language: zh-CN
 # 网站图标
 favicon:
-  enable: false 
-  icon: /images/favicon.png
-  touch_icon: /images/favicon.png
+  enable: true 
+  icon: /images/oilbeater.png
+  touch_icon: /images/oilbeater.png
 
 # 用户头像与昵称
 avatar:
