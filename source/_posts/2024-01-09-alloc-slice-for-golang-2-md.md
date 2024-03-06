@@ -130,42 +130,58 @@ BenchmarkPreallocate2-12                63147178                18.63 ns/op     
 
 # sync.Pool
 
-简单的场景下可以像上个测试用例里一样手动的清空 Slice 在循环内进行复用，但是真实场景里对象的创建通常会发生在代码的各个地方，就需要统一的进行管理和复用了，Golang 里的 `sync.Pool` 就是做这个事情的，而且使用起来也很简单。但是内部实现还是比较复杂的，为了性能进行了大量无锁化的设计，具体实现可以参考[https://www.cyhone.com/articles/think-in-sync-pool/](https://www.cyhone.com/articles/think-in-sync-pool/)。
+简单的场景下可以像上个测试用例里一样手动的清空 Slice 在循环内进行复用，但是真实场景里对象的创建通常会发生在代码的各个地方，就需要统一的进行管理和复用了，Golang 里的 `sync.Pool` 就是做这个事情的，而且使用起来也很简单。但是内部实现还是比较复杂的，为了性能进行了大量无锁化的设计，具体实现可以参考[Let's dive: a tour of sync.Pool internals](https://unskilled.blog/posts/lets-dive-a-tour-of-sync.pool-internals/)。
 
 使用 `sync.Pool` 重新设计的测试用例如下：
 
 ```go
-var sPool = &sync.Pool{
-    New: func() interface{} {
-        return make([]byte, 0, length)
-    },
+var sPool = &sync.Pool{ 
+        New: func() any {
+                b := make([]byte, 0, length)
+                return &b
+        },
+}
+
+func BenchmarkPoolByElement(b *testing.B) {
+        b.ResetTimer()
+        for i := 0; i < b.N; i++ {
+                // Don't preallocate our initial slice
+                b := sPool.Get().(*[]byte)
+                buf := *b
+                for j := 0; j < length; j++ {
+                        buf = append(buf, testtext[j])
+                }
+                buf = buf[:0]
+                sPool.Put(b)
+        }
 }
  
 func BenchmarkPool(b *testing.B) {
-    b.ResetTimer()
-    for i := 0; i < b.N; i++ {
-        // Don't preallocate our initial slice
-        buf := sPool.Get().([]byte)
-        buf = append(buf, testtext...)
-        buf = buf[:0]
-        sPool.Put(buf)
-    }
+        b.ResetTimer()
+        for i := 0; i < b.N; i++ {
+                // Don't preallocate our initial slice
+                bufPtr := sPool.Get().(*[]byte)
+                buf := * bufPtr
+                buf = append(buf, testtext...)
+                buf = buf[:0]
+                sPool.Put(bufPtr)
+        }
 }
 ```
 
 其中 `New` 用来给 `sync.Pool` 一个在没有可用对象时创建对象的构造函数，使用的时候使用 `Get` 方法从 Pool 里获取一个对象，用完了再用 `Put` 方法把对象还给 `sync.Pool`。这里主要注意一下对象的生命周期，以及放回到 `sync.Pool` 时需要清空对象，避免脏数据。测试结果如下：
 
 ```bash
-BenchmarkNoPreallocateByElement-12        522565              2129 ns/op            3320 B/op          9 allocs/op
-BenchmarkPreallocateByElement-12          781638              1311 ns/op            1024 B/op          1 allocs/op
-BenchmarkPoolByElement-12                 957424              1233 ns/op              24 B/op          1 allocs/op
-BenchmarkNoPreallocate-12                4057801               310.3 ns/op          1024 B/op          1 allocs/op
-BenchmarkPreallocate-12                  3841848               315.4 ns/op          1024 B/op          1 allocs/op
-BenchmarkPreallocate2-12                63356907                18.76 ns/op            0 B/op          0 allocs/op
-BenchmarkPool-12                        13784712                85.19 ns/op           24 B/op          1 allocs/op
+BenchmarkNoPreallocateByElement-12        469431              2313 ns/op            3320 B/op          9 allocs/op
+BenchmarkPreallocateByElement-12          802392              1339 ns/op            1024 B/op          1 allocs/op
+BenchmarkPoolByElement-12                1212828               961.5 ns/op             0 B/op          0 allocs/op
+BenchmarkNoPreallocate-12                3249004               370.2 ns/op          1024 B/op          1 allocs/op
+BenchmarkPreallocate-12                  3268851               368.2 ns/op          1024 B/op          1 allocs/op
+BenchmarkPreallocate2-12                62596077                18.63 ns/op            0 B/op          0 allocs/op
+BenchmarkPool-12                        32707296                35.59 ns/op            0 B/op          0 allocs/op
 ```
 
-可见 `sync.Pool` 还是有少量的内存分配，并且性能消耗会比手动复用 Slice 要高一些，不过考虑到使用的便利性以及相比不使用还是有明显的性能提升还是一个不错的方案。
+可见使用 `sync.Pool` 也可以避免内存分配，由于 `sync.Pool` 还有一些额外的处理性能消耗会比手动复用 Slice 稍高一些，不过考虑到使用的便利性以及相比不使用还是有明显的性能提升，还是一个不错的方案。
 
 但是直接使用 `sync.Pool` 也有下面两个问题：
 
@@ -210,6 +226,6 @@ type Pool struct {
 
 - Slice 初始化尽可能指定 capacity
 - 避免在循环中初始化 Slice
-- 性能敏感路径考虑使用 sync.Pool
+- 性能敏感路径考虑使用 `sync.Pool`
 - 内存分配的性能开销可能远大于业务逻辑
 - bytebuffer 的复用可以考虑看下 bytebufferpool
