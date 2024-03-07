@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      阿里大数据竞赛非官方指南第一季终结篇 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">阿里大数据竞赛非官方指南第一季终结篇</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2014-04-17 00:00:00
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/python/" title="python">
+                    #python
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/bigdata/" title="bigdata">
+                    #bigdata
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>一部分指南，一部分评价阿里的比赛，一部分收获感受。少量指南，大量闲话，参赛者慎重围观，官方强势围观。</p>
+<h2 id="指南"><a href="#指南" class="headerlink" title="指南"></a>指南</h2><p>第一季要结束了，其实没啥太多指南的了，只有几条小小的建议,大神可无视。</p>
+<ul>
+<li>训练和测试的数据量都很小，大部分模型如果特征太多的话可能都会过拟合，所以在选择特征的时候要慎重，尽量选比较显著的。</li>
+<li>反正都到最后了，什么方法都可以试一下，基于业务基于算法都可以，没必要死钻一个方法，机器学习的前提也是人要会学习。</li>
+<li>尽量让方法互补，比如一种用久远的数据预测，一种用近的数据预测；或者一部分预测一类人的，一部分预测另一类人的。</li>
+<li>多个方法的结果尽量保证每一部分预测量少但是准确率高，可以用一堆准确率高的小结果合并出一个比较均衡的结果。</li>
+</ul>
+<h2 id="比赛评价"><a href="#比赛评价" class="headerlink" title="比赛评价"></a>比赛评价</h2><p>鉴于博主7月份毕业很可能就去阿里了（签了个意向，没有实习也还没入职，所以还算无关人士），好的评价就不说了，毕竟作为一个阿里这种级别的公司做的好是应该的，主要讲不好的地方。</p>
+<p><strong>整体感受：总体说的过去，比赛开始前没有完整的计划，细节部分粗糙。</strong></p>
+<p>有了一日一测，每个人都有更多机会进榜，前面的人也不能踏实，比赛的可玩性明显增加了。可是官方数据集合规则方面的缺陷，让这个机制不是那么完美。</p>
+<p>大概阿里没想到会有这么多人来比赛，准备明显不充足，包括线上一日一测、马甲、认证、海外选手参赛之类的事情都是随着比赛进行不断加进来的。虽说这个比较像互联网公司的作风，但是作为一个比赛组织成这样就说不过去了。毕竟此类的比赛阿里可能是第一次，但可以借鉴的例子实在是太多了。有那么多成熟的赛制摆在那里，乃们拿出来的是个这么简陋的几乎可以说没有怎么设计的赛制，乃们做成这样搞比赛的同行们都知道么？</p>
+<p>细节方面想吐槽的地方就太多了……那个论坛应该没有经过很好的测试吧，第一次发帖的时候加链接加了好几次才加上，加上后发现跳转的时候带了一些奇怪的参数，把我博客的统计和评论系统都搞乱了，害的我之后发帖只能贴纯文本的链接，不敢用编辑器里的链接。论坛的富文本编辑器还是回炉测一遍吧，怀疑没做好浏览器兼容。</p>
+<p>整个网站美工方面就不说了，好看的地方比较难找就是了。用户系统也很奇怪，报名队伍两个人结果只有一个人能看队伍信息查成绩，这个你们当初是这么设计的么，而且比较奇葩的是我用我的账号创建队伍，设的另一个人队长，结果我们队长什么都干不了，每次都是我的账号弄的。那个上传文件的地方还有bug，我的文件名一长，上传之后就会显示一个很奇怪的截断文件名，弄得我好几次都以为传错了。还有就是哪个基本信息页真心太难看了。</p>
+<p>各种细节方面的粗糙都很伤体验，毕竟最终拿奖的就那么几个人，这么多人来比赛，弄得一群人体验不好其实对公司也很伤吧。如果之前没料到这么多人的话，那么现在已经有这么多人关注了，希望官方能投入更多的精力，让大家的体验好一些。反正现在的细节体验不像一个大公司的做派，但是考虑到阿里其他的一些产品，他们的细节…………让我对第二季不禁有着深深地忧虑。</p>
+<p>由于比赛前的准备不足，初期问题频发，还好官方有着一系列的跟进措施，不过可能主办比赛的人大部分是业务团队不是直接面向客户的，感觉举措言辞都有些生硬，有种强推价值观的感觉。可能作为一个普通客户这样宣泄一下是可以的，不过作为大赛主办方的服务人员，这么做就有些让人不舒服了。毕竟不管你是做技术的还是team leader 给参加比赛的人来看都是客服或者懂技术的客服的角色，服务水平还是第一位的。再碰到比赛中爆发问题的情况可以请教一下阿里的公关或者客服团队看看怎么能柔和的处理这些事情。</p>
+<p>反正我去阿里也到不了数据团队，也找不到我的麻烦，吐槽不嫌事大，权当提个建议。</p>
+<h2 id="个人收获"><a href="#个人收获" class="headerlink" title="个人收获"></a>个人收获</h2><p>博主也是个菜鸟，通过比赛从大神那里学到了很多知识，获益匪浅。通过比赛第一次碰到真实数据真实问题，有收获，玩的开心就足够了。承蒙诸位厚爱，博客在比赛的这个周期内总访问量居然破万了，要知道我之前两年的总访问量也就7k多。还有大牛帮我发现了网站挂马的问题。</p>
+<p>然后收到了第一笔donation，虽说博主还没那么缺钱，但是写的东西第一次创造价值，感觉还是还幸福，就好像突然被照亮了。第一笔donation已经捐给壹基金了，把那位同学的礼物和正能量传递下去。最近打算给博客加一个赞助人页，赞助的同学愿意的话可以把姓名、微博、个人主页链接什么的私信或者邮件发给我，我可以在博客上宣传一下。</p>
+<p>鉴于比赛结束后就没法在论坛上发帖宣传新博文了，大家可以参考下面rss或者微博的方式获得博客的最新更新。最近读python文档收获良多，之后可能会出一个系列python相关的博文。最后我们是来自北京大学名字多变的葫芦娃队，如果评选最萌队名记得投我们一票。</p>
+<ul>
+<li><a href="http://oilbeater.com/%E9%98%BF%E9%87%8C%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%AF%94%E8%B5%9B/2014/03/16/the-setup-of-bigdata-race.html">非官方指南第一弹在这里</a></li>
+<li><a href="http://oilbeater.com/%E9%98%BF%E9%87%8C%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%AF%94%E8%B5%9B/2014/03/24/the-bigdata-race-2.html">非官方指南第二弹在这里</a></li>
+<li><a href="http://oilbeater.com/%E9%98%BF%E9%87%8C%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%AF%94%E8%B5%9B/2014/04/04/the-bigdata-race-3.html">非官方指南第三弹在这里</a></li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2014/04/04/the-bigdata-race-3/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2014-04-17 00:00:00
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/python/" title="python">
+                        #python
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/bigdata/" title="bigdata">
+                        #bigdata
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2014/05/08/from-url-to-webpage/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E5%8D%97"><span class="toc-text">指南</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E8%B5%9B%E8%AF%84%E4%BB%B7"><span class="toc-text">比赛评价</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E6%94%B6%E8%8E%B7"><span class="toc-text">个人收获</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E9%98%BF%E9%87%8C%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B%E9%9D%9E%E5%AE%98%E6%96%B9%E6%8C%87%E5%8D%97%E7%AC%AC%E4%B8%80%E5%AD%A3%E7%BB%88%E7%BB%93%E7%AF%87 + '&url=' + http%3A%2F%2Foilbeater.com%2F2014%2F04%2F17%2Fthe-endof-season%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2014/04/17/the-endof-season/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

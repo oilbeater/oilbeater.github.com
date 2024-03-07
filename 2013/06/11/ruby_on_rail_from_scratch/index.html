@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Ruby on Rails Ubuntu下从零开始到在线网站 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Ruby on Rails Ubuntu下从零开始到在线网站</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2013-06-11 00:00:00
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/ruby/" title="ruby">
+                    #ruby
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>由于实习的东西有一部分是ruby on rails的就在自己机器上也搭个环境走个流程熟悉一下概念。主要是翻译自<a target="_blank" rel="noopener" href="http://blog.coolaj86.com/articles/installing-ruby-on-ubuntu-12-04.html">How to install Ruby (and RVM) on Ubuntu (for technotards)</a>和<a target="_blank" rel="noopener" href="http://book.douban.com/subject/10813224/">Ruby on Rails Tutorial</a>加上自己碰到问题的总结。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="Ruby？"><a href="#Ruby？" class="headerlink" title="Ruby？"></a>Ruby？</h3><p>一个很适合写web的脚本语言，很多博客系统都是ruby写的，包括<a target="_blank" rel="noopener" href="http://octopress.org/">octopress</a>，<a target="_blank" rel="noopener" href="http://nanoc.ws/">nanoc</a>还有本博客用的<a href="jekyllrb.com">jekyll</a>，当然还有著名的不存在的网站<a target="_blank" rel="noopener" href="http://twitter.com/">twitter</a>和著名的有时不存在网站<a target="_blank" rel="noopener" href="https://github.com/">github</a>。Ruby还是门很简单的语言，想大致学一下的话可以看一下<a target="_blank" rel="noopener" href="http://www.ruby-lang.org/en/documentation/quickstart/">Ruby in Twenty Minutes</a>。</p>
+<p>###Rails？</p>
+<p>一个开源的web框架，通过rails可以快速的搭建起一个成型的网站，能够根据你的命令自动生成大量ruby脚本完成所需功能，简化开发流程。</p>
+<p>###RVM and Bundler?</p>
+<p>两个ruby包（gem）版本管理控制工具，用来解决gem版本混乱问题，保持应用gem版本的一致工具。</p>
+<p>##搭环境</p>
+<h3 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h3><p>发现用了很久的11.04的软件源已经不再被支持了，很多软件无法安装，只好换了个LTS版，用12.04表示现阶段一切正常。</p>
+<h3 id="清除不能用的版本"><a href="#清除不能用的版本" class="headerlink" title="清除不能用的版本"></a>清除不能用的版本</h3><p>如果现在已经不正常了就清理干净重新开始吧</p>
+<pre><code>sudo apt-get remove --purge ruby-rvm ruby
+sudo rm -rf /usr/share/ruby-rvm /etc/rmvrc /etc/profile.d/rvm.sh
+rm -rf ~/.rvm* ~/.gem/ ~/.bundle*
+</code></pre>
+<h3 id="安装RVM"><a href="#安装RVM" class="headerlink" title="安装RVM"></a>安装RVM</h3><p>先把依赖关系解决了</p>
+<pre><code>sudo apt-get update
+sudo apt-get install -y \
+  git \
+  build-essential \
+  curl \
+  wget
+</code></pre>
+<p>安装RVM</p>
+<pre><code>curl -L https://get.rvm.io | bash -s stable
+</code></pre>
+<p>把RVM脚本添加到bashrc中</p>
+<pre><code>echo &quot;[[ -s &#39;$&#123;HOME&#125;/.rvm/scripts/rvm&#39; ]] &amp;&amp; source &#39;$&#123;HOME&#125;/.rvm/scripts/rvm&#39;&quot; &gt;&gt; ~/.bashrc
+</code></pre>
+<h3 id="安装Ruby"><a href="#安装Ruby" class="headerlink" title="安装Ruby"></a>安装Ruby</h3><p>同样先解决依赖</p>
+<pre><code>sudo apt-get install -y \
+  build-essential \
+  openssl \
+  libreadline6 \
+  libreadline6-dev \
+  curl \
+  git-core \
+  zlib1g \
+  zlib1g-dev \
+  libssl-dev \
+  libyaml-dev \
+  libxml2-dev \
+  libxslt-dev \
+  autoconf \
+  libc6-dev \
+  ncurses-dev \
+  automake \
+  libtool \
+  bison \
+  subversion \
+  pkg-config \
+  sqlite3 \
+  libsqlite3-dev
+</code></pre>
+<p>通过RVM安装 Ruby</p>
+<pre><code>curl -L https://get.rvm.io | bash -s stable --ruby
+</code></pre>
+<p>检查安装是否成功</p>
+<pre><code>source ~/.rvm/scripts/rvm
+rvm reload
+rvm use default
+ruby --version
+</code></pre>
+<p>这时候应该就能看到版本号了。</p>
+<p>###解决天朝gem无法安装问题</p>
+<p>如果你一直gem install 没有反应且在国内的话有可能就是GFW的问题了。最简单的解决方案是把软件源换成大淘宝的国内镜像。</p>
+<pre><code>gem sources -a http://ruby.taobao.org/  
+</code></pre>
+<p>多种多样的解决方案可以参考<a target="_blank" rel="noopener" href="http://www.cnblogs.com/varlxj/archive/2011/10/16/2211004.html">解决Rubygems被墙，GEM无法更新</a>。</p>
+<p>###安装bundler和rails</p>
+<pre><code>gem install bundler --no-ri --no-rdoc
+gem install rails -v 3.2.13
+</code></pre>
+<p>这时候你运行</p>
+<pre><code>rails -v
+</code></pre>
+<p>应该就能看到版本号了。</p>
+<p>##建网站</p>
+<p>命令行下</p>
+<pre><code>rails new first_app
+</code></pre>
+<p>基本的代码就生成好了。<br>直接命令行下</p>
+<pre><code>rails server
+</code></pre>
+<p>可能提示</p>
+<pre><code>execJs: &#39;Could not find a JavaScript runtime&#39; but execjs AND therubyracer are in Gemfile
+</code></pre>
+<p>在Gemfile中加入两行代码</p>
+<pre><code>gem &#39;execjs&#39;
+gem &#39;therubyracer&#39;, :platforms =&gt; :ruby
+</code></pre>
+<p>命令行下</p>
+<pre><code>bundle install
+rails server
+</code></pre>
+<p>提示绑定到了0.0.0.0:3000，就可以在浏览器浏览你的第一个网站了。</p>
+<p>##上线</p>
+<p>之前的网站只能在本机上看怎么让他到糊脸上上给别人看呢，有一个叫<a target="_blank" rel="noopener" href="https://www.heroku.com/">heroku</a>的网站提供这个服务，可以通过git将本地网站传到heroku，由heroku展示你的网站。</p>
+<p>###注册账号<br>没啥好说的</p>
+<p>###搭建Heroku部署环境</p>
+<p>安装Heroku gem</p>
+<pre><code>gem install heroku
+</code></pre>
+<p>生成ssh密钥</p>
+<pre><code>heroku login
+</code></pre>
+<p>###上传<br>创建heroku项目<br>在网站源文件目录下</p>
+<pre><code>heroku create
+</code></pre>
+<p>加当前代码加入git库中</p>
+<pre><code>git init
+git add .
+git commit -m &quot;first commit&quot;
+</code></pre>
+<p>传到heroku</p>
+<pre><code>git push heroku master
+</code></pre>
+<p>然后再</p>
+<pre><code>heroku open
+</code></pre>
+<p>就可以打开浏览器访问到你的网站了。    </p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2013/05/19/interview/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2013-06-11 00:00:00
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/ruby/" title="ruby">
+                        #ruby
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2013/06/13/Gemfile-introduction/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Ruby%EF%BC%9F"><span class="toc-text">Ruby？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ubuntu"><span class="toc-text">Ubuntu</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%85%E9%99%A4%E4%B8%8D%E8%83%BD%E7%94%A8%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-text">清除不能用的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85RVM"><span class="toc-text">安装RVM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Ruby"><span class="toc-text">安装Ruby</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Ruby%20on%20Rails%20Ubuntu%E4%B8%8B%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%B0%E5%9C%A8%E7%BA%BF%E7%BD%91%E7%AB%99 + '&url=' + http%3A%2F%2Foilbeater.com%2F2013%2F06%2F11%2Fruby_on_rail_from_scratch%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2013/06/11/ruby_on_rail_from_scratch/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

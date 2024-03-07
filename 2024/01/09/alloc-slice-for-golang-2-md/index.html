@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Golang 中预分配 slice 内存对性能的影响（续） 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Golang 中预分配 slice 内存对性能的影响（续）</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2024-01-09 08:16:22
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%80%A7%E8%83%BD/" title="性能">
+                    #性能
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/golang/" title="golang">
+                    #golang
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <ul>
+<li><a href="#%E5%9F%BA%E7%A1%80%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95">基础性能测试</a></li>
+<li><a href="#%E6%95%B4%E4%B8%AA-slice-append">整个 Slice Append</a></li>
+<li><a href="#%E5%A4%8D%E7%94%A8-slice">复用 Slice</a></li>
+<li><a href="#syncpool">sync.Pool</a></li>
+<li><a href="#bytebufferpool">bytebufferpool</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+<p>之前写了一篇 <a href="https://oilbeater.com/2023/07/19/pre-alloc-slice-for-golang/">Golang 中预分配 slice 内存对性能的影响</a>，探讨了一下在 Slice 中预分配内存对性能的影响，之前考虑的场景比较简单，最近又做了一些其他测试，补充一下进一步的信息。包括整个 Slice append，sync.Pool 对性能的影响。</p>
+<h1 id="基础性能测试"><a href="#基础性能测试" class="headerlink" title="基础性能测试"></a>基础性能测试</h1><p>最初的 BenchMark 代码，只考虑了 Slice 是否初始化分配空间的情况，具体的代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> prealloc_test</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;sync&quot;</span></span><br><span class="line">    <span class="string">&quot;testing&quot;</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> length = <span class="number">1024</span></span><br><span class="line"><span class="keyword">var</span> testtext = <span class="built_in">make</span>([]<span class="type">byte</span>, length, length)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkNoPreallocateByElement</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">    b.ResetTimer()</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">        <span class="comment">// Don&#x27;t preallocate our initial slice</span></span><br><span class="line">        <span class="keyword">var</span> init []<span class="type">byte</span></span><br><span class="line">        <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; length; j++ &#123;</span><br><span class="line">            init = <span class="built_in">append</span>(init, testtext[j])</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkPreallocateByElement</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">    b.ResetTimer()</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">        <span class="comment">// Preallocate our initial slice</span></span><br><span class="line">        init := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">0</span>, length)</span><br><span class="line">        <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; length; j++ &#123;</span><br><span class="line">            init = <span class="built_in">append</span>(init, testtext[j])</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkNoPreallocateByElement-12        569978              2151 ns/op            3320 B/op          9 allocs/op</span><br><span class="line">BenchmarkPreallocateByElement-12          804807              1304 ns/op            1024 B/op          1 allocs/op</span><br></pre></td></tr></table></figure>
+
+<p>可见没有预分配的情况下多了 8 次内存分配，两个相对比可以粗略的认为 40% 的时间消耗在了这额外的 8 次内存分配。</p>
+<p>这两个测试用例使用的是循环里逐个 append 元素，但是 Slice 还支持整个 Slice 进行 append 在这种情况下的性能差距是没有体现出来的。而且在这两个测试用例里我们其实无法知道内存分配所占的时间消耗占整个时间的占比。</p>
+<h1 id="整个-Slice-Append"><a href="#整个-Slice-Append" class="headerlink" title="整个 Slice Append"></a>整个 Slice Append</h1><p>因此加入两个整个 Slice Append 的测试用例，观察预分配内存对性能还有没有这么大的影响。新增的用例代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkNoPreallocate</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">    b.ResetTimer()</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">        <span class="comment">// Don&#x27;t preallocate our initial slice</span></span><br><span class="line">        <span class="keyword">var</span> init []<span class="type">byte</span></span><br><span class="line">        init = <span class="built_in">append</span>(init, testtext...)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkPreallocate</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">    b.ResetTimer()</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">        <span class="comment">// Preallocate our initial slice</span></span><br><span class="line">        init := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">0</span>, length)</span><br><span class="line">        init = <span class="built_in">append</span>(init, testtext...)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkNoPreallocateByElement-12        569978              2151 ns/op            3320 B/op          9 allocs/op</span><br><span class="line">BenchmarkPreallocateByElement-12          804807              1304 ns/op            1024 B/op          1 allocs/op</span><br><span class="line">BenchmarkNoPreallocate-12                3829890               311.5 ns/op          1024 B/op          1 allocs/op</span><br><span class="line">BenchmarkPreallocate-12                  3968048               306.7 ns/op          1024 B/op          1 allocs/op</span><br></pre></td></tr></table></figure>
+
+<p>可见两个用例都只用了一次内存分配，消耗时间几乎相同，而且大幅低于逐个元素进行 append 的情况。一方面整个 Slice append，在 Slice 扩容时就知道了最终的大小没必要进行动态内存分配，降低了内存分配的开销。另一方面整个 Slice append 在实现上会进行整段复制，降低了循环的开销，性能会提升很多。</p>
+<p>但在这里每次还是会有一次内存分配，我们依然无法确定这一次内存分配所占的整体时间比例。</p>
+<h1 id="复用-Slice"><a href="#复用-Slice" class="headerlink" title="复用 Slice"></a>复用 Slice</h1><p>为了计算一次内存分配的消耗，我们设计一个新的测试用例，将 Slice 的创建放到循环外，循环内每次最后将 Slice 的 length 设为 0，给下次进行复用。这样在大量的测试下只会进行一次内存分配，平均下来就可以忽略不计了。具体的代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkPreallocate2</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">    b.ResetTimer()</span><br><span class="line">    init := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">0</span>, length)</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">        <span class="comment">// Preallocate our initial slice</span></span><br><span class="line">        init = <span class="built_in">append</span>(init, testtext...)</span><br><span class="line">        init = init[:<span class="number">0</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkNoPreallocateByElement-12        514904              2171 ns/op            3320 B/op          9 allocs/op</span><br><span class="line">BenchmarkPreallocateByElement-12          761772              1333 ns/op            1024 B/op          1 allocs/op</span><br><span class="line">BenchmarkNoPreallocate-12                4041459               320.9 ns/op          1024 B/op          1 allocs/op</span><br><span class="line">BenchmarkPreallocate-12                  3854649               320.1 ns/op          1024 B/op          1 allocs/op</span><br><span class="line">BenchmarkPreallocate2-12                63147178                18.63 ns/op            0 B/op          0 allocs/op</span><br></pre></td></tr></table></figure>
+
+<p>可见这次测试统计上没有内存分配了，整体消耗时间也降为了之前的 5%。因此大致可以计算出在之前的测试用例里每一次内存分配会消耗 95% 的时间，这个占比还是很惊人的。因此对于性能敏感的场景还是需要尽可能的复用对象，避免反复的对象创建的内存开销。</p>
+<h1 id="sync-Pool"><a href="#sync-Pool" class="headerlink" title="sync.Pool"></a>sync.Pool</h1><p>简单的场景下可以像上个测试用例里一样手动的清空 Slice 在循环内进行复用，但是真实场景里对象的创建通常会发生在代码的各个地方，就需要统一的进行管理和复用了，Golang 里的 <code>sync.Pool</code> 就是做这个事情的，而且使用起来也很简单。但是内部实现还是比较复杂的，为了性能进行了大量无锁化的设计，具体实现可以参考<a target="_blank" rel="noopener" href="https://unskilled.blog/posts/lets-dive-a-tour-of-sync.pool-internals/">Let’s dive: a tour of sync.Pool internals</a>。</p>
+<p>使用 <code>sync.Pool</code> 重新设计的测试用例如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sPool = &amp;sync.Pool&#123; </span><br><span class="line">        New: <span class="function"><span class="keyword">func</span><span class="params">()</span></span> any &#123;</span><br><span class="line">                b := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">0</span>, length)</span><br><span class="line">                <span class="keyword">return</span> &amp;b</span><br><span class="line">        &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkPoolByElement</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">        b.ResetTimer()</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">                <span class="comment">// Don&#x27;t preallocate our initial slice</span></span><br><span class="line">                b := sPool.Get().(*[]<span class="type">byte</span>)</span><br><span class="line">                buf := *b</span><br><span class="line">                <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; length; j++ &#123;</span><br><span class="line">                        buf = <span class="built_in">append</span>(buf, testtext[j])</span><br><span class="line">                &#125;</span><br><span class="line">                buf = buf[:<span class="number">0</span>]</span><br><span class="line">                sPool.Put(b)</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkPool</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">        b.ResetTimer()</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">                <span class="comment">// Don&#x27;t preallocate our initial slice</span></span><br><span class="line">                bufPtr := sPool.Get().(*[]<span class="type">byte</span>)</span><br><span class="line">                buf := * bufPtr</span><br><span class="line">                buf = <span class="built_in">append</span>(buf, testtext...)</span><br><span class="line">                buf = buf[:<span class="number">0</span>]</span><br><span class="line">                sPool.Put(bufPtr)</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>New</code> 用来给 <code>sync.Pool</code> 一个在没有可用对象时创建对象的构造函数，使用的时候使用 <code>Get</code> 方法从 Pool 里获取一个对象，用完了再用 <code>Put</code> 方法把对象还给 <code>sync.Pool</code>。这里主要注意一下对象的生命周期，以及放回到 <code>sync.Pool</code> 时需要清空对象，避免脏数据。测试结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkNoPreallocateByElement-12        469431              2313 ns/op            3320 B/op          9 allocs/op</span><br><span class="line">BenchmarkPreallocateByElement-12          802392              1339 ns/op            1024 B/op          1 allocs/op</span><br><span class="line">BenchmarkPoolByElement-12                1212828               961.5 ns/op             0 B/op          0 allocs/op</span><br><span class="line">BenchmarkNoPreallocate-12                3249004               370.2 ns/op          1024 B/op          1 allocs/op</span><br><span class="line">BenchmarkPreallocate-12                  3268851               368.2 ns/op          1024 B/op          1 allocs/op</span><br><span class="line">BenchmarkPreallocate2-12                62596077                18.63 ns/op            0 B/op          0 allocs/op</span><br><span class="line">BenchmarkPool-12                        32707296                35.59 ns/op            0 B/op          0 allocs/op</span><br></pre></td></tr></table></figure>
+
+<p>可见使用 <code>sync.Pool</code> 也可以避免内存分配，由于 <code>sync.Pool</code> 还有一些额外的处理性能消耗会比手动复用 Slice 稍高一些，不过考虑到使用的便利性以及相比不使用还是有明显的性能提升，还是一个不错的方案。</p>
+<p>但是直接使用 <code>sync.Pool</code> 也有下面两个问题：</p>
+<ol>
+<li>对于 Slice 的情况 <code>New</code> 分配的初始内存是固定的，运行时使用空间超出的话，可能还会有大量动态的内存分配调整。</li>
+<li>另一个极端是 Slice 被动态扩容很大后放回到 <code>sync.Pool</code> 中，可能会造成内存的泄漏和浪费。</li>
+</ol>
+<h1 id="bytebufferpool"><a href="#bytebufferpool" class="headerlink" title="bytebufferpool"></a>bytebufferpool</h1><p>为了达到实际运行时更优的性能，<a target="_blank" rel="noopener" href="https://github.com/valyala/bytebufferpool">bytebufferpool</a> 这个项目在 <code>sync.Pool</code> 的基础上运用了一些简单的统计规律，尽可能的减少了上面提到的两个问题在运行时的影响。（该项目的作者是俄罗斯人，手下还有 fasthttp, quicktemplate 和 VictoriaMetrics 几个项目，个顶个都是性能优化的优秀案例，战斗民族经常会搞这种性能推极限的项目。</p>
+<p>代码里主要的结构如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bytebufferpool/pool.go</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">  minBitSize = <span class="number">6</span> <span class="comment">// 2**6=64 is a CPU cache line size</span></span><br><span class="line">  steps      = <span class="number">20</span></span><br><span class="line"> </span><br><span class="line">  minSize = <span class="number">1</span> &lt;&lt; minBitSize</span><br><span class="line">  maxSize = <span class="number">1</span> &lt;&lt; (minBitSize + steps - <span class="number">1</span>)</span><br><span class="line"> </span><br><span class="line">  calibrateCallsThreshold = <span class="number">42000</span></span><br><span class="line">  maxPercentile           = <span class="number">0.95</span></span><br><span class="line">)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">type</span> Pool <span class="keyword">struct</span> &#123;</span><br><span class="line">  calls       [steps]<span class="type">uint64</span></span><br><span class="line">  calibrating <span class="type">uint64</span></span><br><span class="line"> </span><br><span class="line">  defaultSize <span class="type">uint64</span></span><br><span class="line">  maxSize     <span class="type">uint64</span></span><br><span class="line"> </span><br><span class="line">  pool sync.Pool</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>defaultSize</code> 的作用是 <code>New</code> 的时候给 Slice 分配的大小，<code>maxSize</code> 的作用是超过这个大小的 Slice <code>Put</code> 时会拒绝。核心的算法其实就是在运行时根据统计到的 Slice 使用大小信息动态的去调整 <code>defaultSize</code> 和 <code>maxSize</code> ，避免额外的内存分配同时还要避免内存泄漏。</p>
+<p>这个动态统计的过程也比较简单，就是将 <code>Put</code> 到 Pool 里的 Slice 大小划分了 20 个区间范围进行统计，当 <code>Put</code> 次数达到 <code>calibrating</code> 后就进行一次排序，将这个时间段内使用最为频繁的区间大小作为 <code>defaultSize</code> 这样在统计上就可以避免不少额外的内存分配。然后按大小排序，将 95% 分位大小设置为  <code>maxSize</code>，这样就避免了在统计上长尾大的对象进入 Pool。就靠着这样动态调整这两个值，在统计上可以在运行时获得更优的性能。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>Slice 初始化尽可能指定 capacity</li>
+<li>避免在循环中初始化 Slice</li>
+<li>性能敏感路径考虑使用 <code>sync.Pool</code></li>
+<li>内存分配的性能开销可能远大于业务逻辑</li>
+<li>bytebuffer 的复用可以考虑看下 bytebufferpool</li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/30/xmasq-overlay-without-encap/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2024-01-09 08:16:22
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%80%A7%E8%83%BD/" title="性能">
+                        #性能
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/golang/" title="golang">
+                        #golang
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2024/02/22/minikube-vs-kind-vs-k3d/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="toc-text">基础性能测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B4%E4%B8%AA-Slice-Append"><span class="toc-text">整个 Slice Append</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%8D%E7%94%A8-Slice"><span class="toc-text">复用 Slice</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sync-Pool"><span class="toc-text">sync.Pool</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bytebufferpool"><span class="toc-text">bytebufferpool</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Golang%20%E4%B8%AD%E9%A2%84%E5%88%86%E9%85%8D%20slice%20%E5%86%85%E5%AD%98%E5%AF%B9%E6%80%A7%E8%83%BD%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%88%E7%BB%AD%EF%BC%89 + '&url=' + http%3A%2F%2Foilbeater.com%2F2024%2F01%2F09%2Falloc-slice-for-golang-2-md%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2024/01/09/alloc-slice-for-golang-2-md/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      C++ Primer笔记 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">C++ Primer笔记</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2013-04-10 00:00:00
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" title="读书笔记">
+                    #读书笔记
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/C/" title="C++">
+                    #C++
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>#C++ Primer 笔记</p>
+<p>又看了一遍，这是第三遍了，这次是真看，还是有很多没懂，记下摘得句子，加点自己的感悟。</p>
+<p>建议每个内置类型的对象都要初始化。虽然这样做并不总是必需的，但是会更加容易和安全，除非你确定忽略初始化式不会带来风险。（就是变量要及时初始化，静态变量会有默认初始化，动态变量就没准了，要小心）</p>
+<p>程序员经常在调试过程中插入输出语句，这些语句都应该刷新输出流。忘记刷新输出流可能会造成输出停留在缓冲区中，如果程序崩溃，将会导致程序错误推断崩溃位置。（就是及时用endl或者flush来刷新缓冲，其实调试时如果用IDE的话感觉意义不大，频繁刷新缓冲区还会带来性能下降，尤其在文件流里）</p>
+<p>通常把一个对象定义在它首次使用的地方是一个很好的办法。</p>
+<p>头文件不应该含有定义这一规则，有三个例外。头文件可以定义类、值在编译时就已知道的 const 对象和 inline 函数。（多次include会导致重复定义）</p>
+<p>头文件应该含有保护符，即使这些头文件不会被其他头文件包含。编写头文件保护符并不困难，而且如果头文件被包含多次，它可以避免难以理解的编译错误。</p>
+<p>通常，头文件中应该只定义确实必要的东西。不要写using 请养成这个好习惯。（曾经的教训）</p>
+<p>由于 getline 函数返回时丢弃换行符，换行符将不会存储在 string 对象中。</p>
+<p>任何存储 string 的 size 操作结果的变量必须为 string::size_type 类型。特别重要的是，不要把 size 的返回值赋给一个 int 变量。（书上把不要翻译成还要，害得我纠结半天，如果是int编译会有warning）</p>
+<p>string 对象比较操作是区分大小写的，即同一个字符的大小写形式被认为是两个不同的字符。在多数计算机上，大写的字母位于小写之前：任何一个大写之母都小于任意的小写字母。如果两个 string 对象长度不同，且短的 string 对象与长的 string 对象的前面部分相匹配，则短的 string 对象小于长的 string 对象。</p>
+<p>使用 size_type 类型时，必须指出该类型是在哪里定义的。vector 类型总是包括总是包括 vector 的元素类型：</p>
+<pre><code>    vector&lt;int&gt;::size_type        // ok
+    vector::size_type            // error
+     
+</code></pre>
+<p>由 end 操作返回的迭代器并不指向 vector 中任何实际的元素，相反，它只是起一个哨兵（sentinel）的作用，表示我们已处理完 vector 中所有元素。</p>
+<p>？const_iterator c++11 中auto如何区别const_iterator 和 iterator</p>
+<p>string 对象和 bitsets 对象之间是反向转化的：string 对象的最右边字符（即下标最大的那个字符）用来初始化 bitset 对象的低阶位（即下标为 0 的位）。当用 string 对象初始化 bitset 对象时，记住这一差别很重要。（一个和惯性思维相悖，又和仔细思考相符的东西）</p>
+<ul>
+<li>指针初始化和赋值操作的约束<ul>
+<li>0 值常量表达式例如，在编译时可获得 0 值的整型 const 对象或字面值常量 0。</li>
+<li>类型匹配的对象的地址。</li>
+<li>另一对象末的下一地址。</li>
+<li>同类型的另一个有效指针。</li>
+</ul>
+</li>
+</ul>
+<p>对于动态分配的数组，其元素只能初始化为元素类型的默认值，而不能像数组变量一样，用初始化列表为数组元素提供各不相同的初值。（所以给vector初始化只能用一对迭代器了）</p>
+<p>理论上，回收数组时缺少空方括号对，至少会导致运行时少释放了内存空间，从而产生内存泄漏（memory leak）。对于某些系统和&#x2F;或元素类型，有可能会带来更严重的运行时错误。因此，在释放动态数组时千万别忘了方括号对。</p>
+<p>c_str 返回的数组并不保证一定是有效的，接下来对 st2 的操作有可能会改变 st2 的值，使刚才返回的数组失效。如果程序需要持续访问该数据，则应该复制 c_str 函数返回的数组。</p>
+<p>与普通数组一样，使用多维数组名时，实际上将其自动转换为指向该数组第一个元素的指针。(从里往外，从右往左)</p>
+<pre><code>int \*ip[4]; // array of pointers to int    
+int (\*ip)[4]; // pointer to an array of 4 ints
+</code></pre>
+<p>对于位操作符，由于系统不能确保如何处理其操作数的符号位，所以强烈建议使用unsigned整型操作数。（不同体系结构有不同处理方式）</p>
+<p>一般而言，标准库提供的 bitset 操作更直接、更容易阅读和书写、正确使用的可能性更高。而且，bitset 对象的大小不受 unsigned 数的位数限制。通常来说，bitset 优于整型数据的低级直接位操作。利用set和reset来设置位不用复杂的位操作。</p>
+<p>只有在必要时才使用后置操作符，因为前置操作需要做的工作更少，只需加 1 后返回加 1 后的结果即可。而后置操作符则必须先保存操作数原来的值，以便返回未加 1 之前的值作为操作的结果，对于 int 型对象和指针，编译器可优化掉这项额外工作。但是对于更多的复杂迭代器类型，这种额外工作可能会花费更大的代价。（果然很抠性能）</p>
+<p>一旦删除了指针所指向的对象，立即将指针置为 0，这样就非常清楚地表明指针不再指向任何对象。（为什么不在语言级别设置，难道删除的指针有特别用处）</p>
+<p>new非配失败抛出bad_alloc异常。（和malloc的0不一样了啊！）</p>
+<p>不将数组转换为指针的例外情况有：数组用作取地址（&amp;）操作符的操作数或 sizeof 操作符的操作数时，或用数组对数组的引用进行初始化时，不会将数组转换为指针。（其实只要记住数组和指针是两个类型，只是存在一个隐式转换就好了）</p>
+<p>C++ 还提供了另外两种指针转换：指向任意数据类型的指针都可转换为 void* 类型；整型数值常量 0 可转换为任意指针类型。（其他常量值也可以吧？）</p>
+<p>dynamic_cast 支持运行时识别指针或引用所指向的对象。</p>
+<p>const_cast ，顾名思义，将转换掉表达式的 const 性质。类似地，除了添加或删除 const 特性，用 const_cast 符来执行其他任何类型转换，都会引起编译错误。</p>
+<p>编译器隐式执行的任何类型转换都可以由 static_cast 显式完成。</p>
+<p>reinterpret_cast 通常为操作数的位模式提供较低层次的重新解释。</p>
+<p>break 只能在循环或开关中使用。（不能在其他block中用）</p>
+<p>向后跳过已经执行的变量定义语句则是合法的。为什么？向前跳过未执行的变量定义语句，意味着变量可能在没有定义的情况下使用。向后跳回到一个变量定义之前，则会使系统撤销这个变量，然后再重新创建它。（while循环中的局部变量）</p>
+<p>预处理常量</p>
+<pre><code>NDEBUG debug开关
+__FILE__ 文件名
+__LINE__ 当前行号
+__TIME__ 文件被编译的时间
+__DATE__ 文件被编译的日期
+</code></pre>
+<p>如果使用引用形参的唯一目的是避免复制实参，则应将形参定义为 const 引用。（防止各种非右值表达式不能用）</p>
+<pre><code>// function takes a non-const reference parameter
+ int incr(int &amp;val)
+ &#123;
+     return ++val;
+ &#125;
+ int main()
+ &#123;
+     short v1 = 0;
+     const int v2 = 42;
+     int v3 = incr(v1);   // error: v1 is not an int
+     v3 = incr(v2);       // error: v2 is const
+     v3 = incr(0);        // error: literals are not lvalues
+     v3 = incr(v1 + v2);  // error: addition doesn&#39;t yield an lvalue
+     int v4 = incr(v3);   // ok: v3 is a non const object type int
+ &#125;
+</code></pre>
+<p>const 对象、指向 const 对象的指针或引用只能用于调用其 const 成员函数，如果尝试用它们来调用非 const 成员函数，则是错误的。</p>
+<p>仅当形参是引用或指针时，形参是否为 const 才有影响。</p>
+<p>通常，函数不应该有 vector 或其他标准库容器类型的形参。调用含有普通的非引用 vector 形参的函数将会复制 vector 的每一个元素。</p>
+<p>编译器忽略为任何数组形参指定的长度。</p>
+<p>数组形参可声明为数组的引用。如果形参是数组的引用，编译器不会将数组实参转化为指针，而是传递数组的引用本身。在这种情况下，数组大小成为形参和实参类型的一部分。编译器检查数组的实参的大小与形参的大小是否匹配。（好麻烦用vector吧）</p>
+<p>理解返回引用至关重要的是：千万不能返回局部变量的引用。</p>
+<p>返回引用的函数返回一个左值。（可以给函数赋值！！）</p>
+<p>定义函数的源文件应包含声明该函数的头文件。（这样源文件就不用考虑函数位置顺序了）</p>
+<p>既可以在函数声明也可以在函数定义中指定默认实参。但是，在一个文件中，只能为一个形参指定默认实参一次。通常，应在函数声明中指定默认实参，并将该声明放在合适的头文件中。</p>
+<p>内联函数应该在头文件中定义，这一点不同于其他函数。inline 函数的定义对编译器而言必须是可见的，以便编译器能够在调用点内联展开该函数的代码。此时，仅有函数原型是不够的。</p>
+<p>IO 对象不可复制或赋值,形参或返回类型也不能为流类型。如果需要传递或返回 IO 对象，则必须传递或返回指向该对象的指针或引用.(单例模式是么)</p>
+<p>当输入流与输出流绑在一起时，任何读输入流的尝试都将首先刷新其输出流关联的缓冲区。标准库将 cout 与 cin 绑在一起一个 ostream 对象每次只能与一个 istream 对象绑在一起。如果在调用 tie 函数时传递实参 0，则打破该流上已存在的捆绑。</p>
+<p>由于历史原因，IO 标准库使用 C 风格字符串（第 4.3 节）而不是 C++ strings 类型的字符串作为文件名。（这个历史原因不能通过重载解决么？）</p>
+<p>如果程序员需要重用文件流读写多个文件，必须在读另一个文件之前调用 clear 清除该流的状态。</p>
+<p>字符串流做格式转换</p>
+<pre><code>double string_to_double( const std::string&amp; s )
+ &#123;
+   std::istringstream i(s);
+   double x;
+   if (!(i &gt;&gt; x))
+ return 0;
+   return x;
+ &#125; 
+//double to string
+std::ostringstream strs;
+strs &lt;&lt; dbl;
+std::string str = strs.str();
+</code></pre>
+<p>接受容器大小做形参的构造函数只适用于顺序容器，而关联容器不支持这种初始化。</p>
+<p>多数类型都可用作容器的元素类型。容器元素类型必须满足以下两个约束：</p>
+<pre><code>元素类型必须支持赋值运算。
+元素类型的对象必须可以复制。
+除了引用类型外，所有内置或复合类型都可用做元素类型。引用不支持一般意义的赋值运算，因此没有元素是引用类型的容器。
+</code></pre>
+<p>iterator相加是未定义的（书上居然还有iterator相加的说明）</p>
+<p>在使用关联容器时，它的键不但有一个类型，而且还有一个相关的比较函数。默认情况下，标准库使用键类型定义的 &lt; 操作符来实现键（key type）的比较。在实际应用中，键类型必须定义 &lt; 操作符，而且该操作符应能“正确地工作”，这一点很重要。（对象要重载&lt;运算符）</p>
+<p>对于 map 容器，如果下标所表示的键在容器中不存在，则添加新元素，并初始化。</p>
+<p>map 对象中一个给定键只对应一个元素。如果试图插入的元素所对应的键已在容器中，则 insert 将不做任何操作。含有一个或一对迭代器形参的 insert 函数版本并不说明是否有或有多少个元素插入到容器中。但是，带有一个键－值 pair 形参的 insert 版本将返回一个值：包含一个迭代器和一个 bool 值的 pair 对象，其中迭代器指向 map 中具有相应键的元素，而 bool 值则表示是否插入了该元素。如果该键已在容器中，则其关联的值保持不变，返回的 bool 值为 true。在这两种情况下，迭代器都将指向具有给定键的元素。</p>
+<p>在 multimap 中，同一个键所关联的元素必然相邻存放。equal_range 返回该键范围iterator pair对。</p>
+<p>插入迭代器是可以给基础容器添加元素的迭代器。通常，用迭代器给容器元素赋值时，被赋值的是迭代器所指向的元素。而使用插入迭代器赋值时，则会在容器中添加一个新元素，其值等于赋值运算的右操作数的值。</p>
+<pre><code>vector&lt;int&gt; vec; // empty vector
+ // ok: back_inserter creates an insert iterator that adds elements to vec
+ fill_n (back_inserter(vec), 10, 0); // appends 10 elements to vec
+</code></pre>
+<p>stable_sort 保留相等元素的原始相对位置。</p>
+<p>执行 count_if 时，首先读取它的头两个实参所标记的范围内的元素。每读出一个元素，就将它传递给第三个实参表示的谓词函数。此谓词函数。此谓词函数需要单个元素类型的实参，并返回一个可用作条件检测的值</p>
+<p>在创建 inserter 时，应指明新元素在何处插入。inserter 函数总是在它的迭代器实参所标明的位置前面插入新元素。</p>
+<pre><code> istream_iterator&lt;int&gt; in_iter(cin); // read ints from cin
+ istream_iterator&lt;int&gt; eof;      // istream &quot;end&quot; iterator
+ vector&lt;int&gt; vec(in_iter, eof);  // construct vec from an iterator range
+
+vector&lt;int&gt; vec(cin_it, end_of_stream);
+ sort(vec.begin(), vec.end());
+ // writes ints to cout using &quot; &quot; as the delimiter
+ ostream_iterator&lt;int&gt; output(cout, &quot; &quot;);
+ // write only the unique elements in vec to the standard output
+ unique_copy(vec.begin(), vec.end(), output);
+</code></pre>
+<p>有些成员必须在构造函数初始化列表中进行初始化。对于这样的成员，在构造函数函数体中对它们赋值不起作用。没有默认构造函数的类类型的成员，以及 const 或引用类型的成员，不管是哪种类型，都必须在构造函数初始化列表中进行初始化。（没有用初始化列表而调试一天的惨痛教训）</p>
+<p>构造函数初始化列表仅指定用于初始化成员的值，并不指定这些初始化执行的次序。成员被初始化的次序就是定义成员的次序。第一个成员首先被初始化，然后是第二个，依次类推。（设计考虑到了变量间的关联性）</p>
+<p>只要定义一个对象时没有提供初始化式，就使用默认构造函数。为所有形参提供默认实参的构造函数也定义了默认构造函数。</p>
+<p>如果类包含内置或复合类型的成员，则该类不应该依赖于合成的默认构造函数。它应该定义自己的构造函数来初始化这些成员。</p>
+<p>当构造函数被声明 explicit 时，编译器将不使用它作为转换操作符。（Pinder 问的问题）</p>
+<p>通常，除非有明显的理由想要定义隐式转换，否则，单形参构造函数应该为 explicit。将构造函数设置为 explicit 可以避免错误，并且当转换有用时，用户可以显式地构造对象。</p>
+<p>只有单个形参，而且该形参是对本类类型对象的引用（常用 const 修饰），这样的构造函数称为复制构造函数。直接初始化和复制初始化。复制初始化使用 &#x3D; 符号，而直接初始化将初始化式放在圆括号中。直接初始化直接调用与实参匹配的构造函数，复制初始化总是调用复制构造函数。</p>
+<p>当形参或返回值为类类型时，由复制构造函数进行复制。</p>
+<p>为了防止复制，类必须显式声明其复制构造函数为 private。为了防止友元调用，只定义不声明。</p>
+<p>为了管理具有指针成员的类，必须定义三个复制控制成员：复制构造函数、赋值操作符和析构函数。这些成员可以定义指针成员的指针型行为或值型行为。</p>
+<p>重载操作符并不保证操作数的求值顺序，不再具备短路求值特性。（其实本来操作数的求职顺序也不一定）</p>
+<p>复合赋值返回一个引用而加操作符返回一个 Sales_item 对象，这也没什么。当应用于算术类型时，这一区别与操作符的返回类型相匹配：加返回一个右值，而复合赋值返回对左操作数的引用。（考虑运算结果是左值还是右值）</p>
+<p>赋值（&#x3D;）、下标（[]）、调用（()）和成员访问箭头（-&gt;）等操作符必须定义为成员，将这些操作符定义为非成员函数将在编译时标记为错误。</p>
+<p>像赋值一样，复合赋值操作符通常应定义为类的成员，与赋值不同的是，不一定非得这样做，如果定义非成员复合赋值操作符，不会出现编译错误。</p>
+<p>改变对象状态或与给定类型紧密联系的其他一些操作符，如自增、自减和解引用，通常就定义为类成员。对称的操作符，如算术操作符、相等操作符、关系操作符和位操作符，最好定义为普通非成员函数。</p>
+<p>IO 操作符必须为非成员函数。成员函数第一个参数默认为this。</p>
+<p>定义了 operator&#x3D;&#x3D; 的类更容易与标准库一起使用。有些算法，如 find，默认使用 &#x3D;&#x3D; 操作符，如果类定义了 &#x3D;&#x3D;，则这些算法可以无须任何特殊处理而用于该类类型。关联容器以及某些算法，使用默认 &lt; 操作符。一般而言，关系操作符，诸如相等操作符，应定义为非成员函数。</p>
+<p>赋值必须返回对 *this 的引用。（其实是为了方便连续赋值，不然void也是可以的）</p>
+<p> int *pi &#x3D; new int;         &#x2F;&#x2F; pi points to an uninitialized int </p>
+<p> int *pi &#x3D; new int();       &#x2F;&#x2F; pi points to an int value-initialized to 0 </p>
+<p>同时定义前缀式操作符和后缀式操作符存在一个问题：它们的形参数目和类型相同，普通重载不能区别所定义的前缀式操作符还是后缀式操作符。为了解决这一问题，后缀式操作符函数接受一个额外的（即，无用的）int 型形参。使用后缀式操作符进，编译器提供 0 作为这个形参的实参。尽管我们的前缀式操作符函数可以使用这个额外的形参，但通常不应该这样做。那个形参不是后缀式操作符的正常工作所需要的，它的唯一目的是使后缀函数与前缀函数区别开来。</p>
+<p>操作符的后缀式比前缀式复杂一点，必须记住对象在加 1／减 1 之前的当前状态。这些操作符定义了一个局部 CheckedPtr 对象，将它初始化为 *this 的副本，即 ret 是这个对象当前状态的副本。</p>
+<p>函数对象的函数适配器（感觉有点函数编程的东西）</p>
+<pre><code>绑定器，是一种函数适配器，它通过将一个操作数绑定到给定值而将二元函数对象转换为一元函数对象。
+求反器，是一种函数适配器，它将谓词函数对象的真值求反。
+</code></pre>
+<p>转换函数必须是成员函数，不能指定返回类型，并且形参表必须为空。转换函数一般不应该改变被转换的对象。因此，转换操作符通常应定义为 const 成员。使用转换函数时，被转换的类型不必与所需要的类型完全匹配。必要时可在类类型转换之后跟上标准转换以获得想要的类型。类类型转换之后不能再跟另一个类类型转换。如果需要多个类类型转换，则代码将出错。</p>
+<p>基类必须指出希望派生类重写哪些函数，定义为 virtual 的函数是基类期待派生类重新定义的，基类希望派生类继承的函数不能定义为虚函数。</p>
+<p>在 C++ 中，通过基类的引用（或指针）调用虚函数时，发生动态绑定。引用（或指针）既可以指向基类对象也可以指向派生类对象，这一事实是动态绑定的关键。用引用（或指针）调用的虚函数在运行时确定，被调用的函数是引用（或指针）所指对象的实际类型所定义的。</p>
+<p>继承层次的根类一般都要定义虚析构函数（防止删除指针内存泄露）</p>
+<p>除了构造函数之外，任意非 static 成员函数都可以是虚函数。保留字只在类内部的成员函数声明中出现，不能用在类定义体外部出现的函数定义上。基类通常应将派生类需要重定义的任意函数定义为虚函数。尽管不是必须这样做，派生类一般会重定义所继承的虚函数。派生类没有重定义某个虚函数，则使用基类中定义的版本.派生类中虚函数的声明（第 7.4 节）必须与基类中的定义方式完全匹配，但有一个例外：返回对基类型的引用（或指针）的虚函数。派生类中的虚函数可以返回基类函数所返回类型的派生类的引用（或指针）。一旦函数在基类中声明为虚函数，它就一直为虚函数，派生类无法改变该函数为虚函数这一事实。派生类重定义虚函数时，可以使用 virtual 保留字，但不是必须这样做。</p>
+<p>派生类只能通过派生类对象访问其基类的 protected 成员，派生类对其基类类型对象的 protected 成员没有特殊访问权限。</p>
+<p>通常，如果有用在给定调用中的默认实参值，该值将在编译时确定。如果一个调用省略了具有默认值的实参，则所用的值由调用该函数的类型定义，与对象的动态类型无关。通过基类的引用或指针调用虚函数时，默认实参为在基类虚函数声明中指定的值，如果通过派生类的指针或引用调用虚函数，则默认实参是在派生类的版本中声明的值。</p>
+<p>如果基类定义 static 成员，则整个继承层次中只有一个这样的成员。无论从基类派生出多少个派生类，每个 static 成员只有一个实例。static 成员遵循常规访问控制：如果成员在基类中为 private，则派生类不能访问它。假定可以访问成员，则既可以通过基类访问 static 成员，也可以通过派生类访问 static 成员。一般而言，既可以使用作用域操作符也可以使用点或箭头成员访问操作符。</p>
+<p>如果在构造函数或析构函数中调用虚函数，则运行的是为构造函数或析构函数自身类型定义的版本。（运行时的机制）</p>
+<p>派生类对象在赋值给基类对象时会被“切掉”，所以容器与通过继承相关的类型不能很好地融合。（就是说不能转换成子类了是么？）</p>
+<p>如果拿不准是否需要以 typename 指明一个名字是一个类型，那么指定它是个好主意。在类型之前指定 typename 没有害处，因此，即使 typename 是不必要的，也没有关系。</p>
+<p>多个类型形参的实参必须完全匹配.一般而论，不会转换实参以匹配已有的实例化，相反，会产生新的实例。除了产生新的实例化之外，编译器只会执行两种转换：</p>
+<pre><code>const 转换：
+接受 const 引用或 const 指针的函数可以分别用非 const 对象的引用或指针来调用，无须产生新的实例化。如果函数接受非引用类型，形参类型实参都忽略 const，即，无论传递 const 或非 const 对象给接受非引用类型的函数，都使用相同的实例化。
+数组或函数到指针的转换：
+如果模板形参不是引用类型，则对数组或函数类型的实参应用常规指针转换。数组实参将当作指向其第一个元素的指针，函数实参当作指向函数类型的指针。
+</code></pre>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2013/03/03/regex-and-python/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2013-04-10 00:00:00
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" title="读书笔记">
+                        #读书笔记
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/C/" title="C++">
+                        #C++
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2013/05/01/Cpp_interview/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + C%2B%2B%20Primer%E7%AC%94%E8%AE%B0 + '&url=' + http%3A%2F%2Foilbeater.com%2F2013%2F04%2F10%2Fnote-of-CppPrimer%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2013/04/10/note-of-CppPrimer/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

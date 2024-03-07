@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Linux 系统性能分析工具图解读（二） 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Linux 系统性能分析工具图解读（二）</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2014-09-14 19:19:55
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%8A%80%E6%9C%AF/" title="技术">
+                    #技术
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/linux/" title="linux">
+                    #linux
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%80%A7%E8%83%BD/" title="性能">
+                    #性能
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p> <img src="http://oilbeater.qiniudn.com/linux_observability_tools.png"></p>
+<p>第一篇在<a href="http://oilbeater.com/linux/2014/09/28/linux-performance-tools.html">这里</a></p>
+<p>第一篇讲了一些最基础的命令了，接下来在研究研究高级的命令：</p>
+<ul>
+<li><p>sar</p>
+</li>
+<li><p>netstat</p>
+</li>
+<li><p>pidstat</p>
+</li>
+<li><p>strace</p>
+</li>
+<li><p>tcpdump</p>
+</li>
+<li><p>blktrace</p>
+</li>
+<li><p>iotop</p>
+</li>
+<li><p>slabtop</p>
+</li>
+<li><p>sysctl</p>
+</li>
+<li><p>&#x2F;proc</p>
+</li>
+</ul>
+<h2 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h2><p>sar 是 System Activity Reporter 的意思，这是一个强大到发指的工具，在第一篇中提到的那些工具的功能（cpu、 mem、 disk、 net），基本上 sar 都可以覆盖到，不信的话可以试一下 sar -A 1 1 看一下它都统计了哪些东西。此外 sar 可以周期性的执行统计，很多系统级别的监控都是通过 sar 来做的。淘宝还专门自己开发了一个 <a target="_blank" rel="noopener" href="https://github.com/alibaba/tsar">tsar</a> 在原有的系统级别的监控上增加了对应用的监控。</p>
+<h2 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h2><p>这个命令也是和网络相关的，可以查看 socket 的连接信息，比如建立了哪些 TCP 连接，他们的状态是怎样的，一个进程有多少链接。通常这个命令后面都会跟着 grep 或者 awk 的命令进行进一步处理。以至于有的 awk 的教程都会以 netstat 的输出处理作为样例，比如耗子叔叔的 <a target="_blank" rel="noopener" href="http://coolshell.cn/articles/9070.html">awk 简明教程</a>。此外这个命令还有一个 -s 的参数可以统计不同的协议的数据包信息。</p>
+<h2 id="pidstat"><a href="#pidstat" class="headerlink" title="pidstat"></a>pidstat</h2><p>其实要不是看到大神说有这个命令，我还以为这个命令是 ps 的全称。其实展示的东西也和 ps 类似，主要的区别在于 ps 只是一次提供系统进程状态的一个快照，pidstat# 可以指定进程提供定时多次的统计信息，相当于你可以更细粒度的 ps 了。这也是做监控的一个很好的工具，可以针对特殊进程特殊关照。</p>
+<h2 id="strace"><a href="#strace" class="headerlink" title="strace"></a>strace</h2><p>其实感觉 strace 是一个更偏针对应用的性能工具，他可以统计出进程进行了哪些系统调用，处理了哪些信号。也因此 strace 是一个分析程序实现的一个很好的工具，比如说你想知道 pidstat 中的信息都是从哪里获得的就 strace pidstat |&amp; grep open 就可以知道它是打开了哪些文件获取到信息的。由于 strace 会将输出打到标准错误中所以管道处理要记得加上 &amp; 。这个命令是很强大，但问题是也及其消耗性能，一般情况下慢一个数量级还是会有的，所以只是分析的时候用一下，正常执行就不要了。</p>
+<h2 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h2><p>大名鼎鼎的 tcpdump 可以将经过网卡的数据包保存下来一份以供 wireshark 这类软件进一步进行分析。如果愿意的话开启网卡混杂模式也可以捕获同一网络上其他机器的数据包，也是黑客很喜欢的工具。和 strace 类似， tcpdump 的功能很强大，即使开了 filter 功能也很消耗性能，一般的生产机如果流量大的话开启 tcpdump还是吃不消的。当然有一些神秘的组织是需要获取网络包的完整备份的，他们大概是用专门的硬件完成的吧。</p>
+<h2 id="blktrace"><a href="#blktrace" class="headerlink" title="blktrace"></a>blktrace</h2><p>其实这个命令用 btrace 展示会更好一些，看名字就知道是 strace 的 io 版，可以实时的展示每次磁盘 IO 请求的内容，耗时，发生位置等等很多东西，不过带 trace 的命令一般都比较耗性能。</p>
+<h2 id="iotop"><a href="#iotop" class="headerlink" title="iotop"></a>iotop</h2><p>和上个命令类似，一看就是 top 的 io 版，简洁明了，包括展示都和 top 很类似，试一下就知道是怎么回事了。</p>
+<h2 id="slabtop"><a href="#slabtop" class="headerlink" title="slabtop"></a>slabtop</h2><p>其实只要知道 slab 是个什么东西，这个命令就很好理解了。slab 是对象缓冲池，将一些常用的小的对象结构再释放后缓存起来，而不是直接交给系统回收，这样可以避免频繁的小对象找系统申请内存造成性能下降，知道这个再看 这条命令就很轻松了。</p>
+<h2 id="sysctl"><a href="#sysctl" class="headerlink" title="sysctl"></a>sysctl</h2><p>这里面是一些很有讲究的系统参数的设置，很多参数的设置都会对服务器的性能产生很大的影响。这也是个水很深的配置文件，比如 tcp_reuse、tcp_recycle 这些服务器的重要配置都在这里面。这里面的配置估计也能讲上个几天几夜。还是先 sysctl -a 看一下感受感受吧。</p>
+<h2 id="x2F-proc"><a href="#x2F-proc" class="headerlink" title="&#x2F;proc"></a>&#x2F;proc</h2><p>其实上述诸多的工具都是从这个文件加下面读取文件做展示的，不过真要自己解析这里面的文件还是蛮耗功夫的，所以还是好好用一下上面的那些命令吧。不过如果你对那些命令是如何实现的可以配合着 strace 来探索这里面的奥秘。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2014/09/08/linux-performance-tools/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2014-09-14 19:19:55
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%8A%80%E6%9C%AF/" title="技术">
+                        #技术
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/linux/" title="linux">
+                        #linux
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%80%A7%E8%83%BD/" title="性能">
+                        #性能
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2014/11/11/docker-libcontainer-reading/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sar"><span class="toc-text">sar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#netstat"><span class="toc-text">netstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pidstat"><span class="toc-text">pidstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#strace"><span class="toc-text">strace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tcpdump"><span class="toc-text">tcpdump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#blktrace"><span class="toc-text">blktrace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iotop"><span class="toc-text">iotop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#slabtop"><span class="toc-text">slabtop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sysctl"><span class="toc-text">sysctl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#x2F-proc"><span class="toc-text">&#x2F;proc</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Linux%20%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E5%9B%BE%E8%A7%A3%E8%AF%BB%EF%BC%88%E4%BA%8C%EF%BC%89 + '&url=' + http%3A%2F%2Foilbeater.com%2F2014%2F09%2F14%2Flinux-performance-tools-2%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2014/09/14/linux-performance-tools-2/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

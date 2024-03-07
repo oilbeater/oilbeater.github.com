@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Golang 中预分配 slice 内存对性能的影响 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Golang 中预分配 slice 内存对性能的影响</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2023-07-19 10:48:09
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%80%A7%E8%83%BD/" title="性能">
+                    #性能
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/golang/" title="golang">
+                    #golang
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <ul>
+<li><a href="#slice-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80">Slice 内存分配理论基础</a></li>
+<li><a href="#%E5%AE%9A%E9%87%8F%E6%B5%8B%E9%87%8F">定量测量</a></li>
+<li><a href="#lint-%E5%B7%A5%E5%85%B7-prealloc">Lint 工具 prealloc</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+<p>在我代码 review 的过程中经常会关注代码里 slice 的初始化是否分配了预期的内存空间，也就是凡是 <code>var init []int64</code> 的我都会要求尽可能改成 <code>init := make([]int64, 0, length)</code> 格式。但是这个改进对性能究竟有多少影响并没有什么定量的概念，只是教条的去要求。这篇博客会介绍一下预分配内存提升性能的理论基础，定量测量，和自动化检测发现的工具。</p>
+<h1 id="Slice-内存分配理论基础"><a href="#Slice-内存分配理论基础" class="headerlink" title="Slice 内存分配理论基础"></a>Slice 内存分配理论基础</h1><p>Golang Slice 扩容的代码在<a target="_blank" rel="noopener" href="https://github.com/golang/go/blob/go1.20.6/src/runtime/slice.go#L157">slice.go 下的 growslice</a>。大体思路是在 Slice 容量小于 256 时<br>每次扩容会创建一个容量翻倍的新 slice；当容量大于 256 后，每次扩容会创建一个容量为原先的 1.25 倍的新 slice。之后会将旧 slice 的数据复制到新的 slice，最终返回新的 slice。</p>
+<p>扩容的代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">newcap := oldCap</span><br><span class="line">doublecap := newcap + newcap</span><br><span class="line"><span class="keyword">if</span> newLen &gt; doublecap &#123;</span><br><span class="line">	newcap = newLen</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="keyword">const</span> threshold = <span class="number">256</span></span><br><span class="line">	<span class="keyword">if</span> oldCap &lt; threshold &#123;</span><br><span class="line">		newcap = doublecap</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">		<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">		<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; newLen &#123;</span><br><span class="line">			<span class="comment">// Transition from growing 2x for small slices</span></span><br><span class="line">			<span class="comment">// to growing 1.25x for large slices. This formula</span></span><br><span class="line">			<span class="comment">// gives a smooth-ish transition between the two.</span></span><br><span class="line">			newcap += (newcap + <span class="number">3</span>*threshold) / <span class="number">4</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">		<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">		<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">			newcap = newLen</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因此理论上如果预分配好 slice 的容量，不需要动态扩张我们可以在好几个地方有性能的提升：</p>
+<ol>
+<li>内存只需要一次分配，不需要反复分配。</li>
+<li>不需要反复进行数据复制。</li>
+<li>不需要反复对旧的 slice 进行垃圾回收。</li>
+<li>内存准确分配，不存在动态分配导致的容量浪费。</li>
+</ol>
+<p>理论上来看，预分配 slice 容量相比动态分配会带来性能提升，但具体提升有多少就需要定量测量了。</p>
+<h1 id="定量测量"><a href="#定量测量" class="headerlink" title="定量测量"></a>定量测量</h1><p>我们参考 <a target="_blank" rel="noopener" href="https://github.com/alexkohler/prealloc/blob/master/prealloc_test.go">prealloc</a> 的代码进行简单修改来测量不同容量的 slice 预分配和动态分配对性能的影响。</p>
+<p>测试代码如下，通过修改 <code>length</code> 可以观察不同情况下的性能数据：</p>
+<figure class="highlight go"><figcaption><span>title</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> prealloc_test</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;testing&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> length = <span class="number">1000</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkNoPreallocate</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">	b.ResetTimer()</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">		<span class="comment">// Don&#x27;t preallocate our initial slice</span></span><br><span class="line">		<span class="keyword">var</span> init []<span class="type">int64</span></span><br><span class="line">		<span class="keyword">for</span> j := <span class="number">0</span>; j &lt; length; j++ &#123;</span><br><span class="line">			init = <span class="built_in">append</span>(init, <span class="number">0</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkPreallocate</span><span class="params">(b *testing.B)</span></span> &#123;</span><br><span class="line">	b.ResetTimer()</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; b.N; i++ &#123;</span><br><span class="line">		<span class="comment">// Preallocate our initial slice</span></span><br><span class="line">		init := <span class="built_in">make</span>([]<span class="type">int64</span>, <span class="number">0</span>, length)</span><br><span class="line">		<span class="keyword">for</span> j := <span class="number">0</span>; j &lt; length; j++ &#123;</span><br><span class="line">			init = <span class="built_in">append</span>(init, <span class="number">0</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一个函数测试动态分配的性能，第二个函数测试预分配的性能。通过下面的命令可以执行测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go <span class="built_in">test</span> -bench=. -benchmem prealloc_test.go</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>length = 1</code> 情况下的结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkNoPreallocate-12       40228154                27.36 ns/op            8 B/op          1 allocs/op</span><br><span class="line">BenchmarkPreallocate-12         55662463                19.97 ns/op            8 B/op          1 allocs/op</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>length</code> 为 1 的情况下，理论上动态分配和静态分配都要进行一次初始化的内存分配，性能不应该有差异，但是实测下来，预分配的耗时为动态分配的 70%，即使在两者内存分配次数一直的情况下，预分配依然有 1.4x 的性能优势。目测性能提升和变量的连续分配相关。</p>
+<p>在 <code>length = 10</code> 情况下的结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkNoPreallocate-12        5402014               228.3 ns/op           248 B/op          5 allocs/op</span><br><span class="line">BenchmarkPreallocate-12         21908133                50.46 ns/op           80 B/op          1 allocs/op</span><br></pre></td></tr></table></figure>
+
+<p>在 &#96;length&#96;&#96; 为 10 的情况下，预分配依然只进行了一次性能分配，动态分配进行了 5 次性能分配，预分配的性能是动态分配性能的 4 倍。可见即使在 slice 规模较小的时候，预分配依然会有比较明显的性能提升。</p>
+<p>下面是在 <code>length</code> 分别为 129,1025 和 10000 情况下的测试结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># length = 129</span></span><br><span class="line">BenchmarkNoPreallocate-12         743293              1393 ns/op            4088 B/op          9 allocs/op</span><br><span class="line">BenchmarkPreallocate-12          3124831               386.1 ns/op          1152 B/op          1 allocs/op</span><br><span class="line"></span><br><span class="line"><span class="comment"># length = 1025</span></span><br><span class="line">BenchmarkNoPreallocate-12         169700              6571 ns/op           25208 B/op         12 allocs/op</span><br><span class="line">BenchmarkPreallocate-12           468880              2495 ns/op            9472 B/op          1 allocs/op</span><br><span class="line"></span><br><span class="line"><span class="comment"># length = 10000</span></span><br><span class="line">BenchmarkNoPreallocate-12          14430             86427 ns/op          357625 B/op         19 allocs/op</span><br><span class="line">BenchmarkPreallocate-12            56220             20693 ns/op           81920 B/op          1 allocs/op</span><br></pre></td></tr></table></figure>
+
+<p>在更大容量下，静态分配依然只做一次内存分配，但是性能提升并没有相应成倍增长，整体性能会是动态分配的 2 到 4 倍。应该是在这个过程中有一些其他的消耗，或者 golang 对大容量的复制有特殊的优化，因此性能差距并没有拉大。</p>
+<p>当把 slice 的内容换成更复杂的 struct 时，原以为复制会带来更大的性能开销，但实测复杂 struct 预分配和动态分配的性能差距反而更小，看上去还是有很多内部的优化，表现和直觉并不一致。</p>
+<h1 id="Lint-工具-prealloc"><a href="#Lint-工具-prealloc" class="headerlink" title="Lint 工具 prealloc"></a>Lint 工具 prealloc</h1><p>尽管预分配内存可以带来一定的性能提升，但是在比较大的项目中完全依赖人工去 review 这个问题很容易出现纰漏。这时候就需要用到一些 lint 工具来自动做代码扫描了。<a target="_blank" rel="noopener" href="https://github.com/alexkohler/prealloc">prealloc</a> 就是这样一个工具可以扫描潜在的能够预分配但却没有预分配的 slice，并且可以整合到 <a target="_blank" rel="noopener" href="https://golangci-lint.run/usage/linters/#prealloc">golangci-lint</a> 中。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>整体来看 slice 的内存预分配是个比较简单但却能有比较好优化效果的方法，即使在 slice 容量很小的情况下，预分配依然能有比较明显的性能提升。通过 prealloc 这种静态代码扫描工具，可以比较方便的实现这类潜在优化的检测并集成到 CI 中简化日后的操作。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/06/24/optimization-without-changing-code-pgo/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2023-07-19 10:48:09
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%80%A7%E8%83%BD/" title="性能">
+                        #性能
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/golang/" title="golang">
+                        #golang
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/07/24/big-tcp/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Slice-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"><span class="toc-text">Slice 内存分配理论基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E9%87%8F%E6%B5%8B%E9%87%8F"><span class="toc-text">定量测量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lint-%E5%B7%A5%E5%85%B7-prealloc"><span class="toc-text">Lint 工具 prealloc</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Golang%20%E4%B8%AD%E9%A2%84%E5%88%86%E9%85%8D%20slice%20%E5%86%85%E5%AD%98%E5%AF%B9%E6%80%A7%E8%83%BD%E7%9A%84%E5%BD%B1%E5%93%8D + '&url=' + http%3A%2F%2Foilbeater.com%2F2023%2F07%2F19%2Fpre-alloc-slice-for-golang%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2023/07/19/pre-alloc-slice-for-golang/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

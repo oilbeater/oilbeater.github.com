@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      minikube，kind 和 k3d 大比拼 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">minikube，kind 和 k3d 大比拼</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2024-02-22 14:42:22
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/kubernetes/" title="kubernetes">
+                    #kubernetes
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/ci/" title="ci">
+                    #ci
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>作为云原生生态的一个开发者，开发中经常碰到的一个需求是要频繁测试应用在 Kubernetes 环境下的运行状态，在 CI 中可能还要快速测试多个不同 Kubernetes 集群的配置，例如单点，高可用，双栈，多集群等等。因此能够低成本的在本地单机环境快速创建管理 Kubernetes 集群就成了一个刚需。本文将介绍几个常见的单机 Kubernetes 管理工具 minikube, kind 和 k3d 各自的特点、使用场景以及可能的坑。</p>
+<blockquote>
+<p>TL;DR<br>如果你只关心快不快，那么 k3d 是最好的选择。如果你关心的是兼容性以及测试尽可能模拟真实场景，那么 minikube 是最稳妥的选择。kind 算是在这两个之间的一个平衡。</p>
+</blockquote>
+<ul>
+<li><a href="#%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E6%AF%94%E8%BE%83">技术路线比较</a><ul>
+<li><a href="#minikube">minikube</a></li>
+<li><a href="#kind">kind</a></li>
+<li><a href="#k3d">k3d</a></li>
+</ul>
+</li>
+<li><a href="#%E5%90%AF%E5%8A%A8%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83">启动性能比较</a><ul>
+<li><a href="#%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95">测试方法</a></li>
+<li><a href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C">测试结果</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+<h1 id="技术路线比较"><a href="#技术路线比较" class="headerlink" title="技术路线比较"></a>技术路线比较</h1><p>这三者大体功能是类似的，都能够完成单机管理 Kubernetes 的任务，但是由于一些历史原因和技术选项导致了一些细节和使用场景的差异。</p>
+<h2 id="minikube"><a href="#minikube" class="headerlink" title="minikube"></a>minikube</h2><p><a target="_blank" rel="noopener" href="https://minikube.sigs.k8s.io/docs/">minikube</a> 是 Kubernetes 社区最早的一款快速在本地创建 Kubernetes 的软件，也是很多老人第一次上手 Kubernetes 的工具。早期版本是通过在本机创建 VM 来模拟多节点集群，这个方案的好处是能够最大程度还原真实场景，一些操作系统级别的变化，例如不同 OS，不同内核模块都可以覆盖到。缺点就是资源消耗太大，而且在一些虚拟化环境如果没有嵌套虚拟化的支持是没办法运行的，并且启动的速度也比较慢。不过社区最近也推出了 Docker 的 Driver 这些问题都得到了比较好的解决，不过对应代价就是一些虚拟机级别的模拟就不好做了。此外 minikube 还提供了不少的 addon，比如 dashboard，nginx-ingress 等常见的社区组件都能快速的安装使用。</p>
+<h2 id="kind"><a href="#kind" class="headerlink" title="kind"></a>kind</h2><p><a target="_blank" rel="noopener" href="https://kind.sigs.k8s.io/">kind</a> 是近几年流行起来的一个本地部署 Kubernetes 的工具，他的主要特点就是用 Docker 容器模拟节点，并且基本只专注在 Kubernetes 标准部署这一个事情上，其他社区组件都需要额外自己去安装。目前 Kubernetes 本身的 CI 也是通过 kind 来跑的。优点就是启动速度很快，熟悉 Docker 的人用起来也很顺手。缺点是用了容器模拟缺乏操作系统级别的隔离，而且和宿主机共享内核，一些操作系统相关的测试就不好测试了。我之前在测一个内核模块的时候就因为宿主机加了一些 netfilter 功能，结果 kind 里的 Kubernetes 集群挂了。</p>
+<h2 id="k3d"><a href="#k3d" class="headerlink" title="k3d"></a>k3d</h2><p><a target="_blank" rel="noopener" href="https://k3d.io/stable/">k3d</a> 是一个超轻量的本地部署 Kubernetes 工具，他的大体思路和 kind 类似，都是通过 Docker 来模拟节点，主要区别在于部署的不是个标准 Kubernetes 而是一个轻量级的 <a target="_blank" rel="noopener" href="https://k3s.io/">k3s</a>，所以他的大部分优缺点也来自于下面这个 k3s。优点就是安装极致的快，你先别管对不对，你就问快不快吧。缺点主要来自于为了速度做出的一些牺牲，比如镜像用的是个超精简的操作系统，连 glibc 都没有，因此一些要在操作系统层面的操作都会无比困难。还有就是他的安装方式和常见的 kubeadm 也不一样，Kubernetes 组件都不是容器启动的，如果依赖标准部署的一些特性可能都会比较困难。</p>
+<h1 id="启动性能比较"><a href="#启动性能比较" class="headerlink" title="启动性能比较"></a>启动性能比较</h1><p>minikube 社区有一些<a target="_blank" rel="noopener" href="https://minikube.sigs.k8s.io/docs/benchmarks/timetok8s/v1.32.0/">性能测试报告</a>，正好对比的就是本文关注的三款软件的启动速度，不过我更关注的是其他的一些方面，比如镜像大小，内存占用以及最小化安装的启动时间，所以还是再做了一组测试。</p>
+<h2 id="测试方法"><a href="#测试方法" class="headerlink" title="测试方法"></a>测试方法</h2><p>由于三款软件都是一行命令就可以启动，测试还是比较方便的，主要注意以下几个点：</p>
+<ol>
+<li>minikube 采用 Docker Driver，因为真要测启动速度还用虚拟机的 Driver 就没什么意义了。</li>
+<li>所有测试都是镜像已经下载到本地的结果，不会涉及网络下载时间。</li>
+<li>测试的每个软件都是当前的最新版，但是他们支持的 Kubernetes 版本不一致，不是很严谨，但是定性分析应该够了。</li>
+<li>都只启动最基本的组件，不安装其他插件，但是基础 CNI 和 CoreDNS 以及 CSI 都是有的，保证应用的基本运行。</li>
+<li>使用 <code>docker image</code> 命令查看镜像大小，使用 <code>docker stat</code> 查看内存用量。</li>
+</ol>
+<p>测试的命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#minikube</span></span><br><span class="line">time minikube start --driver=docker --force</span><br><span class="line"></span><br><span class="line"><span class="comment">#kind</span></span><br><span class="line">time kind create cluster</span><br><span class="line"></span><br><span class="line"><span class="comment">#k3d</span></span><br><span class="line">time k3d cluster create mycluster --k3s-arg <span class="string">&#x27;--disable=traefik,metrics-server@server:*&#x27;</span> --no-lb</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>软件版本</th>
+<th>Kubernetes 版本</th>
+<th>镜像大小</th>
+<th>启动时间</th>
+<th>内存消耗</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>minikube</td>
+<td>v1.32.0</td>
+<td>v1.28.3</td>
+<td>1.2GB</td>
+<td>29s</td>
+<td>536MiB</td>
+</tr>
+<tr>
+<td>kind</td>
+<td>v0.22</td>
+<td>v1.29.2</td>
+<td>956MB</td>
+<td>20s</td>
+<td>463MiB</td>
+</tr>
+<tr>
+<td>k3d</td>
+<td>v5.6.0</td>
+<td>v1.27.4</td>
+<td>263MB</td>
+<td>7s</td>
+<td>423MiB</td>
+</tr>
+</tbody></table>
+<p>可见单从启动性能这个指标，k3d 在镜像大小，启动时间和内存消耗几个方面都有比较大的优势，对于用 Github 免费 Action 跑 CI 的穷人还是很有吸引力的。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>如果快和更少的资源占用是最重要的目标，那么 k3d 相当合适，如果要测试需要操作系统级别隔离的功能，那么 minikube 的虚拟机 Driver 是唯一的选择，其他场景下 kind 会在兼容和性能之间比较平衡。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2024/01/09/alloc-slice-for-golang-2-md/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2024-02-22 14:42:22
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/kubernetes/" title="kubernetes">
+                        #kubernetes
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/ci/" title="ci">
+                        #ci
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E6%AF%94%E8%BE%83"><span class="toc-text">技术路线比较</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#minikube"><span class="toc-text">minikube</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kind"><span class="toc-text">kind</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#k3d"><span class="toc-text">k3d</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83"><span class="toc-text">启动性能比较</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95"><span class="toc-text">测试方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="toc-text">测试结果</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + minikube%EF%BC%8Ckind%20%E5%92%8C%20k3d%20%E5%A4%A7%E6%AF%94%E6%8B%BC + '&url=' + http%3A%2F%2Foilbeater.com%2F2024%2F02%2F22%2Fminikube-vs-kind-vs-k3d%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2024/02/22/minikube-vs-kind-vs-k3d/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      操作系统启动之谜 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">操作系统启动之谜</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2012-06-29 00:00:00
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%8A%80%E6%9C%AF/" title="技术">
+                    #技术
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/linux/" title="linux">
+                    #linux
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="源码阅读">
+                    #源码阅读
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <img src="http://lh6.googleusercontent.com/-vRXcYw7V7fg/T69fVsIkNaI/AAAAAAAAAIw/Y3KgmC33VbI/s512/linux.jpg" alt="" style="float:left;width:243px;height:208px">
+<p>
+    在我小的时候一直纳闷一台电脑是怎么从给它个电就能自动跑出一个五颜六色的界面的，相信很多人也有和我一样的疑问吧。长大之后总算多少了解一些了,试着把我的了解和疑问写一下。PS：可能今后会有一段不方便更新博客了，不过也只是可能，不过既然有可能了，这次就多写一点。
+</p>
+<p>
+    先考虑一个普通的程序运行，会有各种通用寄存器记录一些变量，一些状态寄存器记录程序状态，eip寄存器记录运行的指令地址；内存中会有代码段，数据断，堆和栈；然后就按照当前的eip地址从内存中取指令，指令再根据各自的寻址方式选择从寄存器还是从内存中读取数据进行运算，如果开启虚拟内存机制，数据页面可能在硬盘上，此时会有磁盘IO。计算机的启动实际上也是一个程序，执行一系列的指令，修改一系列的数据，那么计算机的启动和普通程序有什么不同呢？
+</p>
+<h2>史前时代</h2>
+<p>
+    正如我们所知寄存器和内存这种存储器都是易失性存储器，一掉电他们就清白了，一开机是有作坏事的能力了，问题是谁能给出第一个eip？这第一条指令的eip又该是多少？好吧，就算eip有了，eip去内存取指令了，可内存此时应该也是空的呀。我们知道程序要在内存中才能运行，其他程序可以靠上一个在内存中的程序把自己加在到内存，那么第一个程序怎么把自己加载到内存呢？
+</p>
+<p>
+    从现有的计算机体系角度来看，软件是无法完成这件事情的，只能靠硬件来实现。由硬件把代码复制到内存的一个区域，再把eip置到那个区域就可以执行了，那么我们又该把什么代码硬件复制过去呢？如果你认识 <a href="http://en.wikipedia.org/wiki/BIOS" target="_blank">BIOS</a> 的话，这个时候他就登场了，它包括一系列的开机自检程序，对硬件进行初始化，设置中断向量，中断处理程序之类的工作。这部分代码是写在一个非易失的flash上的，硬件会自动把它加载到1M内存的顶部，为什么现在是1M内存就自己想去吧。不过我一直纳闷的是为什么要加载到顶部，加载到顶部的结果就是启动的第一条指令从地址到内容都是个十分tricky的设计。
+</p>
+<p>
+    其实写到这机器启动的第一条指令还没运行呢。因为尽管代码我们放到内存了，eip还没定下来。实际情况是BIOS代码的大小是不固定的，而硬件又把这部分代码加载到了内存的顶端，这样BIOS中地址最低一条代码的位置就不固定了，按照一般的编程思维，第一条指令就应该是地址最低的那条指令。而第一个eip的值又是由硬件写死的，怎么才能由一个固定的eip定位到一个不确定的地址呢？
+</p>
+<p>
+    先看一下实际中第一条eip是多少吧————0xFFFF0。对应于1M的地址空间，这个地址已经到了最后16字节，如果考虑到最长的指令有15字节和对齐因素的话，这个地方就只能放一条指令了，那应该放一条什么指令呢？事实上这个地方是一条跳转指令，跳转到BIOS
+    的低地址的第一条可执行代码。BIOS代码过把自己最高16字节的代码设为一条跳向低地址的跳转指令，这样就可以灵活的控制开机第二条指令的地址，来解决BIOS代码变化的问题。通过一个跳转指令，硬件和软件完成了交接，进入了一个我们相对熟悉的程序运行过程，BIOS的代码开始欢乐的跑起来了。不过我一直在想如果BIOS代码加载到内存从0开始的位置，第一条指令定位就没那么麻烦了吧。
+</p>
+<img src="http://lh4.googleusercontent.com/-766T21r0A10/T-25_JVG6II/AAAAAAAAAUU/PfkaxOlBjSE/s986/%25E5%2586%2585%25E5%25AD%2598.png" alt="">
+<h2>远古时代</h2>
+<p>
+    走到了这里所有的代码都是在BIOS的flash中代码，硬盘还没干活呢，也就是说操作系统还在睡觉呢。我们要把操作系统的代码弄到内存里来执行，然后就又碰到一个问题，装过操作系统的人都知道，操作系统可以装在不同的盘上，位置也是不固定的，也可能有多个系统，又该到哪去找操作系统呢？还是看一下BIOS在跑趴下之前干了什么吧，BIOS代码在内存中设置了中断向量表和中断处理程序，如下图，倒下前它发了个0x19号中断，这个中断的处理程序会把磁盘的第一个扇区加载到内存。
+</p>
+<img src="http://lh3.googleusercontent.com/-Swu_F5tvfOU/T-25_B_hE5I/AAAAAAAAAUU/SAsjygjEZKc/s930/bios.png" alt="">
+<p>
+    事情到这里慢慢有了头绪，尽管操作系统可能有很多位置也不固定，但是他们如果在第一扇区放个引导指向他们就可以了。实际上在第一扇区会存两个东西，一个 <a href="http://en.wikipedia.org/wiki/Master_boot_record" target="_blank">MBR（Master Boot Record）</a>和一个加载程序。MBR中包括一段检查磁盘启动信息的程序和传说中的分区表。在分区表中就会记录每一个磁盘分区是否有可启动的操作系统，分区的大小，以及操作系统的位置。而那一小段加载程序就通过分区表来加载操作系统，grub就是这一小段程序的一个代表，它可以通过和用户的交互界面让用户选择进入的操作系统。这时候它会加载操作系统的第一部分代码，这第一部分的代码在最后又会加载第二部分代码，然后依次类推，一个链式反应就进入正常运行了，也进入了我们越来越熟悉的时代。
+</p>
+<h2>中世纪</h2>
+<p>
+    操作系统现在其实基本就可以用了，很久很久以前最为简陋的操作系统，没有复杂的寻址模式，没有保护模式，没有操作系统自己的中断处理，差不多也就这样了。为了能兼容这种很就很久以前的设计，计算机启动还是保留着之前的步骤，但是时代总是在进步，所以启动过程也开始进一步演化。
+</p>
+<p>
+    首先要从实模式到保护模式的转化，在之时候要考虑一下原来什么东西是和保护模式不兼容的呢？其实主要还是地址相关的一些东西，可能在32位地址模式下就和原来不一样了。之前主要是有一个中断向量表是和地址相关的，需要把它进化成32位的，此时操作系统也想接管中断处理程序创建自己的中断向量表了，所以BIOS老前辈就要享受兔死狗烹的待遇了。但是在这时候如果有个中断请求正好过来，而中断向量表又在修改中，改了一个错误的地址那么机子刚起来就被打回到史前文明了，BIOS这个老油条还是留了一手的。所以在修改前操作系统会有一个关中断的操作。这样操作系统就可以毫无后顾之忧的修改BIOS的遗产了。
+</p>
+<p>
+    搞定中断向量后，操作系统只需要把相关的寄存器再初始化一次弄成32位模式的，初始化保护模式下GDT和IDT就可以开始保护模式时代了。然后地址线20位到31位在这一刻被激活了，我们终于可以利用4G的寻址空间了。
+</p>
+<h2>现代</h2>
+<p>
+    其实没什么好多说的了，操作系统可以撒欢跑了。我也要准备考虑跑路了。
+</p>
+<h2>参考资料</h2>
+<li><a href="http://pdos.csail.mit.edu/6.828/2011/labs/lab1/" target="_blank">MIT 6.828</a></li>
+<li><a href="http://book.douban.com/subject/2287506/" target="_blank">深入理解Linux内核</a></li>
+<li><a href="http://book.douban.com/subject/6433169/" target="_blank">Linux内核设计的艺术</a></li>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2012/06/12/stackoverflow-and-heapoverflow/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2012-06-29 00:00:00
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%8A%80%E6%9C%AF/" title="技术">
+                        #技术
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/linux/" title="linux">
+                        #linux
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="源码阅读">
+                        #源码阅读
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2012/07/04/the-concern-of-history/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">史前时代</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">远古时代</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">中世纪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">现代</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">参考资料</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E4%B9%8B%E8%B0%9C + '&url=' + http%3A%2F%2Foilbeater.com%2F2012%2F06%2F29%2Fthe-secret-of-os-startup%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2012/06/29/the-secret-of-os-startup/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      不需要封装的 Overlay 容器网络 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">不需要封装的 Overlay 容器网络</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2023-07-30 05:24:33
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/performance/" title="performance">
+                    #performance
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/network/" title="network">
+                    #network
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <ul>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8-overlay-%E7%BD%91%E7%BB%9C">为什么要用 Overlay 网络</a></li>
+<li><a href="#%E5%AE%B9%E5%99%A8-overlay-%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BC%80%E9%94%80%E6%9D%A5%E6%BA%90">容器 Overlay 网络的开销来源</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3-overlay-%E5%B0%81%E8%A3%85%E7%9A%84%E5%BC%80%E9%94%80">如何解决 Overlay 封装的开销</a></li>
+<li><a href="#%E6%88%91%E7%9A%84%E6%83%B3%E6%B3%95">我的想法</a></li>
+</ul>
+<p>上周在看 <a target="_blank" rel="noopener" href="https://antrea.io/">Antrea</a> 的<a target="_blank" rel="noopener" href="https://github.com/antrea-io/antrea/wiki/Community-Meetings#july-17-2023">会议纪要</a>时，发现了一篇上海交大和 VMware 合作的论文 —— <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2305.05455.pdf">XMasq: Low-Overhead Container Overlay Network Based on eBPF</a>。论文里介绍不少通过 eBPF 做容器网络性能优化的方法，不过最令人印象深刻的是他们最终无需给容器数据包封装额外的隧道头就可以实现 Overlay 网络，这里就简单介绍下作者们是如何做到这一点的。</p>
+<h2 id="为什么要用-Overlay-网络"><a href="#为什么要用-Overlay-网络" class="headerlink" title="为什么要用 Overlay 网络"></a>为什么要用 Overlay 网络</h2><p>Overlay 网络相比 Underlay 网络可以完全解耦应用层和底层物理网络,确保两者的灵活性。应用层不需要关心底层物理网络的路由规则等细节,物理网络也不需要针对容器 IP 进行专门路由配置。因此 Overlay 网络作为一种不调底层网络实现的容器组网技术，快速的在容器领域铺开了，主流的开源网络插件处于安装兼容的考虑，基本上都会将 Overlay 作为默认的安装选项。</p>
+<h2 id="容器-Overlay-网络的开销来源"><a href="#容器-Overlay-网络的开销来源" class="headerlink" title="容器 Overlay 网络的开销来源"></a>容器 Overlay 网络的开销来源</h2><p>但是在灵活性的便利下，带来的是性能方面的开销。根据论文里的测量，主流的 Overlay 网络插件，相比于 HOST 网络，吞吐量会下降 25%，CPU 消耗会增加 34%~44%，延迟会上升 45%~58%。</p>
+<p>当然，这里面的性能开销并不完全是 Overlay 的封装带来的，由于容器网络本身的流量路径和 HOST 网络就有比较大的区别，Overlay 封装其实只是其中的一环。如下图所示：<br><img src="/../images/container-network-overhead.png" alt="Alt text"></p>
+<p>其中 1~4，7~10 都是容器网络相比宿主机网络额外带来的链路，Overlay 的封装主要在 4 和 7，分别占到了 egress 和 ingress 开销的 24% 和 29%。</p>
+<p>其他几个链路上的优化在 Cilium 和其他开源项目上其实已经见到过一些了，主要思路是通过 eBPF bypaas 掉部分链路，将数据包能够从容器网络栈直通到物理网卡，下面主要介绍下这篇论文是如何解决 Overlay 封装的问题。</p>
+<h2 id="如何解决-Overlay-封装的开销"><a href="#如何解决-Overlay-封装的开销" class="headerlink" title="如何解决 Overlay 封装的开销"></a>如何解决 Overlay 封装的开销</h2><p>常见的 Overlay 隧道如 VXlan 和 Geneve 都是通过给容器网络的数据包封装一个 UDP 的 Header 实现的 Overlay。外层的 UDP 头部记录宿主机实际的 IP 和 Mac，内层数据包的 Header 里记录容器网络的 IP 和 Mac，外层作为真实网络的通信标识，内层作为容器网络的通信标识。那么有没有可能把两层的信息通过一层全带走，从而实现不需要额外的 UDP Header 呢？这就是这篇论文作者的一个很有意思的工作。</p>
+<p>外层的 IP 和 Mac 作为真实通信的标识是不可能省略的，但是 IP 的 Header 中有一部分字段比如 DSCP 和 ID 是很少被使用的。如果能将这两个字段利用起来，编码内层的信息，那么我们就可以不用内层的容器 IP 和 Mac 这一层了。这里可以想象一下用 iptables 来做 nat 其实是将源 IP 和端口映射成目标 IP 和端口，也可以理解为一种编码的映射关系。</p>
+<p>作者在内核中通过 eBPF 的 Map 缓存了容器网络的 Mac 和 IP 信息，并生成了一个 key 来对应每一组 IP 和 Mac。这样，当容器再进行跨主机网络通信时，可以直接将目标地址修改为对应宿主机的地址，同时将这个 key 写入 IP 中的指定的保留字段。等数据包到达对端后，对端就可以通过这个 key 查询本地的缓存将数据包的地址再还原为容器的地址。这样并不需要额外的封装，通过 IP 和 Mac 头的直接替换，就完成了跨主机的 Overlay 网络。</p>
+<p>由于论文中还应用了很多其他 bypass 的优化，没有单独衡量 Overlay 改造带来的性能提升，从整体效果来看性能优化后的效果较普通 Overlay 网络有很大的提升基本接近 HOST 网络。</p>
+<h2 id="我的想法"><a href="#我的想法" class="headerlink" title="我的想法"></a>我的想法</h2><p>按照我之前的经验使用 UDP 进行 Overlay 封装还有一个很大的性能问题，那就是如果内部数据包是 TCP 的时候，TCP 其实有很多网卡的 Offload 优化，能大幅提升吞吐量，但如果是封装后这种 TCP in UDP 的形式，很多网卡 Offload 的能力就失效了。我们之前在一些虚拟化的平台，使用 UDP 的封装吞吐量只有使用 STT 这种 TCP 进行封装的十分之一。不过这个差别也和网卡的能力，操作系统内核相关，在作者测试的网卡上并没有表现出来明显的差异，有可能是物理网卡支持这种 TCP in UDP 的 Offload。</p>
+<p>这篇论文的目的是希望把这套性能优化做成一个 CNI 无关的插件，所有的容器网络都可以使用，但是论文里大量的 eBPF bypaas 其实也会跳过 CNI Datapath 的处理，会导致原有 CNI 功能的缺失。所以做一个通用插件的意义可能并不大。直接做一个新的 CNI ，不要求其他功能，只追求 Overlay 的通用性和极致的性能其实更合适一些，没准能拿下不少的细分领域市场。反而是 Overlay 封装这块如果能单独拿出来，做成和 VXlan，Geneve 并列的一种封装格式，倒是能真正做到 CNI 无关的一个通用模块。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/27/local-cpu-llm/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2023-07-30 05:24:33
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/performance/" title="performance">
+                        #performance
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/network/" title="network">
+                        #network
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2024/01/09/alloc-slice-for-golang-2-md/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8-Overlay-%E7%BD%91%E7%BB%9C"><span class="toc-text">为什么要用 Overlay 网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-Overlay-%E7%BD%91%E7%BB%9C%E7%9A%84%E5%BC%80%E9%94%80%E6%9D%A5%E6%BA%90"><span class="toc-text">容器 Overlay 网络的开销来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3-Overlay-%E5%B0%81%E8%A3%85%E7%9A%84%E5%BC%80%E9%94%80"><span class="toc-text">如何解决 Overlay 封装的开销</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E6%83%B3%E6%B3%95"><span class="toc-text">我的想法</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E4%B8%8D%E9%9C%80%E8%A6%81%E5%B0%81%E8%A3%85%E7%9A%84%20Overlay%20%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C + '&url=' + http%3A%2F%2Foilbeater.com%2F2023%2F07%2F30%2Fxmasq-overlay-without-encap%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2023/07/30/xmasq-overlay-without-encap/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

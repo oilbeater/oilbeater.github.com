@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      linux 信号处理机制简介 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">linux 信号处理机制简介</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2012-05-09 00:00:00
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%8A%80%E6%9C%AF/" title="技术">
+                    #技术
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/linux/" title="linux">
+                    #linux
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="源码阅读">
+                    #源码阅读
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <div>
+<p>
+    鉴于后面把进程的形象给彻底毁掉了，我提前声明一下，进程是有尊严的有节操的，当然大部分人可能也看不到毁形象那一段。为什么介绍linux要从信号开始呢，当然是为了保证能讲明白，因为翻了翻书我发现这一部分是最简单的了，所以呢，就讲这个吧，顺便把之前源码阅读的东西总结一下。
+</p>
+<h2>信号是什么东西呢？</h2>
+<p>两个直观的感受，你在终端运行一个程序然后摁一下Ctrl+c就是向正在运行的程序发送了一个终止信号，程序就被终止了；在终端kill一个pid相当于发送9号杀死这个进程；在终端运行<code>kill -l</code>
+就可以查看系统的所有信号。   </p> 
+<img src="http://lh6.googleusercontent.com/-vRXcYw7V7fg/T69fVsIkNaI/AAAAAAAAAIw/Y3KgmC33VbI/s512/linux.jpg" style="float:left;width:243px;height:208px">	
+<p>有了上面这些直观感受，那么信号本质是什么呢？信号本质上是一种向一个进程通知发生异步事件的机制，是在软件层次上对中断的一种模拟。这种通知机制可以用于通知硬件消息like上面的感受1，也可以用来进行进程间通信like上面的感受2，还可以用来通知一些程序错误如除0、非法内存访问。异步是说进程没有对信号进行实时监控，不必等待信号到来，事实上进程也根本不知道信号什么时候会来。一个进程本来在欢乐的跑着突然就被你一个ctrl+c给杀死了，飞来横祸呀。至于说是一种软中断，是因为在原理上，一个进程受到一个信号与处理器收到一个中断请求可以说是一样的，本来在欢乐的跑着就从你一个脚上给你来一个高电平。</p>
+<hr>
+<h2>信号分类</h2>
+<p>通过<code>kill -l</code>可以看到linux现在支持64个信号，注意一下信号不是从0编号的而是从1编号。其中前32为标准（Standard）信号，后32为实时（Real-time）信号。好吧，什么是标准信号，什么又是实时信号。</p>
+<p>在遥远的古代是只有标准信号的，那时候它也不叫标准信号，就叫信号，它是一种十分简单的机制。先说一下信号的运行，当信号发送到程序时并不是立即执行而是等待某个时机再执行，在这个时机还没到来的时候你一个类型的信号无论发多少个都只记录一个，就好比有32个信箱每个信箱只能收一封信，多的就扔吧；另一方面信号的响应也是不保证顺序的，你发送信号的顺序和信号响应的顺序可能根本就没什么关系，因为古代人类都比较简单嘛。后来人类不断发展又想要可以响应一个类型的多个信号又想保证响应顺序，实时信号就诞生了，其实就是加了个sigqueue这么个队列数据结构，需求就被满足了。但是之前的简单信号已经成为了实际上的标准，而实时信号的应用也还不如前者广，两者就共存了。</p>
+<blockquote>Tips：实时信号的信号范围由SIGRTMIN和SIGRTMAX两个宏来决定，编程使用实时信号的话可以使用SIGRTMIN+n指定一个信号而不是直接一个数字，因为万一标准信号数量又增加呢，直接写数字编码可能就会出现bug，这两个宏也为将来信号的灵活扩展提供了基础。同时也是灌输一个编程不要使用魔数的原则。</blockquote>
+<hr>
+<h2>信号响应</h2>
+UNIX对前32个信号都有默认的响应方式，分为以下5类：
+<ul>
+<li>Term：终止进程</li>
+<li>Ign：忽略该信号</li>
+<li>Core：终止进程并保存内存信息</li>
+<li>Stop：停止进程</li>
+<li>Cont：有停止就有恢复进程</li>
+</ul>
+<p>当然只有5个响应方法怎么够呢，not fashion 于是sigaction()这个系统调用就上了，通过它可以给一个信号绑定一个函数来当作信号处理函数，你就可以在这个函数里面胡作非为了。可是你胡作非为了内核开发人员又感觉不爽了于是就设了两个信号你是改不了的，以显示他们不可动摇的地位，这两个信号就是9号SIGKILL和19号SIGSTOP，所以你也就不能定义Ctrl+c和Ctrl+z发送出来的信号的处理方式了。</p>
+<blockquote>Tips：当然你足够邪恶的话可以定义这两个组合键指向别的操作。</blockquote>
+<hr>
+<h2>信号处理机制</h2>
+<p>废话这么多终于开始讲机制了。</p>
+<h3>信号发送和接收</h3>
+<p>最简单的理解，一个程序给另一个程序发了个短信，通过中国移不动或者中国联不通的网络，另一个程序的手机就收到了，一个信号就算发送成功了。具体来说就是一个程序调用一个发送信号的系统调用例如。然后内核就扮演运营商的角色把信号扔给另一个进程。我们知道进程在内存里还是有很多家当的，主要维护了一个进程描述符，里面有着pid呀，进程状态呀，优先级呀一堆不可告人的秘密，等以后有空了我给大家八卦一下。</p>
+<p> pending 和 signal 是两个挂起信号队列,为什么要有两个呀?因为一个是私有的队列一个是共享的队列。为什么有私有和共享之分呀?因为一个是针对轻量级进程的一个是针对线程组的?这两个又是什么东西呀?本小农发现这里开始不好说了.为什么有私有和共享之分呀？因为一个是针对轻量级进程的一个是针对线程组的？这两个又是什么东西呀？本小农发现这里开始不好说了……简单说，Linux是没有进程和线程的，有的只有轻量级进程，如果一组轻量级进程之间可以共享资源，那么就组成一个相当于线程组的东西，也就相当于一个线程，换句话说Linux是用轻量级进程这个东西模拟多线程，感兴趣同学可以看一下LWP，总之这里知道有两个信号挂起队列就好了，如果前面LWP的东西没看懂，你这里可以认为一个是记录的给线程的信号，一个记录的给进程的信号。sighand就简单多了就是记录64个信号对应的处理函数的入口地址，当然还有其他好多辅助的数据结构，但主要就是这个功能。如果能大致看懂下面这张图说明你还没晕。</p>
+<img src="http://lh5.googleusercontent.com/-nKNOz8JsqSI/T69fWX0E6WI/AAAAAAAAAIw/Nh-2zidTbGo/s640/signal_struct.jpg" alt="signal struct">
+<p>回到手机短信，内核把短信发给进程是干了什么事呢？就是找个队列把信号插进去。当然进程也是有尊严的，不会让你随便插的如果是标准信号的话你只能插一次，如果这个信号还在的话就不让你插了，不像对实时信号那么随便想插多少插多少。有的进程比较专一，如果有一个信号插进来他会设置一个屏蔽位不让别的信号插，可以对比一下中断，处理器有时也会设一个中断屏蔽位有木有。</p>
+<h3>信号的查看与处理</h3>
+<p>短信发过来了，不一定就被看到了，这也是异步说的意思，那么什么时候进程才会发现我有一个新的短消息呢？原来进程是在从内核态这个黑暗的角落到用户态切换之前偷偷的看一眼短信，看看都有谁插了进来，然后把他们处理掉，再回到用户态光明正大的去接客。那么什么时候进程会去内核态这个小黑屋呢，主要有三种情况：</p>
+<ul>
+<li>执行系统调用</li>
+<li>处理中断异常</li>
+<li>进程调度上CPU</li>
+</ul>
+<p>出小黑屋前，会看一眼手机，如果有短消息就啪啪啪的处理短信，如果没有的话就伤感的回用户态。如果是比较规矩的短信只是执行五种规定的标准动作那么在小黑屋解决就好了，但是有的短信比较坏调用了sigaction告诉进程要出来到这个地方来玩，然后进程就把手机扔小黑屋里拔腿就跑到用户态去玩了，玩完想起来手机还在家，就又回趟家看看还有没有其他短信，没有再去用户态光明正大的见人。具体过程如下图。</p>
+<img src="http://lh6.googleusercontent.com/-_HeCa43rU8o/T69fVlh4E2I/AAAAAAAAAIw/EGiHTpWzNQE/s755/signal_handle.png" alt="">
+<p>好了不调戏进程了，进程也是有尊严的，下面讨论一下进程的节操问题，节操这个问题确实比较难说，唉……</p>
+<p>不管你知不知道，进程从用户态进入内核态是要再内核态保存一份用户态堆栈的副本的，其中最重要的就是保存当前的pc这样进程从内核态返回的时候把pc还原就可以按照原来的指令流行进了；不管你知不知道，当进程从内核态回到用户态的时候这个堆栈的副本是被清空的。于是当进程在收到一个出去玩的短信出去之后，他原来的用户态返回地址就被默默的清空了，然后他玩完回到小黑屋就发现找不到回用户态的路了，一辈子就被关在这个阴冷黑暗的小黑屋，永世不得见光，这个故事告诉我们节操是很重要的。然而这个恐怖的故事没有限制住任何一个进程寻欢作乐，进程们出去玩之前先往外发了个消息把用户态的返回地址，堆栈信息什么的都发出去了，等玩完回家再等小哥把信息发回来，就又可以光明正大的回用户态了，所以节操这个东西……</p>
+<p>好了，上面都是为了加强理解的段子，下面是正儿八经的原理介绍，需要有对堆栈和函数调用机制有一些了解,你会发现还是节操比较好说。</p>
+<p>我们知道，当进程陷入内核态的时候，会在堆栈中保存中断现场。因为用户态和内核态是两个运行级别，所以要使用两个不同的栈。当用户进程通过系统调用刚进入内核的时候，CPU会自动在该进程的内核栈上压入下图所示的内容：（图来自《Linux内核完全注释》）</p>
+<img src="http://lh6.googleusercontent.com/-P2nW44HYRag/T69fWhr0wLI/AAAAAAAAAIw/3DxPJAKvk6M/s912/stack1.png" alt="">
+<p>在处理完系统调用以后，就要调用do_signal()函数进行设置frame等工作。这时内核堆栈的状态应该跟下图左半部分类似（系统调用将一些信息压入栈了）：</p>
+<img src="http://lh4.googleusercontent.com/-L-eVMBLBvPE/T69fXFCUrFI/AAAAAAAAAIw/cOQUBTtSFB4/s800/stack2.png" alt="">
+<p>在找到了信号处理函数之后，do_signal函数首先把内核堆栈中存放返回执行点的eip保存为old_eip，然后将eip替换为信号处理函数的地址，然后将内核中保存的“原ESP”（即用户态栈地址）减去一定的值，目的是扩大用户态的栈，然后将内核栈上的内容保存到用户栈上，这个过程就是设置frame.值得注意的是下面两点：</p>
+<ol>
+<li>之所以把EIP的值设置成信号处理函数的地址，是因为一旦进程返回用户态，就要去执行信号处理程序，所以EIP要指向信号处理程序而不是原来应该执行的地址。</li>
+<li>之所以要把frame从内核栈拷贝到用户栈，是因为进程从内核态返回用户态会清理这次调用所用到的内核栈（类似函数调用），内核栈又太小，不能单纯的在栈上保存另一个frame（想象一下嵌套信号处理），而我们需要EAX（系统调用返回值）、EIP这些信息以便执行完信号处理函数后能继续执行程序，所以把它们拷贝到用户态栈以保存起来。</li>
+</ol>
+<p>以上这些搞清楚之后，下面的事情就顺利多了。这时进程返回用户空间，就会根据内核栈中的EIP值执行信号处理函数。那么，信号处理程序执行完后，怎么返回程序继续执行呢？</p>
+<p>信号处理程序执行完毕之后，进程会主动调用sigreturn()系统调用再次回到内核，查看有没有其他信号需要处理，如果没有，这时内核就会做一些善后工作，将之前保存的frame恢复到内核栈，恢复eip的值为old_eip，然后返回用户空间，程序就能够继续执行。至此，内核遍完成了一次（或几次）信号处理工作。</p>
+<hr>
+<h2>参考资料</h2>
+<ul>
+    <li><a target="_blank" rel="noopener" href="http://book.douban.com/subject/2287506/">《深入理解linux内核》</a>说实话这本书讲的不是很清楚，不过权威的也没有别的书了</li>
+    <li>man signal kill sigaction  说错了还是有权威的linux自带的manual</li>
+    <li><a target="_blank" rel="noopener" href="http://www.ibm.com/developerworks/cn/linux/l-ipc/part2/index1.html">IBM开发者社区的资料</a></li>
+    <li><a target="_blank" rel="noopener" href="http://www.spongeliu.com/linux/linux%E5%86%85%E6%A0%B8%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D/">linux内核信号处理机制简介</a>最后比较严肃的东西都是直接从这上面copy的</li>
+    
+</ul>
+</div>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2012/04/30/the_book_i_read/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2012-05-09 00:00:00
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%8A%80%E6%9C%AF/" title="技术">
+                        #技术
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/linux/" title="linux">
+                        #linux
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="源码阅读">
+                        #源码阅读
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2012/05/26/huangchengtoupaid/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">信号是什么东西呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">信号分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">信号响应</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">信号处理机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">信号发送和接收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">信号的查看与处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">参考资料</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + linux%20%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6%E7%AE%80%E4%BB%8B + '&url=' + http%3A%2F%2Foilbeater.com%2F2012%2F05%2F09%2Flinux-signal%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2012/05/09/linux-signal/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Docker 持续集成过程中的性能问题及解决方法 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Docker 持续集成过程中的性能问题及解决方法</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2016-01-02 14:30:55
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%8A%80%E6%9C%AF/" title="技术">
+                    #技术
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%80%A7%E8%83%BD/" title="性能">
+                    #性能
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Docker/" title="Docker">
+                    #Docker
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>Docker 的出现使开发测试生产环境的统一变得更加容易，然而在使用 docker 搭建这一整套流水线之后，却发现它运行的却不能像丝般润滑，总是感觉没有直接本地开发测试来的效率高。为了能达到一个高效流水般的持续构建，我们来看一下这个过程中 docker 的使用以及 docker 自身存在着哪些问题，我们又该如何克服这些问题，达到如丝般的润滑。</p>
+<p>我们首先来分解一下现在常见的一种利用 docker 做持续部署的流程：</p>
+<ul>
+<li>开发者提交代码</li>
+<li>触发镜像构建</li>
+<li>构建镜像上传至私有仓库</li>
+<li>镜像下载至执行机器</li>
+<li>镜像运行</li>
+</ul>
+<p>在这五步中，1 和 5 的耗时都比较短，主要耗时集中在中间 3 步，也就是 docker build， push， pull 的时间消耗，我们就来分别看一下如何加速这三个步骤。</p>
+<h2 id="Docker-build"><a href="#Docker-build" class="headerlink" title="Docker build"></a>Docker build</h2><p>###选择国外构建</p>
+<p>由于 dockerhub 的官方镜像再国外，而这些基础镜像的软件源都在国外，国内构建的时候网络会是很大的瓶颈，有能力在国外机器进行构建，并且可以通过专线和国内进行传输的话，还是优先将构建节点放在国外，会省很多无谓的在网络上的纠缠，并且很多软件源国外的也要更稳定写，更新也更及时。</p>
+<p>如果只能在国内进行构建的话，建议使用国内的镜像，或者自己在私有仓库存一份官方镜像，并且对镜像进行改造，做一份软件源都在国内的基础镜像，把构建过程中的网络传输都控制在国内或者内网，这样就不用和网络进行纠缠了。</p>
+<p>###善用 .dockerignore</p>
+<p>.dockerignore 可以减少构建时的文件传输，一般通过 git 进行持续构建的时候不做设置都会把 .git 文件夹进行传输造成很多无用的传输,一些与构建无关的代码也尽量卸载 .dockerigonre 文件中。</p>
+<p>###缓存优化的 dockerfile</p>
+<p>dockerfile 的优化也是一个比较直接的优化方式，优化的核心就是能充分利用 build cache，把每次变化的部分放在最后，一般把加入代码放在最后一步，这样每次构建只有最后一层是新的，其他部分都是可以用 cache 的。对于 node、python、go 之类要在构建过程中安装依赖的服务，可以把安装依赖和加入代码分两步完成，这样在依赖不变的情况下这部分的缓存也是可以利用的。以 node 为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">COPY package.json /usr/src/app/</span><br><span class="line">RUN npm install</span><br><span class="line">COPY . /usr/src/app</span><br></pre></td></tr></table></figure>
+
+<p>其他关于 dockerfile 优化的建议可以再单独开一篇了，基本上每个命令都需要特殊对待才能不掉坑里，可以参考一个在线 dockerfile 语法优化器，里面会提供一些相关的 dockerfile 优化建议和一些资源,作者一定是个大好人。</p>
+<p>###smart cache</p>
+<p>在单机模式下充分利用 build cache 是个不错的注意，但是在多个构建机器的情况下就会有问题了。出于磁盘空间考量不可能所有机器都存着所有的镜像，这样缓存优化的 dockerfile 就没有用武之地了。为了让 cache 重新发挥作用我们可以在构建开始时将旧的镜像 pull 下来，这样一来就可以再次利用 cache 了。但是一来 pull 镜像也是需要很多时间的，并且 pull 下来的镜像并不会全部有用，会浪费一定的时间；而来如果 dockerfile 变化比较大有可能没有一层能用 pull 下来反而会浪费更多的时间；三来仓库内可能会有其他的镜像更适合做当前构建的缓存所以我们需要实现一个精准的镜像拉取，不能出错也不能浪费。</p>
+<p>举个栗子，如下图所示:<br><img src="http://7xl5hp.com1.z0.glb.clouddn.com/smartcache.png"></p>
+<p> image 想要构建 node:wheezy 的话那么 node:0-wheezy 是一个比较合适的镜像来做 cache 而想要构建 node:5 的话那么 node:wheezy 和 node:0-wheezy 都不太合适，反而是 python:latest 会更合适。如果我们把仓库中所有的镜像都做成这样一个森林，利用 tire 树可以很精准的知道，哪个镜像的哪几层是 cache 的最好选择，这样精确制导不会有一点浪费。</p>
+<h2 id="Docker-push"><a href="#Docker-push" class="headerlink" title="Docker push"></a>Docker push</h2><p>docker registry 在升级到 v2 后加入了很多安全相关检查，使得原来很多在 v1 already exist 的层依然要 push 到 registry,并且由于 v2 中的存储格式变成了 gzip，在镜像压缩过程中占用的时间很有可能比网络传输还要多。我们简单分解一下 docker push 的流程。</p>
+<ol>
+<li>buffer to diske 将该层文件系统压缩成本地的一个临时文件</li>
+<li>上传文件至 registry</li>
+<li>本地计算压缩包 digest，删除临时文件，digest 传给 registry</li>
+<li>registry 计算上传压缩包 digest 并进行校验</li>
+<li>registry 将压缩包传输至后端存储文件系统</li>
+<li>重复 1-5 直至所有层传输完毕</li>
+<li>计算镜像的 manifest 并上传至 registry 重复 3-5</li>
+</ol>
+<p>此外判断 already exist skip pushing 的条件变严格了，必须是本地计算过digest 且 该 digest 对应的文件属在对应 repo 存在才可以。</p>
+<p>换句话说就是如果这个镜像层是 pull 下来的，那么是没有digest的还是要把整个压缩包传输并计算 digest，如果这个镜像你之前并没有比如 ubuntu 的 base image 你的 repo 第一次创建之前没传输过，那么第一次也要你传输一次确认你真的有 ubuntu。</p>
+<p>这里面的改进点就是在太多了，先列举 Docker 官方已经做得和正在做的。</p>
+<ol>
+<li>1.9.1 后 push 是 streaming 式的，也就是把 1 和 2 合并去掉临时文件，直接一边压缩一边传输。</li>
+<li>pull 镜像后 digest 保存，大概是 1.8.3 之后添加的省去了重复计算。</li>
+<li>registry 可以直接 mount 别人 repo 中的一层到自己的 repo,只要有pull权限即可，这个工作还在进行中。</li>
+</ol>
+<p>但是这只解决了一小部分问题，push 依然会很慢，docker 和 registry 的设计更多的考虑了公有云的环境设置了过多的安全防范为了防止镜像的伪造和越权获取，但是在一个可信的环境内如果 build 和 push 过程都是自己掌控的，那么很多措施都是多余的，我们可以设计一个自己的 smart pusher 挖掘性能的最大潜力：</p>
+<ol>
+<li>压缩传输 streaming 化和 docker 1.9.1 实现的类似</li>
+<li>越过 registry 直接和存储系统通信，直接拿掉上面 5 的传输时间</li>
+<li>如果 digest 在 存储系统中存在则不再重复传输，在 manifest 中写好层次关系就好</li>
+<li>将多层的传输并行化，多个层一块传，这样才能充分发挥多核的优势，docker 自带的串行push效率实在是太低了</li>
+<li>另外针对 build 结果进行 push 的 smart pusher 可以将流水线发挥到极致，build 每构建出一层就进行传输，将 build 和 push 的时间重叠利用</li>
+</ol>
+<p>有了 smart pusher，push 时间的绝大多数都被隐藏到了 build 的时间中，我们把并发和流水线的技术都用上，充分发挥了多核的优势。</p>
+<h2 id="Docker-pull"><a href="#Docker-pull" class="headerlink" title="Docker pull"></a>Docker pull</h2><p>docker pull 镜像的速度对服务的启动速度至关重要，好在 registry v2 后可以并行 pull 了，速度有了很大的改善。但是依然有一些小的问题影响了启动的速度：</p>
+<ol>
+<li>下载镜像和解压镜像是串行的</li>
+<li>串行解压，由于 v2 都是 gzip 要解压，尽管并行下载了还是串行解压，内网的话解压时间比网络传输都要长</li>
+<li>和 registry 通信，registry 在 pull 的过程中并不提供下载内容只是提供下载 url 和鉴权，这一部分加长了网络传输而且一些 metadata 还是要去后端存储获取，延时还是有一些的</li>
+<li>docker pull 某些情况会卡死，不 docker restart 很难解决，而 restart 又会停止所有服务，严重影响服务稳定性。</li>
+</ol>
+<p>为此我们还需要一个独特设计的 smart puller 帮助我们解决最后的问题： 1. streaming downloading and extracting 和在 smarter pusher 做的类似将这两步合为一步 2. 并行解压，也和 smarter pusher 并行压缩类似 3. 越过 registry 直接和后端存储通信 4. redis 缓存 metadata</p>
+<p>有了 smart puller 我们自然的将 docker pull 的工作和 docker daemon 解耦了，这样再不会发生 pull 导致的 docker hang,服务稳定性也得到了增强，解绑后其实 docker 只是做一个 runtime 这一部分也可考虑改成 runc 去除掉 daemon 这个单点，不过这个工作量就比较大了。此外 smart puller 也可以帮助我们实现在 smart cache 中的精确 pull 以及 pull cache 的加速，可谓一举多得。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>将 push 和 pull 的工作和 daemon 解绑，把 smart cache，smart puller 和 smart pusher 用上后，持续集成如丝般润滑。</p>
+<p>至于我把全系列工具都以 smart 命名，主要是为了给 Smartisan T2 开卖造势 （逃</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2015/10/06/borg-paper-reading-note/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2016-01-02 14:30:55
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%8A%80%E6%9C%AF/" title="技术">
+                        #技术
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%80%A7%E8%83%BD/" title="性能">
+                        #性能
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Docker/" title="Docker">
+                        #Docker
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2016/09/24/one-year-in-alauda/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker-build"><span class="toc-text">Docker build</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker-push"><span class="toc-text">Docker push</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker-pull"><span class="toc-text">Docker pull</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Docker%20%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95 + '&url=' + http%3A%2F%2Foilbeater.com%2F2016%2F01%2F02%2Fuse-docker-performance-issue-and-solution%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2016/01/02/use-docker-performance-issue-and-solution/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

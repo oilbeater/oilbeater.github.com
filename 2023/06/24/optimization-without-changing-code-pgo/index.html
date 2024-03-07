@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      无需改动代码的性能优化方法 —— PGO 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">无需改动代码的性能优化方法 —— PGO</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2023-06-24 08:58:29
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%80%A7%E8%83%BD/" title="性能">
+                    #性能
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/golang/" title="golang">
+                    #golang
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/PGO/" title="PGO">
+                    #PGO
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Linux/" title="Linux">
+                    #Linux
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Kernel/" title="Kernel">
+                    #Kernel
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <ul>
+<li><a href="#pgo-in-general">PGO in General</a></li>
+<li><a href="#pgo-in-golang">PGO in Golang</a><ul>
+<li><a href="#%E6%94%B6%E9%9B%86-profile-%E4%BF%A1%E6%81%AF">收集 Profile 信息</a></li>
+<li><a href="#%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96">编译优化</a></li>
+</ul>
+</li>
+<li><a href="#pgo-for-kernel">PGO for Kernel</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+<p>Golang 在 1.20 引入了 <a target="_blank" rel="noopener" href="https://go.dev/doc/pgo">PGO(Profile-guided optimization)</a> 的优化，根据官方博客的介绍可以在不更改代码的情况下达到 2%-7% 的性能提升。在 1.21 的 <a target="_blank" rel="noopener" href="https://tip.golang.org/doc/go1.21">Release Note</a> 中，Golang 将该功能升级到 GA 并在自己的构建中开启了 PGO，将 Golang 自身编译器的性能提升了 2%-4%。PGO 本身是个编译器的优化方法，并不和特定语言相关，Golang 目前也只是很初步的应用了 PGO，这篇文章将会以 Golang 为例介绍 PGO 的工作原理，可能的优化方向和一个应用 PGO 优化 Linux Kernel 的例子。</p>
+<h1 id="PGO-in-General"><a href="#PGO-in-General" class="headerlink" title="PGO in General"></a>PGO in General</h1><p>通常我们认为静态编译型语言的运行性能要好于动态解释型的语言，但是随着 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Just-in-time_compilation">JIT(Just In Time)</a> 技术的引入，动态语言性能有了大幅提升，因为 JIT 可以根据运行时的情况进行针对的强化。</p>
+<p>例如：</p>
+<ul>
+<li>热点代码编译成机器码</li>
+<li>函数内联</li>
+<li>分支预测</li>
+<li>循环展开</li>
+<li>类型推断</li>
+<li>内存分配优化</li>
+<li>寄存器优化</li>
+</ul>
+<p>JIT 通过一系列运行时的优化可以达到和编译型语言接近的性能，在部分情况下由于可以动态根据情况做一些编译期间无法确认的优化，甚至会有比编译型语言更好的性能。例如 Golang 中的函数内联是写死的规则稍，主要看函数大小，而不是函数使用频率。分支预测和循环展开编译器由于不知道分支运行时的频率分布，也无法做专门的优化。Golang 中 Slice 和 Map 的初始化大小需要通过参数手动指定或者自动根据写死的规则进行扩容，无法根据运行时信息分配一个合适的初始化大小。</p>
+<p>于是一个很自然的想法就是能否将类似 JIT 的技术应用到编译型语言，通过运行时的信息去优化代码性能，传统的做法是通过人类对代码运行时理解的经验，主动的在代码中加入编译提示信息，帮助编译器优化，例如 C++ 中的 inline 函数，C 语言中的宏，GCC 提供的 likely&#x2F;unlikely。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> likely(x) __builtin_expect(!!(x), 1) <span class="comment">//gcc内置函数, 帮助编译器分支优化</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> unlikely(x) __builtin_expect(!!(x), 0)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line">    x = <span class="built_in">atoi</span>(argv[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">unlikely</span>(x == <span class="number">3</span>))&#123;  <span class="comment">//告诉编译器这个分支非常不可能为true</span></span><br><span class="line">        x = x + <span class="number">9</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        x = x - <span class="number">8</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;x=%d\n&quot;</span>, x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式存在几个问题：</p>
+<ol>
+<li>需要对所有分支，函数进行考虑，工作量大，并且调整复杂。</li>
+<li>需要依赖程序员凭借经验推测，不一定符合实际场景。</li>
+<li>只能对自己编写的代码进行调整比较方便，一些依赖的库函数调整困难，比如一个应用开发者可能需要向下调整到 glibc 的代码。</li>
+</ol>
+<p>那么能不能有一种方法可以不调整代码，自动根据运行时的信息对代码的编译进行全局的优化呢，这个方法就是 PGO。通过收集运行时的 Profile 信息反过来优化编译过程。</p>
+<p>一个典型的使用 PGO 的工作流分为下面几步：</p>
+<ol>
+<li>构建初始版本二进制，不带任何 PGO 的优化。</li>
+<li>在生产环境收集 Profile 信息。</li>
+<li>重新构建二进制，并使用 2 中收集的 Profile 信息进行构建优化。</li>
+<li>回到 2，持续迭代。</li>
+</ol>
+<p>Google 通过 <a target="_blank" rel="noopener" href="https://research.google/pubs/pub45290/">AutoFDO</a> 实现了持续的 PGO，同时也介绍了 PGO 存在的问题：</p>
+<ol>
+<li>需要配合 pprof 信息，生产环境完整的 Profile 会带来性能下降，通常使用 Sample 的方式牺牲一定精度，开销在 1%。</li>
+<li>需要随着代码动态调整 Profile，不是个一次性的优化，Profile 信息可能会有泄密隐患，如何构建完整流程是个挑战。</li>
+<li>整体性能提升有限，整体性能优化在 10% 左右。</li>
+<li>二进制体积增加。</li>
+</ol>
+<h1 id="PGO-in-Golang"><a href="#PGO-in-Golang" class="headerlink" title="PGO in Golang"></a>PGO in Golang</h1><p>Golang 目前有两个主流的编译器，gc(go compiler) 和 <a target="_blank" rel="noopener" href="https://github.com/golang/gofrontend">gccgo</a>。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>gc</th>
+<th>gccgo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>优点</td>
+<td><ol>1. 官方支持</ol><ol>2. 兼容性好</ol><ol>3. 编译速度较快</ol></td>
+<td><ol>1. 可以使用 GCC 更多优化能力，性能较好</ol><ol>2. 可以支持更多 CPU 架构和系统</ol></td>
+</tr>
+<tr>
+<td>缺点</td>
+<td><ol>1. 优化较为保守</ol></td>
+<td><ol>1. 跟随 GCC 发版，不支持 Golang 新特性，潜在兼容性问题</ol><ol>2. 安装使用复杂</ol><ol>3. 较慢编译速度</ol></td>
+</tr>
+</tbody></table>
+<p>gccgo 使用前后端分离架构，后端已经支持 PGO，这里主要讨论的是官方 gc 的 PGO 优化。</p>
+<h2 id="收集-Profile-信息"><a href="#收集-Profile-信息" class="headerlink" title="收集 Profile 信息"></a>收集 Profile 信息</h2><p>Golang 的 PGO 目前只支持通过 CPU Profile 进行优化，我们可以通过 Golang 标准库里的 runtime&#x2F;pprof 或者 net&#x2F;http&#x2F;pprof 进行 CPU Profile 的采集，如果是其他的 Profile 采集器的数据如果能转换成 <a target="_blank" rel="noopener" href="https://github.com/google/pprof/tree/main/proto">Google pprof</a> 的格式也可以兼容。</p>
+<p>需要注意的是由于 PGO 使用的是类似 JIT 的优化方式，因此最好在真实的生产环境收集 Profile 信息，才能最贴合程序实际的运行条件，方便进行后期的优化。也可将多台机器上收集的 Profile 信息进行合并 <code>go tool pprof -proto a.pprof b.pprof &gt; merged.pprof</code>.</p>
+<h2 id="编译优化"><a href="#编译优化" class="headerlink" title="编译优化"></a>编译优化</h2><p><code>go build -gpo=/tmp/foo.pprof</code> 即可在编译过程中通过 Profile 信息进行优化。Golang 目前针只实现了<a target="_blank" rel="noopener" href="https://go-review.googlesource.com/c/proposal/+/430398/10/design/55022-pgo-implementation.md#208">函数内联优化</a>，尝试将调用比例大于 2% 的函数进行内联。更多的优化还在画大饼，目前画的大饼可以参考 <a target="_blank" rel="noopener" href="https://github.com/golang/go/issues/55022#issuecomment-1245605666%E3%80%82">https://github.com/golang/go/issues/55022#issuecomment-1245605666。</a></p>
+<p><img src="/../images/pgo-in-go.png" alt="Alt text"></p>
+<p>在实践中经常碰到的场景是在跑完 profile 后不会直接重新编译，而是在下次代码变更后再编译发布。这样带来的问题就是 Profile 的信息和代码是存在差异的，Golang 目前通过一些启发式的规则，可以在代码和 Profile 不一致的情况下尽可能的工作。</p>
+<h1 id="PGO-for-Kernel"><a href="#PGO-for-Kernel" class="headerlink" title="PGO for Kernel"></a>PGO for Kernel</h1><p>PGO 一般用于应用的性能优化，但是一些服务器上的应用有可能是系统调用密集型的，在这种情况下其实可以根据应用对内核进行 PGO，打造一个针对应用优化过后的内核。这里可以参考一下早些年我上学时实验室一个大神师弟的工作 <a target="_blank" rel="noopener" href="http://coolypf.com/kpgo.htm">Profile-Guided Operating System Kernel Optimization</a>，我当时也是通过这个工作才了解到了 PGO。</p>
+<p><img src="/../images/kernel-pgo.png" alt="Alt text"></p>
+<p>图片里显示的是不同软件在优化后的吞吐量提升，可以看到在完全不用动应用代码，只是优化内核的编译，吞吐量就会有 2%~10% 的提升。在 Nginx 的例子里出现了性能的下降，我记的当时大神说过是 GCC 在 PGO 的一个 Bug，导致了错误的优化。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>PGO 是一个不需要改动代码就可以获得性能优化的方法，结合 Golang 的 pprof 可以做很好的配合，但是优化程度也相应有限，而且需要配合发布上线流程，可以作为一个性能优化的尝试。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/05/19/memory-with-haochen/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2023-06-24 08:58:29
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%80%A7%E8%83%BD/" title="性能">
+                        #性能
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/golang/" title="golang">
+                        #golang
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/PGO/" title="PGO">
+                        #PGO
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Linux/" title="Linux">
+                        #Linux
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Kernel/" title="Kernel">
+                        #Kernel
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/07/19/pre-alloc-slice-for-golang/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PGO-in-General"><span class="toc-text">PGO in General</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PGO-in-Golang"><span class="toc-text">PGO in Golang</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%B6%E9%9B%86-Profile-%E4%BF%A1%E6%81%AF"><span class="toc-text">收集 Profile 信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96"><span class="toc-text">编译优化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PGO-for-Kernel"><span class="toc-text">PGO for Kernel</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E6%97%A0%E9%9C%80%E6%94%B9%E5%8A%A8%E4%BB%A3%E7%A0%81%E7%9A%84%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%20%E2%80%94%E2%80%94%20PGO + '&url=' + http%3A%2F%2Foilbeater.com%2F2023%2F06%2F24%2Foptimization-without-changing-code-pgo%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2023/06/24/optimization-without-changing-code-pgo/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

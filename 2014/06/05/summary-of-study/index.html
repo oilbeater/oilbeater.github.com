@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      这些年计算机学生路总结资料 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">这些年计算机学生路总结资料</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2014-06-05 09:31:55
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E8%B5%84%E6%BA%90%E6%8E%A8%E8%8D%90/" title="资源推荐">
+                    #资源推荐
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E7%94%9F%E6%B4%BB/" title="生活">
+                    #生活
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E6%80%BB%E7%BB%93/" title="总结">
+                    #总结
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>四年的本科，三年的研究生算是过来了，在计算机学习这条路上也走了很多的弯路。总结了一下好的资料、信息和方法，不敢说有什么指导意义，只是给还没毕业的学生做个参考。</p>
+<p>博主属于路子铺的比较广的那种，玩过开发板、研究过系统内核、改过浏览器内核、写过网站、弄过机器学习毕设又转过头去做网络了，所以没有什么特别精通的方向。不过好在基础面铺的比较广，各个方面都能和人聊两句，所以这里也就给一些打基础的参考。</p>
+<h2 id="参考书"><a href="#参考书" class="headerlink" title="参考书"></a>参考书</h2><p>过来人都知道，学计算机只靠上课那些内容是远不够的，而有些网站推荐的<a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/1711/what-is-the-single-most-influential-book-every-programmer-should-read">程序员必读系列</a>感觉有点坑，而且没有什么针对性，纯粹是别人说好我也来捧的感觉。博主这里推荐的都是看完过，而且确实有实际作用的书，尽量去除掉神话光环。</p>
+<hr>
+<p>以下是基础篇</p>
+<p><strong><a target="_blank" rel="noopener" href="http://book.douban.com/subject/5333562/">《深入理解计算机系统》</a></strong></p>
+<p>这本书来回读了三遍，每次都有很大收获。说到底这只是一本导论性质的书，不像坊间流传的那么传奇，毕竟也只是CMU本科生的一门计算机基础性质的课。不过看完后确实能对整个计算机系统从底层编码到上层开发产生一个清晰的脉络，课后的习题每道都很有意义，作为一部教材，确实让人读起来赏心悦目。北大这边已经将这本书作为必修课的教材，当时知道的时候我还是很为学生们开心的，当然学生们普遍反映很虐。</p>
+<p><strong><a target="_blank" rel="noopener" href="http://book.douban.com/subject/4178907/">《算法引论》</a></strong></p>
+<p>博主从前是个算法渣，当然现在也强不到哪去。但是我一直感觉推荐<a target="_blank" rel="noopener" href="http://book.douban.com/subject/1885170/">《算法导论》</a>甚至<a target="_blank" rel="noopener" href="http://book.douban.com/subject/1418402/">《TAOCP&gt;</a>是毫无诚意的做法。上述两本书一本是字典性质的，另一本就是辞海性质了，看字典和辞海是要闹哪样。《算法引论》这本书主要讲的是如何设计算法，开篇介绍了高中学的数学归纳法，然后通过归纳法告诉你其他的算法是怎么设计出来的。读了这本书很多原来不熟悉的算法都能推导出来了，尤其是动态规划类的题归纳法简直是大杀器。博主之前看过两遍算法导论都是迷迷糊糊，看完算法引论后感觉突然算法开窍了，再看其他算法都清晰了很多。</p>
+<p><strong><a target="_blank" rel="noopener" href="http://book.douban.com/subject/2243615/">《Head First 设计模式》</a></strong></p>
+<p>虽说博主是所谓软件工程国家重点实验室的人，但是真正和软工领域相关的书只有两本能读下来且觉得有意义。（另一本是<a target="_blank" rel="noopener" href="http://book.douban.com/subject/2230248/">《人月神话》</a>也推荐大家读一下）软工的书很容易写的无聊，这本书的优点就是不无聊。个人感觉设计模式主要是针对对面向对象编程尤其是Java的，能够构建出比较高质量的代码，在面电商的时候几乎都碰到设计模式类的问题了。而且真正看下去，感觉这个东西确实是有意义的。很多人推荐另一本书<a target="_blank" rel="noopener" href="http://book.douban.com/subject/1052241/">《设计模式：可复用面向对象软件的基础》</a>，但是由于读了几次都没读下去就不推荐了，感兴趣的同学可以试一下。</p>
+<p><strong><a target="_blank" rel="noopener" href="http://book.douban.com/subject/4889838/">《鸟哥的Linux私房菜.基础学习篇》</a></strong></p>
+<p>这是一本实用的Linux入门基础教程，尽管里面作者的一些观点有些偏激而且说话太啰嗦了……，但是教的东西都是实打实的。可以减少很多自己摸索的痛苦，对命令行不那么恐惧，不过要注意的就是有些东西已经过时了。</p>
+<hr>
+<p>以下是C++篇</p>
+<p><strong><a target="_blank" rel="noopener" href="http://book.douban.com/subject/1767741/">《C++ Primer》</a></strong></p>
+<p>不夸张的说是看完这本书才会写程序的，很多人觉得上手用这本书太难，我当时是课上学过C来看的，感觉讲的比较基础难度没有很大。外国书没那么多tricky类的问题，中规中矩介绍语言，并且融合了软工的一些内容，看完了对编码的帮助还是很大的。</p>
+<p><strong><a target="_blank" rel="noopener" href="http://book.douban.com/subject/5387403/">《Effective C++》</a></strong></p>
+<p>是我看过的C++相关收获最大的一本书。很多人根据有没有读过这本书来把C++程序员划分为两类，这点我就觉得有点过了。这本书很大的一个作用就是扫雷，把C++的雷坑一个个挖出来给你看，告诉你应该怎么绕过去，读之前我都不知道居然有这么多坑。此外也提供了很多软工方面的建议，通过这些建议来帮助程序员写更好的代码掉更少的坑。这本书还有续集<a target="_blank" rel="noopener" href="http://book.douban.com/subject/5908727/">《More Effective C++》</a>,续集偏设计模式一些了，感觉没有上一代那么有启发意义，不过还是值得一看。</p>
+<p><strong><a target="_blank" rel="noopener" href="http://book.douban.com/subject/10427315/">《深度探索C++对象模型》</a></strong></p>
+<p>由于C++的坑太多了，就专门有一本探坑的书，这本书介绍了C++的具体实现告诉大家坑是怎么来的，这本书也被誉为是C++进阶级程序员必读。但这本书本身也是个大坑，原作挖了一堆坑，侯捷老爷子翻译的时候填坑也没填完还又挖了新坑。看这本书很有意思的一点就是看到批注里有老爷子指出原作者哪里又错了。这本书确实对理解C++有着一剂猛药的作用，看完了再看C++感觉都不太一样了，面试时问到的奇葩问题也都能和面试官侃了。但是有一个问题是C++的标准里并没有规定实现标准，所以这本书里介绍的实现模型其实在不同编译器里是不一样的，而且这本书里介绍的一些实现和现在已经不一样了，所以这本书还是个大坑。可以眺，但也不要太认真。</p>
+<hr>
+<p>以下是Python篇</p>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/2/tutorial/index.html">Python Tutorial</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/2/howto/index.html">Python HOWTOs</a></p>
+<p>Python相关的书看过一些，但是都乏善可陈，而且内容都比较陈旧，官方的文档反而写的很不错，尤其是HOWTOs部分，看得很过瘾。本来想把<a target="_blank" rel="noopener" href="https://docs.python.org/2/library/index.html">Library</a>部分加上的，但是鉴于我还没读完，就算了。有余力的同学可以看一下Library部分的文档，你会发现很多Python不优雅，不直观的地方。而且看Library的过程中还能顺便把计算机的基础知识都过一遍。如果是完全没有什么编程经验的同学直接看文档可能会有些苦难，（后方夹带私货，高能预警）可以看我做的一个<a target="_blank" rel="noopener" href="http://www.fenby.com/courses/pythonyu-yan-ji-chu-ke-cheng/">Python基础教程</a>。</p>
+<hr>
+<p>以下是其他杂项</p>
+<p><strong><a target="_blank" rel="noopener" href="http://book.douban.com/subject/1929984/">《数据库系统概念》</a></strong></p>
+<p>已经出第六版了，虽说比较厚，但是内容都很扎实，前面是数据库基础知识包括SQL，后面是数据库系统的设计实现，讲的很全面，用数据库开发数据库都能获得收获。</p>
+<p><strong><a target="_blank" rel="noopener" href="http://book.douban.com/subject/24737674/">《图解TCP&#x2F;IP》</a></strong></p>
+<p>广度还不错的一本书，图真的很多，不过深度略差。主要好在内容比较新，无线，IPV6等最新技术都有涉猎。谁让《TCP&#x2F;IP 详解》系列还是94年的东西，内容太陈旧了呢。不过最近貌似出第二版了，但是没有看过，有兴趣的同学可以去看看。</p>
+<p><strong><a target="_blank" rel="noopener" href="http://book.douban.com/subject/2154713/">《精通正则表达式》</a></strong></p>
+<p>另一种视角来看字符串处理，还是很颠覆原来思想的。</p>
+<hr>
+<p>为了不让书单太长就不加了，博主看过的书可以参考<a target="_blank" rel="noopener" href="http://book.douban.com/people/oilbeater/collect">豆瓣书单</a>里面大部分的书都是上了研究生后才开始看的（本科四年荒废过去了）。所以告诉大家这些书还是能看完的，可能一开始看会很慢，比如我最初看《深入理解计算机系统》就看了两个多月，不过之后基础好了再看别的书会很快的，只要能保持看书的习惯，看完还是没那么痛苦的。当然这些书也只是个基础，不要指望他们能让你功成名就。</p>
+<h2 id="视频网站"><a href="#视频网站" class="headerlink" title="视频网站"></a>视频网站</h2><p>上面的书很多都是偏理论的，而且内容比较老，这几年的一些新技术其实主要还是靠看博客和看视频来学习的。视频网站主要推荐两个：</p>
+<p><a target="_blank" rel="noopener" href="https://www.coursera.org/">Coursera</a></p>
+<p>大名鼎鼎的Coursera，里面的东西也相对偏理论，不过好处是都是很新，前沿的理论，老师的教学质量很好（发现最近有些新课程质量在下滑，不过北美名校的质量还不错）。博主数据挖掘，机器学习，统计类的知识都是在这上面学到的。不过真正完整拿到结业的只有Machine Learning 和 Critical Thinking。因为很多学的时候并没有当期的课，不过学完后和一些高数据挖掘的同学聊天发现居然都能听懂。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lynda.com/">Lynda</a></p>
+<p>这个就是纯技术应用的视频网站了，手把手教你做网站，P图，搞设计，开发应用。教学质量高的吓人，看过几个课程完全就被专业的教学震惊了，当然课程是收费的。在中国你是能找到一些免费的，不过课程都比较老了。如果几个人共用一个账号的话，我感觉这些钱还是相当值的。</p>
+<h2 id="资讯类"><a href="#资讯类" class="headerlink" title="资讯类"></a>资讯类</h2><p>干IT这行，最新的咨询流是很必要的，但是过多的信息又容易让人烦躁，所以如何管理好自己的Timeline就很重要了。关于Timeline的管理可以参考<a target="_blank" rel="noopener" href="http://www.zhihu.com/question/20379741">如何“修剪”知乎上的 timeline？</a>。连知乎这样曾经高质量的社区都水了，可以想象没有不水的地方了，不过我们还是能做到让自己的Timeline不水的。下面是我关注的一些新闻源和博客，都是可以RSS订阅的：</p>
+<p><a target="_blank" rel="noopener" href="http://news.dbanotes.net/">StartupNews</a></p>
+<p><a target="_blank" rel="noopener" href="http://coolshell.cn/">CoolShell</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.jobbole.com/">博客- 伯乐在线</a></p>
+<p><a target="_blank" rel="noopener" href="http://tech.uc.cn/">UC技术博客</a></p>
+<p><a target="_blank" rel="noopener" href="http://googleblog.blogspot.com/">The Official Google Blog</a></p>
+<p><a href="http://oilbeater.com/">Oilbeater</a> (夹带私货，高能预警)</p>
+<p>前面提到的每天都不会有很多，而且干货比较多，质量还不错。</p>
+<p><a target="_blank" rel="noopener" href="http://www.reddit.com/">reddit</a>重点提一下reddit，是我主要的外文资源的获取地，可以去里面搜索你感兴趣的专题，然后订阅那个专题的咨询，我现在就订阅了python和django两个。如果你不是很确定的话可以试一下programming板块，每天会有将近100的量，空闲时间很多的话可以挑战一下。如果还是能看完的话就试一下<a target="_blank" rel="noopener" href="https://news.ycombinator.com/">HackNews</a>吧。</p>
+<p>如果大家有什么好的资讯或者博客源的话希望也能赏我几个。</p>
+<p>微博上多关注几个大牛也能获得很多新鲜的知识，推荐几个（当然也可先关注<a target="_blank" rel="noopener" href="http://weibo.com/oilbeater">Oilbeater</a>，再顺着我的关注走，我的关注还是比较少的）：<br><a target="_blank" rel="noopener" href="http://weibo.com/infoqchina">InfoQ</a>，<a target="_blank" rel="noopener" href="http://weibo.com/52mlnet">我爱机器学习</a>，<a target="_blank" rel="noopener" href="http://weibo.com/blogread">IT技术博客大学习</a>，<a target="_blank" rel="noopener" href="http://weibo.com/kingoi">DataScientist</a>,<a target="_blank" rel="noopener" href="http://weibo.com/huailinchen">湾区评论</a>,<a target="_blank" rel="noopener" href="http://weibo.com/u/2216172320">何_登成</a>,<a target="_blank" rel="noopener" href="http://weibo.com/u/2093492691">程序员的那些事</a></p>
+<p>在强调清洗Timeline的重要性，取消关注一定取消，绝对不能手软，不然到最后Timeline里就全是男默女泪、不转不是中国人、成功人士的n个方法的鸡汤聚集地。同时要警惕那些只知道站队没有实际内容的人，现在越来越不喜欢知乎的一个原因就是发现不管什么问题站队的回答总能顶到最高，实际的回答反而被忽视。所以要让自己的Timeline少一些站队的消息。</p>
+<h2 id="关于项目和实习"><a href="#关于项目和实习" class="headerlink" title="关于项目和实习"></a>关于项目和实习</h2><p>其实很多人夸大了实习和项目的作用，我的感觉项目和实习的名头不是那么重要，重要的是你做了什么事情，能不能拿出一个让人看到觉得还可以的东西。博主去大公司实习过感觉大公司学到的更多的是流程管理类的东西，真正做出来的东西可能并不是那么重要。所以如果不是直接找工作的实习的话推荐去个小公司，或者创业公司，至少能做出一个像样的东西。项目也是类似的，重要的是做出一个能拿出手的东西，论文专利什么的其实都是比较虚的东西。自己做出一些东西改变一下这个世界一点点，感觉还是很好的,比如说写博客。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>打好基础，清理Timeline，做有用的东西，仅供参考，欢迎拍砖。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2014/05/08/from-url-to-webpage/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2014-06-05 09:31:55
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E8%B5%84%E6%BA%90%E6%8E%A8%E8%8D%90/" title="资源推荐">
+                        #资源推荐
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E7%94%9F%E6%B4%BB/" title="生活">
+                        #生活
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E6%80%BB%E7%BB%93/" title="总结">
+                        #总结
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2014/06/13/why-you-should-care-about-docker/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E4%B9%A6"><span class="toc-text">参考书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E7%BD%91%E7%AB%99"><span class="toc-text">视频网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%84%E8%AE%AF%E7%B1%BB"><span class="toc-text">资讯类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E9%A1%B9%E7%9B%AE%E5%92%8C%E5%AE%9E%E4%B9%A0"><span class="toc-text">关于项目和实习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E8%BF%99%E4%BA%9B%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%A6%E7%94%9F%E8%B7%AF%E6%80%BB%E7%BB%93%E8%B5%84%E6%96%99 + '&url=' + http%3A%2F%2Foilbeater.com%2F2014%2F06%2F05%2Fsummary-of-study%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2014/06/05/summary-of-study/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

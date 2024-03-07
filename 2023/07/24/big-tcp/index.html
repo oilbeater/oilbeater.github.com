@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      新的网络性能优化技术 —— BIG TCP 
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">新的网络性能优化技术 —— BIG TCP</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2023-07-24 15:21:15
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/performance/" title="performance">
+                    #performance
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/network/" title="network">
+                    #network
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/kernel/" title="kernel">
+                    #kernel
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>在翻 Cilium Release Blog 时发现了一个叫 Big TCP 的内核技术，这个技术今年 2 月左右刚被合并到内核。看介绍是专门为 100Gbit 以上的高速网络设计的，在将吞吐量提升 50% 的时候还能大幅降低延迟，于是就去了解了一下这个技术。</p>
+<h1 id="高速网络的性能的瓶颈和误区"><a href="#高速网络的性能的瓶颈和误区" class="headerlink" title="高速网络的性能的瓶颈和误区"></a>高速网络的性能的瓶颈和误区</h1><p>提到网络性能，很多人会很自然的联想到网卡的性能，但是做过网络性能优化的人会知道瓶颈更多其实是在 CPU 上。一般使用 iperf3、qperf 这类压测软件进行测试，尤其在小包情况下基本是无法打满网卡带宽的，这时候 CPU 会先于网卡到达瓶颈。</p>
+<p>因此做网络性能的优化通常做的都是 CPUU 相关的优化，不管是 DPDK，Offload，XDP 加速的原理要么是绕过内核栈，要么是卸载部分工作给网卡，本质上都是为了节省 CPU 资源，来处理更多的数据包。</p>
+<p>以 100G 的网卡为例，以太网的 MTU 是 1500 字节，那么在不做任何优化的情况下 CPU 想要跑满网卡，每秒要处理将近 800 万个数据包，如果每个数据包都要走完整的网络栈，现代 CPU 单核还远远处理不了这个量级的数据包。</p>
+<p>为了能让单核跑出尽可能好的网络性能，就需要内核和网卡驱动共同协作，将一部分工作 Offload 给网卡，这也就是 GRO(Generic Receive Offload) 和 TSO(TCP Segment Offload) 相关的技术。</p>
+<h1 id="GRO-和-TSO"><a href="#GRO-和-TSO" class="headerlink" title="GRO 和 TSO"></a>GRO 和 TSO</h1><p>CPU 处理不了那么多数据的一个原因是需要给每个数据包封装协议头，计算校验和等等会浪费大量的资源，而在 100G 这种带宽下 1500 的 MTU 又实在太小了，不得不拆分出这么多小的数据包。如果将数据包的拆分和组装交给网卡来做，那么内核需要处理的数据包的规模就降下来了，这就是 GRO 和 TSO 提升性能的基本原理。</p>
+<p><img src="/../images/tso-gro.png" alt="Alt text"></p>
+<p>如上图所示，在发送数据包的时候内核可以按照 64K 来处理数据包，网卡通过 TSO 拆分成 1.5K 的小包进行传输，接收端网卡通过 GRO 将小包聚合成 64K 的大包在发送给内核处理。这样一来，内核需要处理包的数量就降为了原来的四十分之一。因此理论上开了这两个 Offload 网络的吞吐量在大包的情况下会有数十倍的提升，在我们之前的测试中这个性能大概会差十倍左右。</p>
+<p>而且在主流内核和网卡驱动里只支持 TCP 的 Offload，所以经常会看到的一个不太符合直觉的现象就是 iperf3 的 TCP 性能要远远好于 UDP 的性能，差距大概也在十倍左右。</p>
+<h1 id="Big-TCP-又做了什么？"><a href="#Big-TCP-又做了什么？" class="headerlink" title="Big TCP 又做了什么？"></a>Big TCP 又做了什么？</h1><p>既然已经有了这个 Offload 那么 Big TCP 又做了什么呢？Big TCP 要做的事情就是让内核里处理的这个数据包变的更大，这样整体要处理的数据包就会进一步下降来提升性能。之前内核处理的数据包大小为 64K 的主要限制在于 IP 包的头部有个长度字段，这个字段长度为 16bit，因此理论上一个 IP 包最大长度就是 64K。</p>
+<p>怎样才能突破这个长度限制呢，内核的作者在这里用了一些很 hack 的方法，在 IPv6 的数据包中有一个 hop-by-hop 的 32 位字段可以存储一些附加信息，那么内核里就可以把 IP 包的长度设置为 0，然后从 hop-by-hop 字段中获取真实的数据包长度，这样一个数据包最大就可以到 4GB 的容量。但是处于稳妥的考虑，目前最大只能设置为 512K，即使这样要处理的数据包也变为了原来的八分之一，相比没有卸载的情况就是将近三百分之一。</p>
+<p>根据开发者的<a target="_blank" rel="noopener" href="https://lwn.net/Articles/883713/">测试</a>，吞吐量有将近 50% 的提升，延迟也有将近 30% 的下降，效果可以说相当显著了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;Standard&#x27;</span> performance with current (74KB) limits.</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..10&#125;; <span class="keyword">do</span> ./netperf -t TCP_RR -H iroa23  -- -r80000,80000 -O MIN_LATENCY,P90_LATENCY,P99_LATENCY,THROUGHPUT|<span class="built_in">tail</span> -1; <span class="keyword">done</span></span><br><span class="line">77           138          183          8542.19    </span><br><span class="line">79           143          178          8215.28    </span><br><span class="line">70           117          164          9543.39    </span><br><span class="line">80           144          176          8183.71    </span><br><span class="line">78           126          155          9108.47    </span><br><span class="line">80           146          184          8115.19    </span><br><span class="line">71           113          165          9510.96    </span><br><span class="line">74           113          164          9518.74    </span><br><span class="line">79           137          178          8575.04    </span><br><span class="line">73           111          171          9561.73    </span><br><span class="line"></span><br><span class="line">Now <span class="built_in">enable</span> BIG TCP on both hosts.</span><br><span class="line"></span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> dev eth0 gro_ipv6_max_size 185000 gso_ipv6_max_size 185000</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> &#123;1..10&#125;; <span class="keyword">do</span> ./netperf -t TCP_RR -H iroa23  -- -r80000,80000 -O MIN_LATENCY,P90_LATENCY,P99_LATENCY,THROUGHPUT|<span class="built_in">tail</span> -1; <span class="keyword">done</span></span><br><span class="line">57           83           117          13871.38   </span><br><span class="line">64           118          155          11432.94   </span><br><span class="line">65           116          148          11507.62   </span><br><span class="line">60           105          136          12645.15   </span><br><span class="line">60           103          135          12760.34   </span><br><span class="line">60           102          134          12832.64   </span><br><span class="line">62           109          132          10877.68   </span><br><span class="line">58           82           115          14052.93   </span><br><span class="line">57           83           124          14212.58   </span><br><span class="line">57           82           119          14196.01 </span><br></pre></td></tr></table></figure>
+
+<p>而 <a target="_blank" rel="noopener" href="https://lwn.net/Articles/920017/">Big TCP 的 IPv4 支持</a>要晚一些，主要原因是 IPv4 内并没有类似 IPv6 中 hop-by-hop 的可选信息字段，因此也就不能在 IP 头中保存真实长度信息。不过作者另辟蹊径，直接从内核的 skb-&gt;len 中计算数据包的真实长度信息，反正这个数据包只要在送出去之后长度是正确的就可以，在机器内部其实可以完全依赖 skb 保存状态信息，这样实现了超过 64K 的 TCP 数据包。理论上 IPv4 的做法会更通用，不过 IPv6 已经先实现了，所以就存在了两种不同实现 Big TCP 的方案。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这个技术对内核和硬件驱动都有一定的要求，内核需要 6.3 才正式支持，而网卡驱动的支持可能还需要联系硬件厂商。但 Big TCP 还是一个值得令人期待的技术，能够在不需要应用程序调整的情况下显著提升网络的性能，在特定场景下的收益还是很大的。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2023/07/19/pre-alloc-slice-for-golang/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2023-07-24 15:21:15
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/performance/" title="performance">
+                        #performance
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/network/" title="network">
+                        #network
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/kernel/" title="kernel">
+                        #kernel
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2023/07/27/local-cpu-llm/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E9%80%9F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD%E7%9A%84%E7%93%B6%E9%A2%88%E5%92%8C%E8%AF%AF%E5%8C%BA"><span class="toc-text">高速网络的性能的瓶颈和误区</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GRO-%E5%92%8C-TSO"><span class="toc-text">GRO 和 TSO</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Big-TCP-%E5%8F%88%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">Big TCP 又做了什么？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E6%96%B0%E7%9A%84%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF%20%E2%80%94%E2%80%94%20BIG%20TCP + '&url=' + http%3A%2F%2Foilbeater.com%2F2023%2F07%2F24%2Fbig-tcp%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2023/07/24/big-tcp/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
