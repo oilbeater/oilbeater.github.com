@@ -6,7 +6,7 @@
   <link href="http://oilbeater.com/atom.xml" rel="self"/>
   
   <link href="http://oilbeater.com/"/>
-  <updated>2024-02-23T04:39:34.655Z</updated>
+  <updated>2024-03-13T10:52:58.121Z</updated>
   <id>http://oilbeater.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>自动关闭 VS Code Remote SSH 机器</title>
+    <link href="http://oilbeater.com/2024/03/13/shutdown-remote-ssh-server/"/>
+    <id>http://oilbeater.com/2024/03/13/shutdown-remote-ssh-server/</id>
+    <published>2024-03-13T10:09:26.000Z</published>
+    <updated>2024-03-13T10:52:58.121Z</updated>
+    
+    <content type="html"><![CDATA[<p>我现在所有的开发环境都转移到了 GCP 的 Spot Instance 实例，然后用 VS Code Remote SSH 插件进行连接。这种方式的好处是 GCP 可以按秒计费，即使开了很高规格的机器只要及时关机费用也是可控的，缺点是如果中间忘了关机赶上过节那费用就烧开了。再被烧掉了 10 多美元后，痛定思痛决定找个能在 VS Code 空闲时自动关机的方法。过程中为了能够在 Docker 容器内执行 shutdown 命令还搞了一些黑魔法。</p><h1 id="如何判断空闲"><a href="#如何判断空闲" class="headerlink" title="如何判断空闲"></a>如何判断空闲</h1><p>这个功能其实类似 CodeSpace 里的 idle timeout，但是 Remote SSH 这个插件并没有暴露这个功能，所以只能自己实现。其实主要的难点在于如何在 Server 端判断空闲，找了一圈没在 VS Code 里看到有暴露的接口，于是就想能不能跳出 VS Code 看看有什么方法能够简洁的判断空闲发生。</p><p>最直接的想法就是去看 SSH 的连接，因为 Remote SSH 也是通过 SSH 连接上来的，如果当前机器没有存活的 SSH 连接，那么就可以认为是空闲直接关机了。但是问题是 Remote SSH 的连接超时时间会特别长，搜索了一些 Issue 有说是 4 个小时的，我也尝试了直接关闭 VS Code 的客户端，发现 Server 端的 SSH 连接也一直没有消失。如果在 Server 端设置 SSH 超时，Client 那边很快就会重连，连接数量也不会减少。</p><p>既然没法通过直接看 SSH 连接数量来判断，那么就进一步去看能不能判断已有的 SSH 连接是不是已经没有流量了。用 <code>tcpdump</code> 抓包看了一下，即使客户端没有任何交互，还是会有 1s 一次的 TCP 心跳数据包，所以也不能有流量为 0 来判断。不过观察下来心跳数据包的大小都是固定的，都是 44 字节，正好可以根据这个特征来判断，如果一段时间内 SSH 端口没有大于 44 字节的数据包就可以判断空闲了。</p><p>于是第一版本的脚本就出来了：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>; <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> [ -f /root/dump ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">rm</span> /root/dump</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">timeout</span> 1m tcpdump -nn -i ens4 tcp and port 22 and greater 50 -w /root/dump</span><br><span class="line"></span><br><span class="line">  line_count=$(<span class="built_in">wc</span> -l &lt; /root/dump)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> [ <span class="variable">$line_count</span> -gt 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">rm</span> /root/dump</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">rm</span> /root/dump</span><br><span class="line">    shutdown -h now</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure><p>这样就实现了 1 分钟内 SSH 端口没有非心跳数据包就关机的功能，下一步就是要让这个脚本自动运行了。</p><h1 id="Docker-黑魔法"><a href="#Docker-黑魔法" class="headerlink" title="Docker 黑魔法"></a>Docker 黑魔法</h1><p>在把脚本打包成 Docker 镜像时发现了一个有趣的问题，那就是所有的 Base Image 里都没有 <code>shutdown</code> 命令，<code>shutdown</code> 命令也没法很容易的安装。为了能够执行主机上的 <code>shutdown</code> 命令，就需要在 Docker 容器里切换到主机的命名空间，再去关机。所以需要把之前的脚本稍微修改一下，包装一下 <code>shutdown</code> 命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nsenter -a -t 1 shutdown -h now</span><br></pre></td></tr></table></figure><p>这个 <code>nsenter</code> 命令的作用是选定 Pid 为 1 的进程，然后进入这个进程的所有(pid, mount, network) Namespaces，这样当 Docker 运行在共享主机 Pid 模式下我们相当于就进入了主机 1 号进程的所有 Namespaces，看上去就和 SSH 到主机上一样可以执行操作了。这样只要再用下面的命令启动容器，就可以不担心忘记随时关机了：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name=close --pid=host --network=host --privileged --restart=always -d close:v0.0.1</span><br></pre></td></tr></table></figure><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过监控 SSH 的流量情况可以一定程度上猜测 VS Code 已经空闲了，然后再用 Docker 的一些黑魔法就可以实现自动关机了。不过整个链路的黑魔法都太多了，有没有什么简单的方式呢？</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;我现在所有的开发环境都转移到了 GCP 的 Spot Instance 实例，然后用 VS Code Remote SSH 插件进行连接。这种方式的好处是 GCP 可以按秒计费，即使开了很高规格的机器只要及时关机费用也是可控的，缺点是如果中间忘了关机赶上过节那费用就烧开了。</summary>
+      
+    
+    
+    
+    
+    <category term="docker" scheme="http://oilbeater.com/tags/docker/"/>
+    
+    <category term="vscode" scheme="http://oilbeater.com/tags/vscode/"/>
+    
+    <category term="tools" scheme="http://oilbeater.com/tags/tools/"/>
+    
+  </entry>
   
   <entry>
     <title>minikube，kind 和 k3d 大比拼</title>
@@ -499,33 +525,6 @@
     <category term="随想" scheme="http://oilbeater.com/tags/%E9%9A%8F%E6%83%B3/"/>
     
     <category term="工作" scheme="http://oilbeater.com/tags/%E5%B7%A5%E4%BD%9C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>技术好就不需要测试了...吗？</title>
-    <link href="http://oilbeater.com/2016/10/07/do-we-need-qa/"/>
-    <id>http://oilbeater.com/2016/10/07/do-we-need-qa/</id>
-    <published>2016-10-07T21:03:34.000Z</published>
-    <updated>2023-02-19T15:05:26.719Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="http://7xl5hp.com1.z0.glb.clouddn.com/qa.jpg"></p><p>软件开发有一个传说，越早发现问题最后产品的质量越有保障。软件开发中保障质量的主要方法有两个，Code Review 和测试。然而 Code Review 通常在代码已经大致成型之后，而测试又在更靠后的阶段，那么在看似事后的手段中投入大量精力来保证软件质量是不是本末倒置呢？</p><p>这些看似不合理的流程的设立其实有着更深层面的原因，如果一个人身体是车床，技术是工艺流程，软件是车床上的产品，那么人和机器有什么区别呢？人不是完美的，人会犯错误，人有着复杂的心理变化，这些心理起伏会对整个结果产生影响。</p><p>一个简单的例子，如果开发的流程引入了 Code Review 和测试，写代码的人就会写的更加小心。我们对看不见的客户碰到问题而抱怨可以视而不见，但被身边的人指出来你这里有问题就心里亚历山大，为了避免这种窘境就需要在写代码过程中注意这里会不会被人揪出问题。所以这些看似后期的流程会在前期就发生巨大的作用，甚至他们最大的作用其实并不在测试过程中发现了多少问题，而在于有测试这件事对开发过程产生的心理影响。</p><p>车床上的产品在流入市场前也会经过测试，软件测试和这种测试还有一些微妙的区别，由于软件产品和人是直接相关的，而这种测试也不可避免的把人加进来，把人加入这个流程事情就复杂了。当找到一个 bug 如果交给机器人处理，机器会按照预订路线处理。而如果是人本能反应会是抗拒的，尽管指出的是软件的问题，而负责人产生的心理反应会是他觉得我有问题，我是不是很糟糕等一系列负面情绪，于是接下来本能的反应就是回避掉或者转移这个问题，诸如在我的机器上是好的呀，我测过没问题呀，我没有动过这块呀，是不是别的组件有问题呀，这个就是这样的不是问题……这样面对 bug 的惯用句式。</p><p>同样由于测试也是人，这种抗拒的答复又会在测试的人身上产生反应，认为是对自己测试工作的否定，而接下来的反应很可能就连锁循环下去了。日积月累下来，测试和开发的关系可能就不会太好了，本来双方的理想工作模型是以软件作为中介互相配合，到最后变为相互间直接的指责。这种相互指责其实还不是最差的结果，另一种可能就是双方都是和气的人不想惹对方生气，开发想万一让他们测出问题来他们又得嫌弃我了，我这个功能不告诉他们偷偷上好了，测试发现问题想这个问题好想也不太严重不会影响客户吧，告诉开发他可能心情不好，觉得我事多，要不就算了吧。这样表面的和和气气下隐藏着更大的危险。</p><p>仔细想想这些事，发现软件的质量还真不只是技术的问题，心理层面的问题会起着微妙而又举足轻重的作用，而如果开发和测试双方都能意识到这点，能跳出自己的心理定式，客观的看待软件中的 bug，了解对方反应背后的心心理动机，多一些理解，那么整个流程的效率就会更高，软件的质量也能得到更好的保证。</p><p>当然这些想法都是我在读《颠覆完美软件-软件测试必须知道的几件事中》想到的，推荐开发和测试还有基础团队的领导者抽空看一看。这是本顶着测试的名号讲程序开发心理学的书，里面会有些更有意思的例子，读过后会有很多旁观者清的体会，也会更深刻的理解那些技术表面下的心理本能。</p><p><img src="http://7xl5hp.com1.z0.glb.clouddn.com/qabook.jpg"></p><p>我在读《颠覆完美软件-软件测试必须知道的几件事中》想到的，推荐开发和测试还有基础团队的领导者抽空看一看。这是本顶着测试的名号讲程序开发心理学的书，读过后会有很多旁观者清的体会，也会更深刻的理解那些技术表面下的心理本能。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;http://7xl5hp.com1.z0.glb.clouddn.com/qa.jpg&quot;&gt;&lt;/p&gt;
-&lt;p&gt;软件开发有一个传说，越早发现问题最后产品的质量越有保障。软件开发中保障质量的主要方法有两个，Code Review 和测试。然而 Code Rev</summary>
-      
-    
-    
-    
-    
-    <category term="技术" scheme="http://oilbeater.com/tags/%E6%8A%80%E6%9C%AF/"/>
-    
-    <category term="测试" scheme="http://oilbeater.com/tags/%E6%B5%8B%E8%AF%95/"/>
-    
-    <category term="软件工程" scheme="http://oilbeater.com/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/"/>
     
   </entry>
   
