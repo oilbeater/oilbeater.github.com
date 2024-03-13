@@ -1,5 +1,5 @@
 ---
-title: 自动关闭 VS Code Remote SSH 机器
+title: 实现 VS Code Remote SSH 下的自动关机
 date: 2024-03-13 10:09:26
 tags: [vscode, tools, docker]
 ---
