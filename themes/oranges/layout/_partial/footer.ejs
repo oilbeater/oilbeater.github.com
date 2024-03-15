@@ -1,0 +1,49 @@
+<%
+  const footerMoreVars = [
+    {
+      name: '{thisYear}',
+      desc: '今年年份',
+      func: () => {
+        return new Date().getFullYear()
+      }
+    }
+  ]
+%>
+<div class="footer">
+  <div class="social">
+    <ul>
+      <% for(let item of theme.footer.social){ %>
+        <li>
+          <a title="<%- item.name %>" href="<%- item.path %>">
+            <i class="iconfont icon-<%- item.icon %>"></i>
+          </a>
+        </li>
+      <% } %>
+    </ul>
+  </div>
+  <% for(let item of theme.footer.more){ %>
+    <%
+      footerMoreVars.forEach(i => {
+        if (item.name.includes(i.name)) {
+          item.name = item.name.replace(i.name, i.func)
+        }
+      })
+    %>
+    <div class="footer-more">
+      <% if (item.path) { %>
+        <a href="<%- item.path %>"><%- item.name %></a>
+      <% } else { %>
+        <%- item.name %>
+      <% } %>  
+    </div>
+  <% } %>
+  <% if (theme.footer.views && theme.footer.views.enable) { %>
+    <div class="footer-views">
+      <% for(let item of theme.footer.views.item) {
+        if (item.enable) { %>
+          <%- item.name %><span id="<%- item.id %>"></span><%- item.unit %>
+        <% } %>
+      <% } %>
+    </div>
+  <% } %>
+</div>

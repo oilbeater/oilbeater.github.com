@@ -27,12 +27,6 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Copy customized files
-        run: |
-          cp themes/header.ejs themes/oranges/layout/_partial/header.ejs
-          cp themes/gitalk.css themes/oranges/source/plugins/gitalk.css
-          cp themes/comments.ejs themes/oranges/layout/_partial/comments.ejs
-
       - name: Build
         run: npm run build
 

@@ -1,0 +1,32 @@
+<div class="container index">
+  <div class="post-list">
+    <!-- 遍历渲染文章 -->
+    <% page.posts.forEach(function(item) { %>
+      <div class="post-item" title="<%- item.title %>">
+        <div class="time-m-d"><%- item.date.format("YYYY-MM-DD") %></div>
+        <div class="title">
+          <a href="<%- url_for(item.path) %>">
+            <% if(item.title !== "") { %>
+              <% if (item.top) { %>
+                <span><span title="<%= __('pinned') %>" class="icon iconfont icon-pin-top post-top"></span><%- item.title %></span>
+              <% } else { %>
+                <span><%- item.title %></span>
+              <% } %>
+            <% } else { %>
+              <span>untitled</span>
+            <% } %>
+          </a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  <nav class="post-navigation">
+    <% if(page.prev !== 0){ %>
+      <a href="<%- url_for(page.prev_link)%>"><i class="iconfont icon-angleleft"></i></a>
+    <% } %>
+    <span class="page-num"><%- page.current %> / <%- page.total -%></span>
+    <% if(page.next !== 0){ %>
+      <a href="<%- url_for(page.next_link)%>"><i class="iconfont icon-angleright"></i></a>
+    <% } %>
+  </nav>
+</div>

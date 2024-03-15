@@ -5,9 +5,10 @@
   <meta name="author" content="<%= config.author %>" />
   <meta name="description" content="<%= config.description %>" />
 
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://oilbeater.com/images/oilbeater.png" />
   <meta name="twitter:site" content="<%= config.title %>" />
-  <meta name="twitter:creator" content="Oilbeater">
+  <meta name="twitter:creator" content="@Oilbeater">
   <meta name="twitter:title" content="<%= page.title %> | <%= config.title%>" />
   <meta name="twitter:description" content="<%= page.description %>" />
 
@@ -17,6 +18,8 @@
   <meta property="og:locale" content="<%= config.language %>" />
   <meta property="og:description" content="<%= page.description %>" />
 
+  <meta name="google-adsense-account" content="ca-pub-9141929305076734">
+  
   <% if(is_home() && page.current > 1){ %>
     <meta name="robots" content="noindex" />
   <% } %>
@@ -107,4 +110,6 @@
       document.documentElement.setAttribute('color-mode', colorMode)
     }
   </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+  crossorigin="anonymous"></script>
 </head>
