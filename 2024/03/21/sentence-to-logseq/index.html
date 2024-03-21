@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://oilbeater.com/images/oilbeater.png" />
+  <meta name="twitter:site" content="Oilbeater 的自习室" />
+  <meta name="twitter:creator" content="@Oilbeater">
+  <meta name="twitter:title" content="如何轻松将 AI 生成内容整合入 Logseq 笔记 | Oilbeater 的自习室" />
+  <meta name="twitter:description" content="" />
+
+  <meta property="og:site_name" content="Oilbeater 的自习室">
+  <meta property="og:title" content="如何轻松将 AI 生成内容整合入 Logseq 笔记 | Oilbeater 的自习室" />
+  <meta property="og:type" content="article" />
+  <meta property="og:locale" content="zh-CN" />
+  <meta property="og:description" content="" />
+
+  <meta name="google-adsense-account" content="ca-pub-9141929305076734">
+  
+  
+  
+  <title>
+    
+      如何轻松将 AI 生成内容整合入 Logseq 笔记
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+  crossorigin="anonymous"></script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">如何轻松将 AI 生成内容整合入 Logseq 笔记</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2024-03-21 10:39:37
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/logseq/" title="logseq">
+                    #logseq
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/ai/" title="ai">
+                    #ai
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/learning/" title="learning">
+                    #learning
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>我的日常生活已经融入了很多 AI 的协助，比如翻译一段文字、解释某个名词、回答一个问题等等。但是频繁使用后发现了另一个问题就是这些 AI 的产出对我的知识来说是个有益的补充，可是使用的时候通常是一次性的解决问题，并没有把这些内容沉淀下来。当需要把他们收集到笔记里的时候还要再回去整理，很是不方便。想象一下，如果这些临时查询的宝贵信息可以自动保存到自己的笔记系统中，就再也不用担心丢失重要的知识片段了。于是就萌生了做个工作流把这些 AI 生成的内容自动存到我的笔记系统里，然后再定期回顾。这里会介绍我调研的一些工具的局限，以及如何用了一个简单的框架把 AI 生成的内容自动导入到 logseq，并做成 flashcard。</p>
+<h1 id="问题分解和初步调研"><a href="#问题分解和初步调研" class="headerlink" title="问题分解和初步调研"></a>问题分解和初步调研</h1><p>这里以我一个日常翻译的场景为例：当遇到读不懂的句子是我希望能够划词翻译，然后让 AI 帮我分析这个句子里疑难的单词，最后把这些内容以 flashcard 的格式保存到 logseq 里，这样借助手机端的同步我就可以在碎片时间来复习这个句子了。所以问题大致就是三个，1. 取出划线的文本 2. 编写一个 prompt 生成我想要的内容 3. 保存到 logseq。</p>
+<p>前两步其实很多工具都已经集成了包括 Raycast AI 和 OpenAI-translator，但是第他们都没提供把前两步的结果导出到第三方的扩展接口。Raycast 理论上可以通过自己的插件体系来完成这件事，但是我这边不太熟悉 JS，并且也不想太依赖 Raycast AI，毕竟后面不打算续费了。于是决定自己写个 python 脚本做这些事，然后通过 Raycast 的 script command 和快捷键直接调用脚本，这样理论上也可以一个快捷键完成整个工作流。</p>
+<h1 id="如何获取划选的文本"><a href="#如何获取划选的文本" class="headerlink" title="如何获取划选的文本"></a>如何获取划选的文本</h1><p>第一个难题就是获取划选的文本，看上去是个操作系统级别的操作，并不是很好实现。直到我看到了一个查词软件的实现我才恍然大悟：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://github.com/raycast/script-commands/blob/master/commands/apps/dictionary/look-up-in-dictionary.applescript</span></span><br><span class="line">tell application <span class="string">&quot;System Events&quot;</span></span><br><span class="line">    keystroke <span class="string">&quot;c&quot;</span> using &#123;<span class="built_in">command</span> down&#125;</span><br><span class="line">    delay 0.1</span><br><span class="line">    <span class="keyword">do</span> shell script <span class="string">&quot;open dict://&quot;</span> &amp; the clipboard</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>这个脚本本质上是模拟键盘摁下了 <code>cmd + v</code>，然后直接读剪切板去了，就这么绕过了获取选中文本的问题。考虑到我在用 Raycast 的时候经常碰到划选的文本识别错误，已经养成了 <code>cmd + v</code> 的习惯，那就不用费劲心思找获取划选的文本的方法了，直接读剪贴板就完了。</p>
+<h1 id="调用-AI"><a href="#调用-AI" class="headerlink" title="调用 AI"></a>调用 AI</h1><p>这块基本经轻车熟路了，关键的是设置一个合适的 prompt，在翻译的同时生成一个句子的教学指南，并尽可能的按照 logseq 的格式来输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">message_text = [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>,</span><br><span class="line">        <span class="string">&quot;content&quot;</span>: <span class="string">&quot;You are a university English teacher, below is a paragraph in English. &quot;</span> +</span><br><span class="line">        <span class="string">&quot;Please first translate it into Chinese. Then extract difficult words and phrases from the source paragraph, sort them in descending order of importance choose only the top 3 output them with explain of their usage to me in detail from a linguistic perspective.&quot;</span> +</span><br><span class="line">        <span class="string">&quot;The overall output should look like this: \n&quot;</span> +</span><br><span class="line">        <span class="string">&quot;- &#123;The Chinese Translation&#125; \n&quot;</span> +</span><br><span class="line">        <span class="string">&quot;- Explanation: \n&quot;</span> +</span><br><span class="line">        <span class="string">&quot;  - &#123;word or phrase&#125;: &#123;explanation&#125;\n&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;role&quot;</span>:<span class="string">&quot;user&quot;</span>,</span><br><span class="line">        <span class="string">&quot;content&quot;</span>: content</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h1 id="输出到-logseq"><a href="#输出到-logseq" class="headerlink" title="输出到 logseq"></a>输出到 logseq</h1><p>在输出到 logseq 这一步的时候本来是打算调用 logseq 的 API，logseq 的开发者模式提供了一个本地的 HTTP 服务可以通过 HTTP 去调用。但是当我看了他们的 API 文档后差点给整崩溃了，所有的操作都要用 id，page id 又没办法去直接索引，要 getAll 后自己过滤。appendBlock 也不允许插入带层级的 Block，要串好几个 API 才能完成一个简单的操作。</p>
+<p>崩溃的时候转念一想，logseq 不就是一堆 markdown 的渲染器么，既然 API 那么难用我直接去写文件不就好了，于是一组复杂的 API 调用变成了轻松愉快的文件 append 操作。这样既绕开了 logseq API 的限制，甚至有可能接入其他基于 markdown 的笔系统。</p>
+<p>最后完整的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pyperclip</span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> AzureOpenAI</span><br><span class="line"></span><br><span class="line">content = pyperclip.paste()</span><br><span class="line"></span><br><span class="line">azure_endpoint = <span class="string">&quot;YOUR AZURE ENDPOINT&quot;</span></span><br><span class="line">api_key = <span class="string">&quot;YOUR API KEY&quot;</span></span><br><span class="line">model = <span class="string">&quot;YOUR MODEL NAME&quot;</span></span><br><span class="line">logseq_path = <span class="string">&quot;YOUR LOGSEQ PAGE FILE PATH&quot;</span></span><br><span class="line"></span><br><span class="line">client = AzureOpenAI(</span><br><span class="line">  azure_endpoint = azure_endpoint,</span><br><span class="line">  api_key=api_key,</span><br><span class="line">  api_version=<span class="string">&quot;2024-02-15-preview&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">message_text = [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>,</span><br><span class="line">        <span class="string">&quot;content&quot;</span>: <span class="string">&quot;You are a university English teacher, below is a paragraph in English. &quot;</span> +</span><br><span class="line">        <span class="string">&quot;Please first translate it into Chinese. Then extract difficult words and phrases from the source paragraph, sort them in descending order of importance choose only the top 3 output them with explain of their usage to me in detail from a linguistic perspective.&quot;</span> +</span><br><span class="line">        <span class="string">&quot;The overall output should look like this: \n&quot;</span> +</span><br><span class="line">        <span class="string">&quot;- &#123;The Chinese Translation&#125; \n&quot;</span> +</span><br><span class="line">        <span class="string">&quot;- Explanation: \n&quot;</span> +</span><br><span class="line">        <span class="string">&quot;  - &#123;word or phrase&#125;: &#123;explanation&#125;\n&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;role&quot;</span>:<span class="string">&quot;user&quot;</span>,</span><br><span class="line">        <span class="string">&quot;content&quot;</span>: content</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">completion = client.chat.completions.create(</span><br><span class="line">  model=model, <span class="comment"># model = &quot;deployment_name&quot;</span></span><br><span class="line">  messages = message_text,</span><br><span class="line">  temperature=<span class="number">0.7</span>,</span><br><span class="line">  max_tokens=<span class="number">500</span>,</span><br><span class="line">  top_p=<span class="number">0.95</span>,</span><br><span class="line">  frequency_penalty=<span class="number">0</span>,</span><br><span class="line">  presence_penalty=<span class="number">0</span>,</span><br><span class="line">  stop=<span class="literal">None</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> completion.choices[<span class="number">0</span>].message.content == <span class="literal">None</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;No response&quot;</span>)</span><br><span class="line">    exit()</span><br><span class="line"></span><br><span class="line">response = completion.choices[<span class="number">0</span>].message.content</span><br><span class="line"><span class="built_in">print</span>(response)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(logseq_path, <span class="string">&#x27;a&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">&quot;\n- &quot;</span> + content.rstrip() + <span class="string">&quot; #card #English&quot;</span> + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> response.splitlines():</span><br><span class="line">        <span class="keyword">if</span> line.startswith(<span class="string">&quot;```&quot;</span>):</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> line.rstrip() == <span class="string">&quot;&quot;</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line.startswith(<span class="string">&quot;- &quot;</span>):</span><br><span class="line">            line = <span class="string">&quot;- &quot;</span> + line.rstrip()</span><br><span class="line">        f.write(<span class="string">&quot;  &quot;</span> + line + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    f.close()</span><br></pre></td></tr></table></figure>
+<p>后需要做的就是在 Raycast 里给这个脚本设置一个快捷键，这样下次碰到不会的句子，选中复制后就可以通过快捷键完成翻译，难点提取，和生成 flashcard 的整个工作流。</p>
+<p>最后生成的 flashcard 效果大概如下：</p>
+<p><img src="/../images/logseq-card.png" alt="alt text"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过将 AI 生成的内容自动化集成到 Logseq 笔记中，我们不仅提高了信息管理的效率，还优化了学习和工作流程。通过一个简单的脚本每个人都可以轻松地将这种强大的技术整合到日常生活中，实现知识的积累和复习。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2024/03/13/shutdown-remote-ssh-server/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2024-03-21 10:39:37
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/logseq/" title="logseq">
+                        #logseq
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/ai/" title="ai">
+                        #ai
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/learning/" title="learning">
+                        #learning
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E8%A7%A3%E5%92%8C%E5%88%9D%E6%AD%A5%E8%B0%83%E7%A0%94"><span class="toc-text">问题分解和初步调研</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E5%88%92%E9%80%89%E7%9A%84%E6%96%87%E6%9C%AC"><span class="toc-text">如何获取划选的文本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B0%83%E7%94%A8-AI"><span class="toc-text">调用 AI</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E5%88%B0-logseq"><span class="toc-text">输出到 logseq</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+     crossorigin="anonymous"></script>
+<!-- 横向广告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9141929305076734"
+     data-ad-slot="3076777751"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2024 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%A6%82%E4%BD%95%E8%BD%BB%E6%9D%BE%E5%B0%86%20AI%20%E7%94%9F%E6%88%90%E5%86%85%E5%AE%B9%E6%95%B4%E5%90%88%E5%85%A5%20Logseq%20%E7%AC%94%E8%AE%B0 + '&url=' + http%3A%2F%2Foilbeater.com%2F2024%2F03%2F21%2Fsentence-to-logseq%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2024/03/21/sentence-to-logseq/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
