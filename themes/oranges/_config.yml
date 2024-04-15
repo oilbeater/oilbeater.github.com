@@ -109,6 +109,10 @@ navbar:
     enable: true
     path: /about/
     key: about
+  -
+    name: Running Page
+    enable: true
+    path: /running_page/
 
 # 文章目录
 catalog:
