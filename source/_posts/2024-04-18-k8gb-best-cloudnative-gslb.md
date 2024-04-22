@@ -1,5 +1,5 @@
 ---
-title: k8gb: 云原生最佳开源 GSLB 方案 
+title: "k8gb: 云原生最佳开源 GSLB 方案" 
 date: 2024-04-18 10:01:10
 tags: [kubernetes, network]
 ---
