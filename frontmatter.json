@@ -1,0 +1,25 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.framework.id": "hexo",
+  "frontMatter.preview.host": "http://localhost:4000",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "drafts",
+      "path": "[[workspace]]/source/_drafts"
+    },
+    {
+      "title": "posts",
+      "path": "[[workspace]]/source/_posts"
+    },
+    {
+      "title": "about",
+      "path": "[[workspace]]/source/about"
+    },
+    {
+      "title": "tags",
+      "path": "[[workspace]]/source/tags"
+    }
+  ],
+  "frontMatter.content.publicFolder": "source/images",
+  "frontMatter.git.enabled": true
+}
