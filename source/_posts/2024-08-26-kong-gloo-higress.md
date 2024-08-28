@@ -17,9 +17,9 @@ tags:
 | ----- | -------- | -------- | ----- |  --- |
 | 技术栈 | Nginx + Lua | Envoy + Go | Envoy + WASM | 虽然几家都提供了插件机制，但是和网关的耦合程度都比价高，非网关的开发者上手还是有一定难度 |
 | 日志监控  | 每个 AI 插件会将元信息，如模型名、Token 开销费用等信息加入到 Audit Log 中，但是似乎没有自定义元信息的功能，需要通过其他插件来辅助完成 | 似乎没有在 AI 这块对日志有功能增强，还是通用的监控 | 日志和监控中增加了 Token 的用量，提供的信息和 Kong 类似，也不具备自定义元信息的功能 | 如果能增加一些自定义元信息，并支持记录 Request 和 Response 里 Message 信息就更好了 |
-| Proxy | Kong 提供了归一化的 API 能够用一套统一的 API 去调用不同的 LLM API，这对开发者还是比较友好的能够不需要大改应用代码就能用不用的 LLM | Gloo 没有提供归一化的 API，只是反向代理到上游 LLM API | Higress 支持将不同的 LLM API 统一转换成 OpenAI API，这对开发者来说也比较友好，毕竟目前生态里还是直接用 OpenAI API 的比较多 | 虽然我觉得是否提供归一化的 API 没那么重要，不过一定要归一化的话归一化成 OpenAI 格式的会好些 |
-|  API Key 管理  | 直接从客户端透传 Key 给上游 | 客户端的 Key 可以和上游的 Key 不一样，相当于把 Key 在网关层做了一层屏蔽 | 直接从客户端透传 Key 给上游 | 个人感觉 Gloo 这个功能还比较实用，避免了在 LLM 那里真实的 Key 被过多业务方知道，安全和可控性会更好一些 |
-| Cache | 没有提供 LLM Cache 相关能力 | 提供了语义 Cache，看配置是调用了 OpenAI 的 Embedding 和 Redis 的 Vector，不过没看到更细粒度的比如 TTL 相似度的配置 | 提供的还是文本匹配的缓存，相比全文本可以通过 JSON PATH 的语法选择部分 Message 做缓存，看配置也是利用 Redis，不过不支持语义 Cache | Gloo 提供的语义 Cache 看起来更高级一些 |
+| Proxy | Kong 提供了归一化的 API 能够用一套统一的 API 去调用不同的 LLM API，这对开发者还是比较友好的能够不需要大改应用代码就能用不同的 LLM | Gloo 没有提供归一化的 API，只是反向代理到上游 LLM API | Higress 支持将不同的 LLM API 统一转换成 OpenAI API，这对开发者来说也比较友好，毕竟目前生态里还是直接用 OpenAI API 的比较多 | 虽然我觉得是否提供归一化的 API 没那么重要，不过一定要归一化的话归一化成 OpenAI 格式的会好些 |
+|  API Key 管理  | 客户端的 Key 可以和上游的 Key 不一样，相当于把 Key 在网关层做了一层屏蔽 | 客户端的 Key 可以和上游的 Key 不一样，相当于把 Key 在网关层做了一层屏蔽 | 直接从客户端透传 Key 给上游 | 个人感觉 Gloo 这个功能还比较实用，避免了在 LLM 那里真实的 Key 被过多业务方知道，安全和可控性会更好一些 |
+| Cache | 当前版本没有提供 LLM Cache 相关能力，据说会在 3.8 版本提供 | 提供了语义 Cache，看配置是调用了 OpenAI 的 Embedding 和 Redis 的 Vector，不过没看到更细粒度的比如 TTL 相似度的配置 | 提供的还是文本匹配的缓存，相比全文本可以通过 JSON PATH 的语法选择部分 Message 做缓存，看配置也是利用 Redis，不过不支持语义 Cache | Gloo 提供的语义 Cache 看起来更高级一些 |
 |  请求/响应改写  | 可以在 Request 和 Response 阶段分别加 prompt 对 message 进行改写，相当于一个小型的 workflow | 只提供了 prepend system prompt 的能力，感觉提升有限  | 和 Kong 类似提供了用 prompt 进行改写的能力，不过现在只支持通义千问的 LLM 感觉不够开放 |  |
 | RAG | 目前没有相关功能的插件 | 可以对接一个 postgres 和 OpenAI 的 embedding Token 这样可以自己提供一些文本来做 RAG | 和 Gloo 的功能类似，不过只支持阿里云的向量服务和通义千问，还是感觉不够开放 | 感觉 RAG 的配置参数都比较少没有相似度，或者爬取网页的接口，只能做比较简单的 RAG |
 
