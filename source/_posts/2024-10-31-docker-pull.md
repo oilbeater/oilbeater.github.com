@@ -129,8 +129,8 @@ tags:
 
 ### 参考资料
 
-	- [eStargz: Standard-Compatible Extension to Container Image Layers for Lazy Pulling](https://github.com/containerd/stargz-snapshotter/blob/main/docs/estargz.md)
-	- [Startup Containers in Lightning Speed with Lazy Image Distribution on Containerd](https://medium.com/nttlabs/startup-containers-in-lightning-speed-with-lazy-image-distribution-on-containerd-243d94522361)
-	- [Slacker: Fast Distribution with Lazy Docker Containers](https://www.usenix.org/conference/fast16/technical-sessions/presentation/harter)
-	- [Accelerated Container Image](https://github.com/containerd/accelerated-container-image)
-	- [Use Image streaming to pull container images](https://cloud.google.com/kubernetes-engine/docs/how-to/image-streaming)
+- [eStargz: Standard-Compatible Extension to Container Image Layers for Lazy Pulling](https://github.com/containerd/stargz-snapshotter/blob/main/docs/estargz.md)
+- [Startup Containers in Lightning Speed with Lazy Image Distribution on Containerd](https://medium.com/nttlabs/startup-containers-in-lightning-speed-with-lazy-image-distribution-on-containerd-243d94522361)
+- [Slacker: Fast Distribution with Lazy Docker Containers](https://www.usenix.org/conference/fast16/technical-sessions/presentation/harter)
+- [Accelerated Container Image](https://github.com/containerd/accelerated-container-image)
+- [Use Image streaming to pull container images](https://cloud.google.com/kubernetes-engine/docs/how-to/image-streaming)
