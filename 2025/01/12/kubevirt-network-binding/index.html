@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="Oilbeater 的自习室" />
+  <meta name="twitter:creator" content="@Oilbeater">
+  <meta name="twitter:title" content="从 Network Binding Plugin 看 KubeVirt 的扩展方式 | Oilbeater 的自习室" />
+  <meta name="twitter:description" content="" />
+
+  <meta property="og:site_name" content="Oilbeater 的自习室">
+  <meta property="og:title" content="从 Network Binding Plugin 看 KubeVirt 的扩展方式 | Oilbeater 的自习室" />
+  <meta property="og:type" content="article" />
+  <meta property="og:locale" content="zh-CN" />
+  <meta property="og:description" content="" />
+
+  <meta name="google-adsense-account" content="ca-pub-9141929305076734">
+  
+  
+  
+  <title>
+    
+      从 Network Binding Plugin 看 KubeVirt 的扩展方式
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+  crossorigin="anonymous"></script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+        <li class="nav-item" data-path="/running_page/">
+          <a href="/running_page/">Running Page</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">从 Network Binding Plugin 看 KubeVirt 的扩展方式</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-01-12 08:16:07
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/kubevirt/" title="kubevirt">
+                    #kubevirt
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/networking/" title="networking">
+                    #networking
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>在 KubeVirt v1.4 的新版本里将 <a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/network/network_binding_plugins/">Network Binding Plugin</a> 提升到了 Beta，提供了一种新的扩展 KubeVirt 网络的方式。虽然名义上是为了扩展网络的能力，但实际上从实现上来看，这个机制能做的事情远不止网络，所有和 libvirt domain xml 相关的变更都可以通过这个机制来实现。</p>
+<h2 id="KubeVirt-Network-Overview"><a href="#KubeVirt-Network-Overview" class="headerlink" title="KubeVirt Network Overview"></a>KubeVirt Network Overview</h2><p>先从网络的角度来看下 KubeVirt 之前的网络机制有什么问题，新的机制又是如何进行扩展的。</p>
+<p>由于 KubeVirt 使用的是 Pod 里面跑 VM 的架构，所以复用了 CNI 的网络机制。这样的话就将网络分成了两个部分，一个是 Pod 网络由各个 CNI 提供。另一部分就是如何将 CNI 提供的网络接入 VM，在 libvirt 里这部分叫做 Domain 网络。</p>
+<p>KubeVirt 之前的各种网络机制（Bridge， Masquerade， Passt， Slirp）所做的事情就是通过不同的技术方案将 Pod 里的 eth0 接入到 VM 的 tap0 网卡。例如 Bridge 将 tap0 和 eth0 接入到同一个网桥，Masquerade 将 tap0 的流量经过 iptables nat 规则导入 eth0，Passt 和 Slirp 通过用户态的网络栈做流量重定向。</p>
+<p><img src="/../images/kubevirt-networking-tradition.png" alt="alt text"></p>
+<p>这些方法在实现上都是类似的，在 Pod 内部做一些网络相关的配置，然后修改 libvirt 的启动参数接入对应的网络。但是现有的机制都是写死在 KubeVirt Core 里的，并没有扩展机制，想要新增一种机制或者修改已有的机制都需要修改 KubeVirt 的代码很不灵活，例如默认的 bridge 插件会劫持 DHCP 请求，但是又不支持 IP, 所以 bridge 模式下的双栈就很难实现，而 Kube-OVN 中已经实现的 DHCP 又被这个机制绕过去了，之前想做 bridge 的双栈就需要改 KubeVirt 的代码来关闭默认的 DHCP 十分麻烦。因此新版本中将这套机制抽象出来提供了一套通用的机制。</p>
+<h2 id="Hook-Sidecar"><a href="#Hook-Sidecar" class="headerlink" title="Hook Sidecar"></a>Hook Sidecar</h2><p>先来看一种在 KubeVirt 中已经存在的扩展机制 <a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/user_workloads/hook-sidecar/">Hook Sidecar</a>。</p>
+<p>这套机制是在 VM 正式创建前，可以加载一个用户自定义的镜像，或者一段 ConfigMap 里保存的 Shell 或者 Python 脚本，来修改 VM 启动前 libvirt 的启动参数和 cloud-init 参数。</p>
+<p>它的执行机制和 CNI 有些类似，virt-handler 在启动 VM 前会去对应目录寻找 <code>/usr/bin/onDefineDomain</code> 和 <code>/usr/bin/preCloudInitIso</code> 两个二进制文件，前者传入 virt-handler 生成的 libvirt XML 配置，返回修改后的配置；后者传入 cloudInit 配置，返回修改后的 cloudInit 配置。这样的话所有 KubeVirt 本身不支持的 libvirt 和 cloudInit 参数都可以通过这种机制来注入修改。并且由于 Sidecar 内实际可以执行任意代码，所能做的事情远不止修改这两个配置，所有初始化阶段 KubeVirt 没有实现的能力其实都可以在这里来实现。</p>
+<h2 id="Network-Binding-Plugin"><a href="#Network-Binding-Plugin" class="headerlink" title="Network Binding Plugin"></a>Network Binding Plugin</h2><p>现在可以到 Network Binding Plugin 这个机制了，这个机制其实和 Hook Sidecar 基本上大同小异。主要区别是将二进制调用改成了 gRPC 调用，gRPC 里注册的方法还是  <code>onDefineDomain</code> 和 <code>preCloudInitIso</code> 参数传递从命令行参数改为了 gRPC Request 里的参数，其他都是一样的。</p>
+<p>具体的例子可以参考目前还在 KubeVirt 代码里的 <a target="_blank" rel="noopener" href="https://github.com/kubevirt/kubevirt/tree/main/cmd/sidecars/network-slirp-binding">Slirp Binding</a> 的实现。尽管在 Network Binding Plugin 的规范里还增加了<code>networkAttachmentDefinition</code> 字段可以选择一个 CNI，但这个其实使用之前的网卡选择机制也能实现，甚至由于 Sidecar 里可以执行任意代码，在里面再实现一个 CNI 覆盖 Pod 原先的网络也是可以的。</p>
+<p>那么之后的网络架构就变成了下图这样：</p>
+<p><img src="/../images/networking-binding.png" alt="alt text"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然 Network Binding Plugin 的机制是为 Network 扩展准备的，但实际上几乎可以扩展所有 KubeVirt 在 virt-handler 侧的处理逻辑，甚至可以把 KubeVirt 也只当一个框架，所有的逻辑都通过 Sidecar 来处理，相信未来可以玩出不少花活来。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/user_workloads/hook-sidecar/">https://kubevirt.io/user-guide/user_workloads/hook-sidecar/</a></li>
+<li><a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/network/network_binding_plugins/">https://kubevirt.io/user-guide/network/network_binding_plugins/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubevirt/kubevirt/blob/main/docs/network/network-binding-plugin.md">https://github.com/kubevirt/kubevirt/blob/main/docs/network/network-binding-plugin.md</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubevirt/kubevirt/tree/main/cmd/sidecars/network-slirp-binding">https://github.com/kubevirt/kubevirt/tree/main/cmd/sidecars/network-slirp-binding</a></li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2024/10/31/docker-pull/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2025-01-12 08:16:07
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/kubevirt/" title="kubevirt">
+                        #kubevirt
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/networking/" title="networking">
+                        #networking
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#KubeVirt-Network-Overview"><span class="toc-text">KubeVirt Network Overview</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hook-Sidecar"><span class="toc-text">Hook Sidecar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Network-Binding-Plugin"><span class="toc-text">Network Binding Plugin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+     crossorigin="anonymous"></script>
+<!-- 横向广告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9141929305076734"
+     data-ad-slot="3076777751"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2025 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E4%BB%8E%20Network%20Binding%20Plugin%20%E7%9C%8B%20KubeVirt%20%E7%9A%84%E6%89%A9%E5%B1%95%E6%96%B9%E5%BC%8F + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F01%2F12%2Fkubevirt-network-binding%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/01/12/kubevirt-network-binding/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
