@@ -39,7 +39,7 @@ KubeVirt 之前的各种网络机制（Bridge， Masquerade， Passt， Slirp）
 ![alt text](../images/networking-binding.png)
 ## 总结
 
-虽然 Network Binding Plugin 的机制是为 Network 扩展准备的，但实际上几乎可以扩展所有 KubeVirt 在 virt-handler 侧的处理逻辑，甚至可以把 KubeVirt 也只当一个框架，所有的逻辑都通过 Sidecar 来处理，相信未来可以玩出不少花活来。
+虽然 Network Binding Plugin 的机制是为 Network 扩展准备的，但实际上几乎可以扩展所有 KubeVirt 在 virt-handler 侧的处理逻辑。甚至可以把 KubeVirt 也只当一个框架，所有的逻辑都通过 Sidecar 来处理，相信未来可以玩出不少花活来。
 
 ## 参考资料
 
