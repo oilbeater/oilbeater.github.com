@@ -220,7 +220,7 @@
 <p>具体的例子可以参考目前还在 KubeVirt 代码里的 <a target="_blank" rel="noopener" href="https://github.com/kubevirt/kubevirt/tree/main/cmd/sidecars/network-slirp-binding">Slirp Binding</a> 的实现。尽管在 Network Binding Plugin 的规范里还增加了<code>networkAttachmentDefinition</code> 字段可以选择一个 CNI，但这个其实使用之前的网卡选择机制也能实现，甚至由于 Sidecar 里可以执行任意代码，在里面再实现一个 CNI 覆盖 Pod 原先的网络也是可以的。</p>
 <p>那么之后的网络架构就变成了下图这样：</p>
 <p><img src="/../images/networking-binding.png" alt="alt text"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然 Network Binding Plugin 的机制是为 Network 扩展准备的，但实际上几乎可以扩展所有 KubeVirt 在 virt-handler 侧的处理逻辑，甚至可以把 KubeVirt 也只当一个框架，所有的逻辑都通过 Sidecar 来处理，相信未来可以玩出不少花活来。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然 Network Binding Plugin 的机制是为 Network 扩展准备的，但实际上几乎可以扩展所有 KubeVirt 在 virt-handler 侧的处理逻辑。甚至可以把 KubeVirt 也只当一个框架，所有的逻辑都通过 Sidecar 来处理，相信未来可以玩出不少花活来。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/user_workloads/hook-sidecar/">https://kubevirt.io/user-guide/user_workloads/hook-sidecar/</a></li>
 <li><a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/network/network_binding_plugins/">https://kubevirt.io/user-guide/network/network_binding_plugins/</a></li>
