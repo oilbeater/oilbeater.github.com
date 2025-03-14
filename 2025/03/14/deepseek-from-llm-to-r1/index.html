@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content="从 Network Binding Plugin 看 KubeVirt 的扩展方式 | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="从 DeepSeek LLM 到 R1 —— DeepSeek LLM | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content="从 Network Binding Plugin 看 KubeVirt 的扩展方式 | Oilbeater 的自习室" />
+  <meta property="og:title" content="从 DeepSeek LLM 到 R1 —— DeepSeek LLM | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -26,7 +26,7 @@
   
   <title>
     
-      从 Network Binding Plugin 看 KubeVirt 的扩展方式
+      从 DeepSeek LLM 到 R1 —— DeepSeek LLM
       
       
       |
@@ -181,25 +181,31 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">从 Network Binding Plugin 看 KubeVirt 的扩展方式</div>
+      <div class="post-title">从 DeepSeek LLM 到 R1 —— DeepSeek LLM</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-          2025-01-12 08:16:07
+          2025-03-14 10:48:50
         </span>
         
               <span class="post-tags">
                 <i class="iconfont icon-tags mr-10" title="标签"></i>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/kubevirt/" title="kubevirt">
-                    #kubevirt
+                  <a href="/tags/DeepSeek/" title="DeepSeek">
+                    #DeepSeek
                   </a>
                 </span>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/networking/" title="networking">
-                    #networking
+                  <a href="/tags/LLM/" title="LLM">
+                    #LLM
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Paper/" title="Paper">
+                    #Paper
                   </a>
                 </span>
                 
@@ -207,33 +213,48 @@
           
       </div>
       <div class="markdown-body">
-        <p>在 KubeVirt v1.4 的新版本里将 <a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/network/network_binding_plugins/">Network Binding Plugin</a> 提升到了 Beta，提供了一种新的扩展 KubeVirt 网络的方式。虽然名义上是为了扩展网络的能力，但实际上从实现上来看，这个机制能做的事情远不止网络，所有和 libvirt domain xml 相关的变更都可以通过这个机制来实现。</p>
-<h2 id="KubeVirt-Network-Overview"><a href="#KubeVirt-Network-Overview" class="headerlink" title="KubeVirt Network Overview"></a>KubeVirt Network Overview</h2><p>先从网络的角度来看下 KubeVirt 之前的网络机制有什么问题，新的机制又是如何进行扩展的。</p>
-<p>由于 KubeVirt 使用的是 Pod 里面跑 VM 的架构，所以复用了 CNI 的网络机制。这样的话就将网络分成了两个部分，一个是 Pod 网络由各个 CNI 提供。另一部分就是如何将 CNI 提供的网络接入 VM，在 libvirt 里这部分叫做 Domain 网络。</p>
-<p>KubeVirt 之前的各种网络机制（Bridge， Masquerade， Passt， Slirp）所做的事情就是通过不同的技术方案将 Pod 里的 eth0 接入到 VM 的 tap0 网卡。例如 Bridge 将 tap0 和 eth0 接入到同一个网桥，Masquerade 将 tap0 的流量经过 iptables nat 规则导入 eth0，Passt 和 Slirp 通过用户态的网络栈做流量重定向。</p>
-<p><img src="/../images/kubevirt-networking-tradition.png" alt="alt text"></p>
-<p>这些方法在实现上都是类似的，在 Pod 内部做一些网络相关的配置，然后修改 libvirt 的启动参数接入对应的网络。但是现有的机制都是写死在 KubeVirt Core 里的，并没有扩展机制，想要新增一种机制或者修改已有的机制都需要修改 KubeVirt 的代码很不灵活，例如默认的 bridge 插件会劫持 DHCP 请求，但是又不支持 IP, 所以 bridge 模式下的双栈就很难实现，而 Kube-OVN 中已经实现的 DHCP 又被这个机制绕过去了，之前想做 bridge 的双栈就需要改 KubeVirt 的代码来关闭默认的 DHCP 十分麻烦。因此新版本中将这套机制抽象出来提供了一套通用的机制。</p>
-<h2 id="Hook-Sidecar"><a href="#Hook-Sidecar" class="headerlink" title="Hook Sidecar"></a>Hook Sidecar</h2><p>先来看一种在 KubeVirt 中已经存在的扩展机制 <a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/user_workloads/hook-sidecar/">Hook Sidecar</a>。</p>
-<p>这套机制是在 VM 正式创建前，可以加载一个用户自定义的镜像，或者一段 ConfigMap 里保存的 Shell 或者 Python 脚本，来修改 VM 启动前 libvirt 的启动参数和 cloud-init 参数。</p>
-<p>它的执行机制和 CNI 有些类似，virt-handler 在启动 VM 前会去对应目录寻找 <code>/usr/bin/onDefineDomain</code> 和 <code>/usr/bin/preCloudInitIso</code> 两个二进制文件，前者传入 virt-handler 生成的 libvirt XML 配置，返回修改后的配置；后者传入 cloudInit 配置，返回修改后的 cloudInit 配置。这样的话所有 KubeVirt 本身不支持的 libvirt 和 cloudInit 参数都可以通过这种机制来注入修改。并且由于 Sidecar 内实际可以执行任意代码，所能做的事情远不止修改这两个配置，所有初始化阶段 KubeVirt 没有实现的能力其实都可以在这里来实现。</p>
-<h2 id="Network-Binding-Plugin"><a href="#Network-Binding-Plugin" class="headerlink" title="Network Binding Plugin"></a>Network Binding Plugin</h2><p>现在可以到 Network Binding Plugin 这个机制了，这个机制其实和 Hook Sidecar 基本上大同小异。主要区别是将二进制调用改成了 gRPC 调用，gRPC 里注册的方法还是  <code>onDefineDomain</code> 和 <code>preCloudInitIso</code> 参数传递从命令行参数改为了 gRPC Request 里的参数，其他都是一样的。</p>
-<p>具体的例子可以参考目前还在 KubeVirt 代码里的 <a target="_blank" rel="noopener" href="https://github.com/kubevirt/kubevirt/tree/main/cmd/sidecars/network-slirp-binding">Slirp Binding</a> 的实现。尽管在 Network Binding Plugin 的规范里还增加了<code>networkAttachmentDefinition</code> 字段可以选择一个 CNI，但这个其实使用之前的网卡选择机制也能实现，甚至由于 Sidecar 里可以执行任意代码，在里面再实现一个 CNI 覆盖 Pod 原先的网络也是可以的。</p>
-<p>那么之后的网络架构就变成了下图这样：</p>
-<p><img src="/../images/networking-binding.png" alt="alt text"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然 Network Binding Plugin 的机制是为 Network 扩展准备的，但实际上几乎可以扩展所有 KubeVirt 在 virt-handler 侧的处理逻辑。甚至可以把 KubeVirt 也只当一个框架，所有的逻辑都通过 Sidecar 来处理，相信未来可以玩出不少花活来。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/user_workloads/hook-sidecar/">https://kubevirt.io/user-guide/user_workloads/hook-sidecar/</a></li>
-<li><a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/network/network_binding_plugins/">https://kubevirt.io/user-guide/network/network_binding_plugins/</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/kubevirt/kubevirt/blob/main/docs/network/network-binding-plugin.md">https://github.com/kubevirt/kubevirt/blob/main/docs/network/network-binding-plugin.md</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/kubevirt/kubevirt/tree/main/cmd/sidecars/network-slirp-binding">https://github.com/kubevirt/kubevirt/tree/main/cmd/sidecars/network-slirp-binding</a></li>
-</ul>
+        <p>最近找到了 DeepSeek 发表过的论文合集，包含了从 DeepSeek 第一版的 LLM 到最新的 R1 的演变过程。从当下的角度我们当然知道 DeepSeek R1 在模型能力上已经接近了业界最领先的水平，但他是如何一步步从一个在中国一开始都没有被重视的量化公司走到这里的其实更吸引我的注意。</p>
+<p>这个系列的博客我会从论文阅读的角度，试图去寻找他们一步步探索的轨迹，从论文的路径上来看就是 DeepSeek LLM -&gt; DeepSeek MoE -&gt; DeepSeek V2 -&gt; DeepSeek V3 -&gt; DeepSeek R1。在整理论文时我才发现，DeepSeek 第一篇对外发布的论文是在 2024 年的 1 月，当时他们刚发布第一版模型，即使在 AI 行业内也不被认为是个主要竞争者。然而仅仅一年后的 2025 年 1 月，就已经进化到了 R1 这种业界领先水平。都说 AI 一天，人间一年，但是当真看到人间一年的进展时，还是深深的被 DeepSeek 的速度所震撼。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>DeepSeek LLM 是 DeepSeek 开源的第一个 LLM，当时开源 LLM 里最受关注的是 LLaMA-2，很多模型也是基于它的架构和基础进行的。现在从后视的角度我们知道 DeepSeek 最终选择了和 LLaMA 这类 Dense 架构不同的 MoE 架构，但是在当时第一版的时候还是基本上照搬了 LLaMA-2 的架构，进行局部的调整。可以猜测当时团队内部还处于探索模型架构的阶段。</p>
+<p>尽管架构大体和 LLaMA-2 相同，训练的数据量也都是 2T tokens，但是在性能评测上，如下图所示 DeepSeek LLM 基本上是全面超越了 LLaMA-2。论文里介绍了他们发现的一些有趣的关于数据，训练和微调的方法。</p>
+<p><img src="/../images/deepseekllm.png" alt="alt text"></p>
+<p>值得注意的是 DeepSeek 在训练过程中是可以使用更多的数据，使用更大参数量的模型的，显然这样做会提升模型性能。但是这篇论文目的主要是和 LLaMA-2 对比，因此特意把数据规模和参数量都做到尽可能相近，来比较在其他方面还有哪些地方可以提升。</p>
+<h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><p>LLaMA-2 和 DeepSeek LLM 在数据的选择上还是有很大的区别的。虽然都是 2T 的 token 量，LLaMA-2 里接近 90% 的语料都是英文，而 DeepSeek LLM 虽然没有详细说语言的比例，但是看表述语料里的英文和中文比例应该是比较接近的。所以逻辑上来看 DeepSeek LLM 在中文的评测上大幅领先并不是个意外。意外的反而是在英文评测指标上，DeepSeek LLM 在训练量明显少的情况下依然取得了接近的性能结果。</p>
+<p>我猜测这种现象的原因有两个，第一是 DeepSeek LLM 的语料质量更高，弥补了数量上的劣势。LLaMA-2 在介绍预训练语料的时候说除了一些敏感信息没有对数据集进行过滤，而 DeepSeek LLM 中介绍了为了提高数据质量专门做了模型去评估数据质量，还特意把一些冷门领域的数据占比放大，已获得更好的数据多样性。因此可以推测英文部分的语料质量 DeepSeek LLM 要高一些。作为参考 LLaMA-3 也在数据准备过程中引入了去重和质量过滤来提升语料的质量。</p>
+<p>另一个原因我猜大概是中文语料的引入也提升了模型最终在英文上的表现。OpenAI GPT 3.5 的时候训练语料也是英文为主，但是最终在中文的表现上不差，一个猜测的原因就是在英文语料上学习到的一些知识迁移到了中文。同样中文语料里学习到的一些知识也可以迁移到英文。此外由于中文和英文在语法和表现形式上也有比较大的区别，这种多样化的数据是不是一定程度上也提升了模型的能力？还有就是不同语言本身就有不同的文化背景和内容倾向，这其实也是进一步增加了数据的多样性。如果这个猜测成立的话，那准备语料其实应该刻意地去增加不同语言的比重，让模型可以学习更丰富的语言表达形式。</p>
+<h2 id="模型架构"><a href="#模型架构" class="headerlink" title="模型架构"></a>模型架构</h2><p>模型的架构层面 DeepSeek LLM 和 LLaMA-2 几乎完全一样，各个路径上用到的技术比如 Pre-Norm，FFN 的激活函数，位置编码器都一模一样。最大的区别在于使用 GQA（Group<br>Query Attention）上。GQA 相比最原始的 MHA（Multi Head Attention），可以理解为为了节省训练和推理的 kv cache 占用，直接让多个 Query 头共享一组 Key 和 Value 的参数矩阵，这样可以大幅压缩显存的使用。但是带来的问题就是减少了 Key 和 Value 的潜空间个数，模型的表达能力也出现了下降。LLaMA-2 的做法是通过增加 FFN 网络的宽度来提供更多的非线性表达能力，而 DeepSeek LLM 的做法是增加 Attention 的层数。可以粗略理解尽管模型参数量相同，但是 LLaMA-2 是一个更宽的模型，而 DeepSeek LLM 是一个更深的模型。</p>
+<p>另一个区别在于 LLaMA-2 使用的是 cosine learning scheduler 而 DeepSeek LLM 使用的是 Multi-Step learning scheduler。给出的理由是当增加数据量的时候，Multi-Step 可以更好的利用前一阶段的结果，持续训练速度会更快。</p>
+<p>此外论文里还花了很大篇幅来介绍如何在不同的数据规模，数据质量，模型规模下选择合适的超参，如何去画 scaling law 曲线。这块是作者当成最大亮点来讲的，但是我看上去感觉和炼丹一样，看的我脑壳疼，感兴趣的同学可以自己看看。</p>
+<h2 id="后训练"><a href="#后训练" class="headerlink" title="后训练"></a>后训练</h2><p>在论文发表的那个时间点，后训练主要是做对齐，也就是通过 SFT 和 RLHF 来对齐人类的偏好，增加模型的安全性。用到的数据基本上也都是一些带标记的对话文本，并没有对数据的分布做特别的处理。DeepSeek LLM 在这里对数据的选择又做出了和 LLaMA-2 很不一样的选择。</p>
+<p>如果看最上面模型性能评估的对比图，可以看到 DeepSeek LLM 在 MATH，HumanEval 和 MBPP 几个非中文的指标表现也要好很多。因为 DeepSeek 在后训练的 SFT 阶段将近 70% 的样本都是 Math 和 Code 相关数据。可见他们根本就没把对齐作为后训练的重点，而是把提升模型能力作为后训练的重点，所以这更像是一个鸡贼的刷榜优化。</p>
+<p>当时主流的做法还是在 base model 训练好了后再 SFT 一个代码和数学领域的模型，比如 Code LLaMA  和 OpenAI Codex 是分别在 LLaMA-2 和 OpenAI GPT3 上 SFT 出来的。Meta 当时甚至还在 Code LLaMA 上再 SFT 一个 Python 专用的 LLM 出来。</p>
+<p>现在我们当然知道在后训练阶段通过在 Math 和 Code 样本上进行 RL 可以激发出模型 CoT 的推理能力，R1 的想法可能在这个时候就已经诞生了。</p>
+<p>此外 DeepSeek LLM 在这里并没有用当时很流行的 RLHF，而是选择 DPO(Direct Preference Optimization) 进行和人类偏好的对齐。这种方法直接对两个不同生成结果的概率差作为优化目标进行训练，这相比 RL 其实更直观也更容易设计。在 LLaMA-3 的后训练过程中也用到了 DPO。</p>
+<h2 id="Future-Work"><a href="#Future-Work" class="headerlink" title="Future Work"></a>Future Work</h2><p>在我上学的时候，老师和我说真正的 Future Work 不要写在论文里，自己偷偷做再发下一篇，论文的 Future Work 里就写你觉得没戏的和你觉得做不出来的。而 DeepSeek LLM 最后 Future Work 的几句话从现在的视角来看都太真诚了，几乎已经把 R1 的路子给指出来了。</p>
+<blockquote>
+<p>DeepSeek LLM 将会是一个长期项目，专注于促进开源模型进步，</p>
+</blockquote>
+<p>这个不好说，毕竟满打满算也就一年多。</p>
+<blockquote>
+<p>Soon，我们将会发布 Code 和 MoE 架构的技术报告。MoE 的架构看上去很有希望。</p>
+</blockquote>
+<p>这个 Soon 指的是一周发布 MoE，半个月发布 DeepSeek Code。而我们已经知道 MoE 成为了 V2，V3 和 R1 模型的基础架构，参数量也上升到了 671B。</p>
+<blockquote>
+<p>我们现在已经有了大得多质量好得多的数据集，下一代模型所有指标都会显著提升。</p>
+</blockquote>
+<p>数据量半年后从 2T 变成了 8T，不过同期 LLaMA-3 变成了 15T。DeepSeek V2 的各项指标相比同期的 LLaMA-3 在英文上是稍微落后的，而且在 V2 的时候他们的重点就已经变成了疯狂降低成本。</p>
+<blockquote>
+<p>我们的对齐团队发现强化学习能够增强模型的复杂推理能力。</p>
+</blockquote>
+<p>从今天回头来看，这不就是 R1 最重要的方法么。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>从今天的视角来看，DeepSeek 当时应该还在探索期，还在和业界的开源模型对齐，还做了很多理论上的研究。但是从论文的各个细节上来看，一年后那个石破天惊的 R1 诞生的条件已经差不多具备了。</p>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2024/10/31/docker-pull/" target="_self">
+              <a href="/2025/01/12/kubevirt-network-binding/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>上一页</span>
               </a>
@@ -242,21 +263,27 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-              2025-01-12 08:16:07
+              2025-03-14 10:48:50
             </span>
             
                   <span class="post-tags">
                     <i class="iconfont icon-tags mr-10" title="标签"></i>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/kubevirt/" title="kubevirt">
-                        #kubevirt
+                      <a href="/tags/DeepSeek/" title="DeepSeek">
+                        #DeepSeek
                       </a>
                     </span>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/networking/" title="networking">
-                        #networking
+                      <a href="/tags/LLM/" title="LLM">
+                        #LLM
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Paper/" title="Paper">
+                        #Paper
                       </a>
                     </span>
                     
@@ -264,11 +291,6 @@
               
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2025/03/14/deepseek-from-llm-to-r1/" target="_self">
-                <span>下一页</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -282,7 +304,7 @@
     <div class="title">目录</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#KubeVirt-Network-Overview"><span class="toc-text">KubeVirt Network Overview</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hook-Sidecar"><span class="toc-text">Hook Sidecar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Network-Binding-Plugin"><span class="toc-text">Network Binding Plugin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE"><span class="toc-text">数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="toc-text">模型架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%AD%E7%BB%83"><span class="toc-text">后训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Future-Work"><span class="toc-text">Future Work</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
       
     </div>
   </div>
@@ -644,12 +666,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E4%BB%8E%20Network%20Binding%20Plugin%20%E7%9C%8B%20KubeVirt%20%E7%9A%84%E6%89%A9%E5%B1%95%E6%96%B9%E5%BC%8F + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F01%2F12%2Fkubevirt-network-binding%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E4%BB%8E%20DeepSeek%20LLM%20%E5%88%B0%20R1%20%E2%80%94%E2%80%94%20DeepSeek%20LLM + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F03%2F14%2Fdeepseek-from-llm-to-r1%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/01/12/kubevirt-network-binding/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/03/14/deepseek-from-llm-to-r1/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
