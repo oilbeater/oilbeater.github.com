@@ -14,7 +14,7 @@ tags:
 
 由于 KubeVirt 使用的是 Pod 里面跑 VM 的架构，所以复用了 CNI 的网络机制。这样的话就将网络分成了两个部分，一个是 Pod 网络由各个 CNI 提供。另一部分就是如何将 CNI 提供的网络接入 VM，在 libvirt 里这部分叫做 Domain 网络。
 
-KubeVirt 之前的各种网络机制（Bridge， Masquerade， Passt， Slirp）所做的事情就是通过不同的技术方案将 Pod 里的 eth0 接入到 VM 的 tap0 网卡。例如 Bridge 将 tap0 和 eth0 接入到同一个网桥，Masquerade 将 tap0 的流量经过 iptables nat 规则导入 eth0，Passt 和 Slirp 通过用户态的网络栈做流量重定向。
+KubeVirt 之前的各种网络机制（Bridge，Masquerade，Passt，Slirp）所做的事情就是通过不同的技术方案将 Pod 里的 eth0 接入到 VM 的 tap0 网卡。例如 Bridge 将 tap0 和 eth0 接入到同一个网桥，Masquerade 将 tap0 的流量经过 iptables nat 规则导入 eth0，Passt 和 Slirp 通过用户态的网络栈做流量重定向。
 
 ![alt text](../images/kubevirt-networking-tradition.png)
 
