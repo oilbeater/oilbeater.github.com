@@ -1,5 +1,5 @@
 ---
-title: 从 DeepSeek LLM 到 R1 —— DeepSeek LLM
+title: 从 DeepSeek LLM 到 DeepSeek R1 —— DeepSeek LLM
 date: 2025-03-14 10:48:50
 tags: 
 - DeepSeek
