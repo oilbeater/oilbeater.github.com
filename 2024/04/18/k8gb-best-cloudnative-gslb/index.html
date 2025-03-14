@@ -250,7 +250,7 @@
 <p>众所周知多集群之间的数据同步也是一个世界难题，但是 k8gb 同样通过 DNS 巧妙的实现了数据的同步。</p>
 <p>同步的流程图如下所示：</p>
 <p><img src="https://www.k8gb.io/docs/images/k8gb-multi-cluster-interoperabililty.svg" alt="k8gb multi-cluster-interoperability"></p>
-<p>大致的思路是每个集群的 k8gb 会把自己的 CoreDNS 的 Ingress IP 同样注册到上游 CoreDNS，这样每个集群就可以直接访问另一个集群的 CoreDNS 了。然后每个集群内的 CoreDNS 再按照一个特殊的域名格式比如 <code>localtargets-app.cloud.example.com</code> 来保存本集群内 <code>app.cloud.example.com</code> Ingress 的 Ingress IP 并维护其健康状态。这样每个集群就都可以通过这个特殊的域名来或者其他集群这个域名对应的 Ingress IP 然后加入到自己的返回结果里，实现了域名解析的多集群同步。</p>
+<p>大致的思路是每个集群的 k8gb 会把自己的 CoreDNS 的 Ingress IP 同样注册到上游 DNS，这样每个集群就可以直接访问另一个集群的 CoreDNS 了。然后每个集群内的 CoreDNS 再按照一个特殊的域名格式比如 <code>localtargets-app.cloud.example.com</code> 来保存本集群内 <code>app.cloud.example.com</code> Ingress 的 Ingress IP 并维护其健康状态。这样每个集群就都可以通过这个特殊的域名来获得其他集群这个域名对应的 Ingress IP 然后加入到自己的返回结果里，实现了域名解析的多集群同步。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>k8gb 作为一款开源的 GSLB 实现了和 Kubernetes 的无缝对接，能够很好的对跨集群的域名和流量进行自动化管理，并且对外部的依赖降到了只需要一个添加 DNS 记录的 API，真正实现了一套可以多云统一的 GSLB 方案。尽管目前这个项目还没有那么火热，但在我心里它已经是这个领域内的最佳方案了。</p>
 
       </div>
