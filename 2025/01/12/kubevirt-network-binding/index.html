@@ -210,7 +210,7 @@
         <p>在 KubeVirt v1.4 的新版本里将 <a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/network/network_binding_plugins/">Network Binding Plugin</a> 提升到了 Beta，提供了一种新的扩展 KubeVirt 网络的方式。虽然名义上是为了扩展网络的能力，但实际上从实现上来看，这个机制能做的事情远不止网络，所有和 libvirt domain xml 相关的变更都可以通过这个机制来实现。</p>
 <h2 id="KubeVirt-Network-Overview"><a href="#KubeVirt-Network-Overview" class="headerlink" title="KubeVirt Network Overview"></a>KubeVirt Network Overview</h2><p>先从网络的角度来看下 KubeVirt 之前的网络机制有什么问题，新的机制又是如何进行扩展的。</p>
 <p>由于 KubeVirt 使用的是 Pod 里面跑 VM 的架构，所以复用了 CNI 的网络机制。这样的话就将网络分成了两个部分，一个是 Pod 网络由各个 CNI 提供。另一部分就是如何将 CNI 提供的网络接入 VM，在 libvirt 里这部分叫做 Domain 网络。</p>
-<p>KubeVirt 之前的各种网络机制（Bridge， Masquerade， Passt， Slirp）所做的事情就是通过不同的技术方案将 Pod 里的 eth0 接入到 VM 的 tap0 网卡。例如 Bridge 将 tap0 和 eth0 接入到同一个网桥，Masquerade 将 tap0 的流量经过 iptables nat 规则导入 eth0，Passt 和 Slirp 通过用户态的网络栈做流量重定向。</p>
+<p>KubeVirt 之前的各种网络机制（Bridge，Masquerade，Passt，Slirp）所做的事情就是通过不同的技术方案将 Pod 里的 eth0 接入到 VM 的 tap0 网卡。例如 Bridge 将 tap0 和 eth0 接入到同一个网桥，Masquerade 将 tap0 的流量经过 iptables nat 规则导入 eth0，Passt 和 Slirp 通过用户态的网络栈做流量重定向。</p>
 <p><img src="/../images/kubevirt-networking-tradition.png" alt="alt text"></p>
 <p>这些方法在实现上都是类似的，在 Pod 内部做一些网络相关的配置，然后修改 libvirt 的启动参数接入对应的网络。但是现有的机制都是写死在 KubeVirt Core 里的，并没有扩展机制，想要新增一种机制或者修改已有的机制都需要修改 KubeVirt 的代码很不灵活，例如默认的 bridge 插件会劫持 DHCP 请求，但是又不支持 IP, 所以 bridge 模式下的双栈就很难实现，而 Kube-OVN 中已经实现的 DHCP 又被这个机制绕过去了，之前想做 bridge 的双栈就需要改 KubeVirt 的代码来关闭默认的 DHCP 十分麻烦。因此新版本中将这套机制抽象出来提供了一套通用的机制。</p>
 <h2 id="Hook-Sidecar"><a href="#Hook-Sidecar" class="headerlink" title="Hook Sidecar"></a>Hook Sidecar</h2><p>先来看一种在 KubeVirt 中已经存在的扩展机制 <a target="_blank" rel="noopener" href="https://kubevirt.io/user-guide/user_workloads/hook-sidecar/">Hook Sidecar</a>。</p>
