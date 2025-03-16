@@ -32,7 +32,7 @@ LLaMA-2 和 DeepSeek LLM 在数据的选择上还是有很大的区别的。虽�
 ## 模型架构
 
 模型的架构层面 DeepSeek LLM 和 LLaMA-2 几乎完全一样，各个路径上用到的技术比如 Pre-Norm，FFN 的激活函数，位置编码器都一模一样。最大的区别在于使用 GQA（Group 
-Query Attention）上。GQA 相比最原始的 MHA（Multi Head Attention），可以理解为为了节省训练和推理的 kv cache 占用，直接让多个 Query 头共享一组 Key 和 Value 的参数矩阵，这样可以大幅压缩显存的使用。但是带来的问题就是减少了 Key 和 Value 的潜空间个数，模型的表达能力也出现了下降。LLaMA-2 的做法是通过增加 FFN 网络的宽度来提供更多的非线性表达能力，而 DeepSeek LLM 的做法是增加 Attention 的层数。可以粗略理解尽管模型参数量相同，但是 LLaMA-2 是一个更宽的模型，而 DeepSeek LLM 是一个更深的模型。
+Query Attention）上。GQA 相比最原始的 MHA（Multi Head Attention），可以理解为为了节省训练和推理的 kv cache 占用，直接让多个 Query 头共享一组 Key 和 Value 的参数矩阵，这样可以大幅压缩显存的使用。但是带来的问题就是减少了 Key 和 Value 的潜空间个数，模型的表达能力也出现了下降。LLaMA-2 的做法是通过增加 FFN 网络的宽度来提供更多的非线性表达能力，而 DeepSeek LLM 的做法是增加 Attention 的层数。可以粗略理解尽管模型参数量相同，但是 LLaMA-2 是一个更宽的模型，而 DeepSeek LLM 是一个更深的模型。当然从后视的角度来看，DeepSeek 后续在 V2 公布的 MLA 对 Attention 层做了一个极其激进的更新，直接把推理所需的 KV Cache 降低了一个数量级。
 
 另一个区别在于 LLaMA-2 使用的是 cosine learning scheduler 而 DeepSeek LLM 使用的是 Multi-Step learning scheduler。给出的理由是当增加数据量的时候，Multi-Step 可以更好的利用前一阶段的结果，持续训练速度会更快。
 
@@ -48,7 +48,7 @@ Query Attention）上。GQA 相比最原始的 MHA（Multi Head Attention），�
 
 现在我们当然知道在后训练阶段通过在 Math 和 Code 样本上进行 RL 可以激发出模型 CoT 的推理能力，R1 的想法可能在这个时候就已经诞生了。
 
-此外 DeepSeek LLM 在这里并没有用当时很流行的 RLHF，而是选择 DPO(Direct Preference Optimization) 进行和人类偏好的对齐。这种方法直接对两个不同生成结果的概率差作为优化目标进行训练，这相比 RL 其实更直观也更容易设计。在 LLaMA-3 的后训练过程中也用到了 DPO。
+此外 DeepSeek LLM 在这里并没有用当时很流行的 RLHF，而是选择 DPO(Direct Preference Optimization) 进行和人类偏好的对齐。这种方法直接对两个不同生成结果的概率差作为优化目标进行训练，这相比 RL 其实更直观也更容易设计，在 LLaMA-3 的后训练过程中也用到了 DPO。可以看出 DeepSeek 团队当时对已有的 RL 算法还是不太满意的，还在探索。这也就造就了后来在 DeepSeek Math 中公布的 GRPO。 
 
 ## Future Work
 
