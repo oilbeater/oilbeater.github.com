@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content=" | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="llama-4-chaos | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content=" | Oilbeater 的自习室" />
+  <meta property="og:title" content="llama-4-chaos | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -23,10 +23,13 @@
   <meta name="google-adsense-account" content="ca-pub-9141929305076734">
   
   
-    <meta name="robots" content="noindex" />
-  
   
   <title>
+    
+      llama-4-chaos
+      
+      
+      |
     
      Oilbeater 的自习室
   </title>
@@ -133,151 +136,245 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="技术好就不需要测试了...吗？">
-        <div class="time-m-d">2016-10-07</div>
-        <div class="title">
-          <a href="/2016/10/07/do-we-need-qa/">
-            
-              
-                <span>技术好就不需要测试了...吗？</span>
-              
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">llama-4-chaos</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-04-06 15:57:23
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/LLM/" title="LLM">
+                    #LLM
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Llama/" title="Llama">
+                    #Llama
+                  </a>
+                </span>
+                
+              </span>
+          
       </div>
-    
-      <div class="post-item" title="来鸟公司的一年">
-        <div class="time-m-d">2016-09-24</div>
-        <div class="title">
-          <a href="/2016/09/24/one-year-in-alauda/">
-            
-              
-                <span>来鸟公司的一年</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <p>前段时间 Meta AI 的负责人离职让人怀疑 Llama 4 的进度出现了问题，结果没过两天 Meta 就发布了 Llama 4，似乎是为了打破传言。然而看完了现在已经公布的模型基础信息，我反而更觉得 Llama 项目内部已经极度混乱了。下面是我根据已有信息的分析，欢迎指正。</p>
+<h2 id="模型基础信息"><a href="#模型基础信息" class="headerlink" title="模型基础信息"></a>模型基础信息</h2><p>Llama 这次正式发布了一个 109B 和 一个 400B 参数量的模型，以及一个未发布的 2T 参数量模型的信息，我把关键的架构信息汇总如下，以下信息均来自 Llama 自己的博客和 huggingface 模型页面：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>参数量</th>
+<th>激活参数量</th>
+<th>专家数</th>
+<th>上下文</th>
+<th>语料量</th>
+<th>GPU 时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scout</td>
+<td>109B</td>
+<td>17B</td>
+<td>16</td>
+<td>10M</td>
+<td>40T</td>
+<td>5.0M</td>
+</tr>
+<tr>
+<td>Maverick</td>
+<td>400B</td>
+<td>17B</td>
+<td>128+1</td>
+<td>1M</td>
+<td>22T</td>
+<td>2.38M</td>
+</tr>
+<tr>
+<td>Behemoth</td>
+<td>2T</td>
+<td>288B</td>
+<td>16</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>这里都不用再看模型的评分表现了，这几个模型架构方面的对比就能看出很多问题了。</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="奇怪的-MoE-架构"><a href="#奇怪的-MoE-架构" class="headerlink" title="奇怪的 MoE 架构"></a>奇怪的 MoE 架构</h2><p>Llama 4 这次从 Dense 模型全面转向了 MoE，但是诡异的点在于他们三个模型采用了两套 MoE 架构。最大的 Behemoth 和最小的 Scout 采用的是传统的 MoE，专家数也是 16 这个传统认为比较大的一个专家数量，而中间的那个 Maverick 采用的却是 DeepSeek MoE 提出的一个新的细粒度专家加共享专家的模型是个 128 专家加 1 共享专家的架构。</p>
+<p>一般来说一代模型都是采用同一个架构，只是在模型的层数和每层的宽度上做调整，两个有很大差异的模型在同一代就很奇怪。而且就算有变化也不应该是最大和最小的保持一致，把中间规模的给换了，给人的感觉是中间的这个 Maverick 其实是被 DeepSeek 冲击下重新仿照 DeepSeek 模型重新训练的，但是时间上来不及把三个都重做，只好就放在一块发布了。</p>
+<h2 id="奇怪的成本投入"><a href="#奇怪的成本投入" class="headerlink" title="奇怪的成本投入"></a>奇怪的成本投入</h2><p>一般来讲，模型参数规模越大，需要投入的成本越高。一方面是更大的模型可以容纳更多的知识，会提供给更大规模模型更多的语料；另一方在语料相同的情况下，更大的模型需要训练的参数更多 GPU 开销也会更高。所以通常来讲模型规模越大，需要的成本会越高。</p>
+<p>然而到了 Llama 4 这里出现了两个指标都相反的情况。Maverick 的参数规模是 Scout 的接近 4 倍，但是 Maverick 训练的语料量只有 Scout 的二分之一，消耗的 GPU 时间同样也只有二分之一。考虑到这两个模型的激活参数量是一致的这个 GPU 时间可以理解，但是语料量也只给一半这个事情就很奇怪了。给我的感觉是要么这次只是试水新型的 MoE 架构，并没有想做完整训练，要么就是训到后面训崩了，从中间那个 snapshot 出来了。</p>
+<h2 id="奇怪的上下文长度"><a href="#奇怪的上下文长度" class="headerlink" title="奇怪的上下文长度"></a>奇怪的上下文长度</h2><p>一般来讲更大的模型，能力会越强。可在这一代 Llama，最让人感到震撼的 10M 上下文是给的最小规模的 Scout，更大的 Maverick 反而是 1M 上下文。考虑到目前扩充上下文的主流方法还是在后训练做微调，更大的 Maverick 在后训练的投入上还不如更小的 Scout。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>给我的感觉是 Llama 4 这一代本来是想走传统 MoE，被 DeepSeek 冲击后又半路开始看 DeepSeek MoE。但是训练可能已经开始了，停下来又有阻力，所以中间又插了一个中规模的 Maverick。按照这个参数量选择来看是想用比 DeepSeek V3 小的参数量实现类似的性能。但是 17B 的激活要追平 DeepSeek V3 的 39B 激活我觉得还是有很大难度的。不过最后能让这一代的模型以这么混乱的形式发布，还加了个期货模型，我还是觉得 Llama 项目内部出了不少的问题。</p>
+<p><img src="/../images/llama4.png"></p>
+
       </div>
-    
-      <div class="post-item" title="Docker 持续集成过程中的性能问题及解决方法">
-        <div class="time-m-d">2016-01-02</div>
-        <div class="title">
-          <a href="/2016/01/02/use-docker-performance-issue-and-solution/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>Docker 持续集成过程中的性能问题及解决方法</span>
-              
+              <a href="/2025/03/29/deepseek-moe/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2025-04-06 15:57:23
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/LLM/" title="LLM">
+                        #LLM
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Llama/" title="Llama">
+                        #Llama
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
-      </div>
+      
+    </div>
     
-      <div class="post-item" title="Borg 论文阅读笔记">
-        <div class="time-m-d">2015-10-06</div>
-        <div class="title">
-          <a href="/2015/10/06/borg-paper-reading-note/">
-            
-              
-                <span>Borg 论文阅读笔记</span>
-              
-            
-          </a>
-        </div>
-      </div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E4%BF%A1%E6%81%AF"><span class="toc-text">模型基础信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E6%80%AA%E7%9A%84-MoE-%E6%9E%B6%E6%9E%84"><span class="toc-text">奇怪的 MoE 架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E6%80%AA%E7%9A%84%E6%88%90%E6%9C%AC%E6%8A%95%E5%85%A5"><span class="toc-text">奇怪的成本投入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E6%80%AA%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E9%95%BF%E5%BA%A6"><span class="toc-text">奇怪的上下文长度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+     crossorigin="anonymous"></script>
+<!-- 横向广告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9141929305076734"
+     data-ad-slot="3076777751"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
     
-      <div class="post-item" title="为啥我要从阿里离职">
-        <div class="time-m-d">2015-05-15</div>
-        <div class="title">
-          <a href="/2015/05/15/whyleaveali/">
-            
-              
-                <span>为啥我要从阿里离职</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="分布式系统断电自恢复">
-        <div class="time-m-d">2015-03-22</div>
-        <div class="title">
-          <a href="/2015/03/22/recovery-services/">
-            
-              
-                <span>分布式系统断电自恢复</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="oilbeater博客回顾2014篇">
-        <div class="time-m-d">2015-01-11</div>
-        <div class="title">
-          <a href="/2015/01/11/the-summary-of-blog/">
-            
-              
-                <span>oilbeater博客回顾2014篇</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="nginx 配置从零开始">
-        <div class="time-m-d">2014-12-28</div>
-        <div class="title">
-          <a href="/2014/12/28/nginx-conf-from-zero/">
-            
-              
-                <span>nginx 配置从零开始</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="一次奇幻的 docker libcontainer 代码阅读之旅">
-        <div class="time-m-d">2014-11-11</div>
-        <div class="title">
-          <a href="/2014/11/11/docker-libcontainer-reading/">
-            
-              
-                <span>一次奇幻的 docker libcontainer 代码阅读之旅</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Linux 系统性能分析工具图解读（二）">
-        <div class="time-m-d">2014-09-14</div>
-        <div class="title">
-          <a href="/2014/09/14/linux-performance-tools-2/">
-            
-              
-                <span>Linux 系统性能分析工具图解读（二）</span>
-              
-            
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+
+
       </div>
     
   </div>
-  <nav class="post-navigation">
-    
-      <a href="/page/3/"><i class="iconfont icon-angleleft"></i></a>
-    
-    <span class="page-num">4 / 7</span>
-    
-      <a href="/page/5/"><i class="iconfont icon-angleright"></i></a>
-    
-  </nav>
-</div>
+
 
         
 <div class="footer">
@@ -573,6 +670,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + llama-4-chaos + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F04%2F06%2Fllama-4-chaos%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/04/06/llama-4-chaos/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
