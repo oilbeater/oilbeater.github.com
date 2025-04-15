@@ -247,7 +247,7 @@
 <h2 id="iotop"><a href="#iotop" class="headerlink" title="iotop"></a>iotop</h2><p>和上个命令类似，一看就是 top 的 io 版，简洁明了，包括展示都和 top 很类似，试一下就知道是怎么回事了。</p>
 <h2 id="slabtop"><a href="#slabtop" class="headerlink" title="slabtop"></a>slabtop</h2><p>其实只要知道 slab 是个什么东西，这个命令就很好理解了。slab 是对象缓冲池，将一些常用的小的对象结构再释放后缓存起来，而不是直接交给系统回收，这样可以避免频繁的小对象找系统申请内存造成性能下降，知道这个再看 这条命令就很轻松了。</p>
 <h2 id="sysctl"><a href="#sysctl" class="headerlink" title="sysctl"></a>sysctl</h2><p>这里面是一些很有讲究的系统参数的设置，很多参数的设置都会对服务器的性能产生很大的影响。这也是个水很深的配置文件，比如 tcp_reuse、tcp_recycle 这些服务器的重要配置都在这里面。这里面的配置估计也能讲上个几天几夜。还是先 sysctl -a 看一下感受感受吧。</p>
-<h2 id="x2F-proc"><a href="#x2F-proc" class="headerlink" title="&#x2F;proc"></a>&#x2F;proc</h2><p>其实上述诸多的工具都是从这个文件加下面读取文件做展示的，不过真要自己解析这里面的文件还是蛮耗功夫的，所以还是好好用一下上面的那些命令吧。不过如果你对那些命令是如何实现的可以配合着 strace 来探索这里面的奥秘。</p>
+<h2 id="proc"><a href="#proc" class="headerlink" title="&#x2F;proc"></a>&#x2F;proc</h2><p>其实上述诸多的工具都是从这个文件加下面读取文件做展示的，不过真要自己解析这里面的文件还是蛮耗功夫的，所以还是好好用一下上面的那些命令吧。不过如果你对那些命令是如何实现的可以配合着 strace 来探索这里面的奥秘。</p>
 
       </div>
       
@@ -309,7 +309,7 @@
     <div class="title">目录</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sar"><span class="toc-text">sar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#netstat"><span class="toc-text">netstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pidstat"><span class="toc-text">pidstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#strace"><span class="toc-text">strace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tcpdump"><span class="toc-text">tcpdump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#blktrace"><span class="toc-text">blktrace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iotop"><span class="toc-text">iotop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#slabtop"><span class="toc-text">slabtop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sysctl"><span class="toc-text">sysctl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#x2F-proc"><span class="toc-text">&#x2F;proc</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sar"><span class="toc-text">sar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#netstat"><span class="toc-text">netstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pidstat"><span class="toc-text">pidstat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#strace"><span class="toc-text">strace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tcpdump"><span class="toc-text">tcpdump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#blktrace"><span class="toc-text">blktrace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iotop"><span class="toc-text">iotop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#slabtop"><span class="toc-text">slabtop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sysctl"><span class="toc-text">sysctl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#proc"><span class="toc-text">&#x2F;proc</span></a></li></ol>
       
     </div>
   </div>
