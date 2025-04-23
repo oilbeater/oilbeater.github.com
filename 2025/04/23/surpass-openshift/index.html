@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content=" | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="如何超越 OpenShift | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content=" | Oilbeater 的自习室" />
+  <meta property="og:title" content="如何超越 OpenShift | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -23,10 +23,13 @@
   <meta name="google-adsense-account" content="ca-pub-9141929305076734">
   
   
-    <meta name="robots" content="noindex" />
-  
   
   <title>
+    
+      如何超越 OpenShift
+      
+      
+      |
     
      Oilbeater 的自习室
   </title>
@@ -133,151 +136,198 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="我和耗子叔的回忆">
-        <div class="time-m-d">2023-05-19</div>
-        <div class="title">
-          <a href="/2023/05/19/memory-with-haochen/">
-            
-              
-                <span>我和耗子叔的回忆</span>
-              
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">如何超越 OpenShift</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-04-23 10:40:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/OpenShift/" title="OpenShift">
+                    #OpenShift
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Product/" title="Product">
+                    #Product
+                  </a>
+                </span>
+                
+              </span>
+          
       </div>
-    
-      <div class="post-item" title="2023 周报 #2：Github Action 优化和 ChatGPT">
-        <div class="time-m-d">2023-02-26</div>
-        <div class="title">
-          <a href="/2023/02/26/2023-Weekly-2/">
-            
-              
-                <span>2023 周报 #2：Github Action 优化和 ChatGPT</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <p>OpenShift 作为容器平台的标杆产品，同时也是开源商业化的标杆，一直是被人试图追赶或者超越的对象。但是如果只是照着 OpenShift 的产品模仿，那么当追上 OpenShift 时只可能有一种情况，那就是 OpenShift 停止发展，过了一年后你终于追上了，然后会因同样原因被淘汰。</p>
+<p>那么有没有什么方法能够追上甚至超越 OpenShift 呢？我认为要从 OpenShift 本身那些因为商业模式的选择和技术路线上的选择入手，从他们在这种选择下不可避免的缺点入手，做出差异化才有超越的可能。</p>
+<h2 id="OpenShift-并不-Open"><a href="#OpenShift-并不-Open" class="headerlink" title="OpenShift 并不 Open"></a>OpenShift 并不 Open</h2><p>OpenShift 里的 Open 可能和 OpenAI 里的 Open 是同一个 Open。如果你尝试不通过 RedHat 的销售自己去部署一套 OpenShift 就会知道我在说什么了。</p>
+<p>OpenShift 的所有组件确实是开源的，但如果你是一个纯粹的社区用户会步步受挫。一个功能你可能找不到对应组件，找到组件可能找不到对应源码，找到源码又没有文档指导如何编译使用。这些现象在那些完全是 OpenShift 自己使用的组件里已经见怪不怪了。大概 OpenShift 这部分的社区只是对客户和合作伙伴开放的。</p>
+<p>而对于那些非 OpenShift 专属的组件，OpenShift 采取的策略会是一旦选择就大举投入，争取到对应组件的社区的主导权。所以会看到的一个现象是有些社区很出名的项目 OpenShift 的人完全不投入，而一个项目在平稳发展了几年后会突然涌入大量 OpenShift 的人。</p>
+<p>这些都是 OpenShift 在商业化与开源之间权衡后的选择，并没有对错之分，但这会给更开放的项目留出机会。如果新的产品能够降低参与门槛，收取更广泛的反馈，让更多的贡献者来参与创新，那么我认为它的上限将会超越 OpenShift。</p>
+<h2 id="OpenShift-的技术并不先进"><a href="#OpenShift-的技术并不先进" class="headerlink" title="OpenShift 的技术并不先进"></a>OpenShift 的技术并不先进</h2><p>受限于第一点因素，OpenShift 并不能广泛的吸收整个生态的最新成果。在生态内某个组件和 OpenShift 专属的组件功能重叠情况下，OpenShift 内部的研发人员是很难有动力切换到另一个社区或者另一个公司主导的开源组件。</p>
+<p>以我比较了解的网络为例，OpenShift 早期通过 Haproxy 实现了 Route 来打通集群外访问集群内的流量。在当时 Ingress 还不成熟，Route 是一个相比社区先进的多的方案，OpenShift 的方案在当时是绝对领先的。但是随着 Ingress 的成熟，社区生态内各种网关都在飞速发展，而 OpenShift 受限于自己早期的实现和用户用法很长时间都没有去支持 Ingress 这个在社区已经标准化的功能。现阶段 Ingress 规范已经进化到 GatewayAPI 有一段时间了，大量 AI Gateway 的新场景都在通过 GatewayAPI 进行扩展，而 OpenShift 现如今还没有支持 GatewayAPI，最近正在计划在之前的 Haproxy 上同时支持 Route，Ingress 和 GatewayAPI。</p>
+<p>类似的案例在 OpenShift 内还有很多，早期可能还是一个优秀的方案，但由于 OpenShift 专属导致不开放，随着社区的发展，原先优势的方案反而变成了阻碍前进的障碍。就像现在在 Kubernetes 上做 Ingress Gateway 不会有人去参考 OpenShift 的实现，在很多细分领域 OpenShift 已经并不是最先进的解决方案了，尤其是在那些由 OpenShift 专属组件提供服务的领域。现在的 OpenShift 在我看来就是一个覆盖面积很广，但平庸且无趣的平台。</p>
+<p>容器平台的生产过程其实和手机的生产很像，都是从成百上千个供应链供应商那里选择需要的配件，然后组装成一个成品。如果能够保持开放，选择供应链上最先进的那些配件，或者根据场景快速组合出一个针对特定场景的产品，那么在技术竞争力上应该会远超 OpenShift。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>要想真正追赶甚至超越 OpenShift，关键不是在已有功能上亦步亦趋，而是要做到更开放、更领先。这样才能摆脱追随者路径，真正形成对 OpenShift 的差异化优势，成为下一轮技术浪潮的主导者。</p>
+
       </div>
-    
-      <div class="post-item" title="2023 周报 #1：Twitter，第二大脑和数字移民">
-        <div class="time-m-d">2023-02-19</div>
-        <div class="title">
-          <a href="/2023/02/19/2023-weekly-1/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>2023 周报 #1：Twitter，第二大脑和数字移民</span>
-              
+              <a href="/2025/04/14/deepseek-mla/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2025-04-23 10:40:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/OpenShift/" title="OpenShift">
+                        #OpenShift
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Product/" title="Product">
+                        #Product
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
-      </div>
+      
+    </div>
     
-      <div class="post-item" title="烧钱工作法 —— 远程开发是怎样提升我的效率？">
-        <div class="time-m-d">2023-01-15</div>
-        <div class="title">
-          <a href="/2023/01/15/how-remote-coding-improve-productivity/">
-            
-              
-                <span>烧钱工作法 —— 远程开发是怎样提升我的效率？</span>
-              
-            
-          </a>
-        </div>
-      </div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenShift-%E5%B9%B6%E4%B8%8D-Open"><span class="toc-text">OpenShift 并不 Open</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenShift-%E7%9A%84%E6%8A%80%E6%9C%AF%E5%B9%B6%E4%B8%8D%E5%85%88%E8%BF%9B"><span class="toc-text">OpenShift 的技术并不先进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+     crossorigin="anonymous"></script>
+<!-- 横向广告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9141929305076734"
+     data-ad-slot="3076777751"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
     
-      <div class="post-item" title="2022 年终总结">
-        <div class="time-m-d">2022-12-30</div>
-        <div class="title">
-          <a href="/2022/12/30/2022-summary/">
-            
-              
-                <span>2022 年终总结</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="聊聊一致性哈希">
-        <div class="time-m-d">2016-12-18</div>
-        <div class="title">
-          <a href="/2016/12/18/consist-hash/">
-            
-              
-                <span>聊聊一致性哈希</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="《西部世界》与弗洛伊德的精神分析">
-        <div class="time-m-d">2016-12-11</div>
-        <div class="title">
-          <a href="/2016/12/11/westworld-and-frued/">
-            
-              
-                <span>《西部世界》与弗洛伊德的精神分析</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Google 是如何做负载均衡的？">
-        <div class="time-m-d">2016-11-21</div>
-        <div class="title">
-          <a href="/2016/11/21/google-loadbalancert/">
-            
-              
-                <span>Google 是如何做负载均衡的？</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="破译上帝的密码">
-        <div class="time-m-d">2016-10-30</div>
-        <div class="title">
-          <a href="/2016/10/30/decode-god-code/">
-            
-              
-                <span>破译上帝的密码</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="做科研一样做产品">
-        <div class="time-m-d">2016-10-30</div>
-        <div class="title">
-          <a href="/2016/10/30/code-as-expirement/">
-            
-              
-                <span>做科研一样做产品</span>
-              
-            
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+
+
       </div>
     
   </div>
-  <nav class="post-navigation">
-    
-      <a href="/page/2/"><i class="iconfont icon-angleleft"></i></a>
-    
-    <span class="page-num">3 / 8</span>
-    
-      <a href="/page/4/"><i class="iconfont icon-angleright"></i></a>
-    
-  </nav>
-</div>
+
 
         
 <div class="footer">
@@ -573,6 +623,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%A6%82%E4%BD%95%E8%B6%85%E8%B6%8A%20OpenShift + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F04%2F23%2Fsurpass-openshift%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/04/23/surpass-openshift/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
