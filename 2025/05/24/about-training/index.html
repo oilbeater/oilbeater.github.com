@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content=" | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="关于培训 | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content=" | Oilbeater 的自习室" />
+  <meta property="og:title" content="关于培训 | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -23,10 +23,13 @@
   <meta name="google-adsense-account" content="ca-pub-9141929305076734">
   
   
-    <meta name="robots" content="noindex" />
-  
   
   <title>
+    
+      关于培训
+      
+      
+      |
     
      Oilbeater 的自习室
   </title>
@@ -133,58 +136,142 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="linux 信号处理机制简介">
-        <div class="time-m-d">2012-05-09</div>
-        <div class="title">
-          <a href="/2012/05/09/linux-signal/">
-            
-              
-                <span>linux 信号处理机制简介</span>
-              
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">关于培训</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-05-24 10:40:04
+        </span>
+        
       </div>
-    
-      <div class="post-item" title="我这阵子读的书-Top5">
-        <div class="time-m-d">2012-04-30</div>
-        <div class="title">
-          <a href="/2012/04/30/the_book_i_read/">
-            
-              
-                <span>我这阵子读的书-Top5</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <p>这两天接了个 Kube-OVN 培训的任务，事实上这已经是这几年第三次给这家公司培训相同的内容了，形式也从线上转到线下还要求手把手的敲命令，可想而知之前几次的最终效果怎样。我可以理解需求方的技术焦虑，但我认为培训这种形式是极其低效的，更多的只是培训当时能获得一些虚假的满足感，不会产生什么长期收益。</p>
+<p>一方面培训是一种被动学习方式，完全由老师带节奏前进，那听讲的人只是被动的吸收，很难有深度的思考。另一方面需要等到培训才了解的知识大概率是实际上用不到的知识，如果每天都用的话根本来不及等这种一年一次的培训。如果实际用不到，那么哪怕当场掌握了，很快也会什么都剩不下。</p>
+<p>我觉得这和我们一直以来的教育理念有些关系，传统上我们认为认真听老师讲课，努力记笔记，不会的问题堵着老师问，都是优秀的学习习惯。但这些都是偏被动的学习方法，我们很多年的教育过程中其实缺乏主动学习的机会。这种被动的方式早期的效果可能会很好，因为早期学校里的知识难度不大，而且我们展示学习成果的方式就是考试，而考试是可以通过过拟合的方式来提升效果的，并不能真正反映你对知识的掌握程度。</p>
+<p>在我的经历里，到了初中阶段，最出色的那批人就不再是认真听课，努力记笔记那批人了。而是换成了那批给人感觉平时一直玩，考试成绩还很好的一批人，事实上越往后这批人的比例越高。我认为这里并不是智商的区别而是被动学习和主动学习模式的区别。主动学习的人会更多依赖自己思考来解决问题，而不是依赖老师的讲解，这个方法看似低效其实最终效果会更好。想象一下同样一道题，一个人是老师之前讲过所以考试的时候做出来了，另一个人是上课没听到但是考试的时候临场也做出来了。从考试的结果来说两个人是一样的，但两个人的实际能力是天差地别的。后者实际上拥有更好的学习方法和能力，并且在更难的问题上有更好的泛化能力，自然可以显得游刃有余。就好比前者一直在用冒泡算法去排序，后者则是不断用快排，在小规模上前者可能更简单更不容易出错，效果会比后者好，但是后者一旦调整好了，在更大规模的数据上会有指数级别的优势。</p>
+<p>这也是为什么有些转行的程序员的表现会比科班的表现好。一方面他们采用的是主动学习这种高速方法，另一方面科班的被动学习学到的大量都是实际中毫无用处的知识，两者的基础差距本身就没那么大，用一个更高速的方法很容易短期就实现超越。</p>
+<p>所以还是要主动学习，学点有用的。（不要再折腾供应商搞什么高级培训了</p>
+
       </div>
-    
-      <div class="post-item" title="我也说一下写博客的原因">
-        <div class="time-m-d">2012-04-28</div>
-        <div class="title">
-          <a href="/2012/04/28/the-reason-to-blog/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>我也说一下写博客的原因</span>
-              
+              <a href="/2025/04/23/surpass-openshift/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2025-05-24 10:40:04
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
+      
+    </div>
+    
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+     crossorigin="anonymous"></script>
+<!-- 横向广告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9141929305076734"
+     data-ad-slot="3076777751"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+
+
       </div>
     
   </div>
-  <nav class="post-navigation">
-    
-      <a href="/page/7/"><i class="iconfont icon-angleleft"></i></a>
-    
-    <span class="page-num">8 / 8</span>
-    
-  </nav>
-</div>
+
 
         
 <div class="footer">
@@ -480,6 +567,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%85%B3%E4%BA%8E%E5%9F%B9%E8%AE%AD + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F05%2F24%2Fabout-training%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/05/24/about-training/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
