@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content=" | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="Kube-OVN 是如何自动修复 CVE 的 | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content=" | Oilbeater 的自习室" />
+  <meta property="og:title" content="Kube-OVN 是如何自动修复 CVE 的 | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -23,10 +23,13 @@
   <meta name="google-adsense-account" content="ca-pub-9141929305076734">
   
   
-    <meta name="robots" content="noindex" />
-  
   
   <title>
+    
+      Kube-OVN 是如何自动修复 CVE 的
+      
+      
+      |
     
      Oilbeater 的自习室
   </title>
@@ -133,71 +136,252 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="皇城根儿下的偷拍">
-        <div class="time-m-d">2012-05-26</div>
-        <div class="title">
-          <a href="/2012/05/26/huangchengtoupaid/">
-            
-              
-                <span>皇城根儿下的偷拍</span>
-              
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Kube-OVN 是如何自动修复 CVE 的</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-06-28 00:02:21
+        </span>
+        
       </div>
-    
-      <div class="post-item" title="linux 信号处理机制简介">
-        <div class="time-m-d">2012-05-09</div>
-        <div class="title">
-          <a href="/2012/05/09/linux-signal/">
-            
-              
-                <span>linux 信号处理机制简介</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <blockquote>
+<p>这篇博客是内部分享的一个大纲，并没有做仔细整理，大体思路就是捕获所有 Kube-OVN 的依赖：操作系统，Golang，程序依赖，环境组件（k8s,kubevirt 等），然后激进的实时更新所有依赖做到动态清零。</p>
+</blockquote>
+<p>Kube-OVN CVEs 问题修复的流程经历了如下几个阶段：</p>
+<ul>
+<li>发版&#x2F;按需统一进行手动修复</li>
+<li>每次 commit 检测可修复安全漏洞，手动进行修复</li>
+<li>master 依赖自动更新，发版分支部分依赖自动更新，少量手动修复</li>
+<li>未来目标：所有依赖自动更新，避免手动修复</li>
+</ul>
+<h2 id="按需修复"><a href="#按需修复" class="headerlink" title="按需修复"></a>按需修复</h2><p>优势：</p>
+<ul>
+<li>相比每个安全漏洞单独修复，整体修复频次低<br>劣势：</li>
+<li>发版集中修复，研发还要兼顾发版期间赶进度，测试，bug 修复，时间压力大</li>
+<li>依赖更新没有经过日常验证，存在未知的风险</li>
+<li>大部分安全修复工作没有实际意义还需要花费人工精力</li>
+</ul>
+<h2 id="每次-Commit-检测修复"><a href="#每次-Commit-检测修复" class="headerlink" title="每次 Commit 检测修复"></a>每次 Commit 检测修复</h2><p>增加工作：</p>
+<ul>
+<li>流水线增加 trivy 扫描，存在安全问题无法合并代码</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn/blob/master/.github/workflows/build-x86-image.yaml#L3437">https://github.com/kubeovn/kube-ovn/blob/master/.github/workflows/build-x86-image.yaml#L3437</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn/actions/runs/15760235247?pr=5376">https://github.com/kubeovn/kube-ovn/actions/runs/15760235247?pr=5376</a></li>
+</ul>
+<p>优势：</p>
+<ul>
+<li>将 CVE 修复打散到平时，发版时时间压力较低</li>
+<li>可以快速发版</li>
+<li>大部分依赖更新已经得到了日常自动化测试的验证，风险也较低<br>劣势：</li>
+<li>最后一次提交和发版扫描之间存在时间差，理论上会遗漏一部分 CVE</li>
+<li>会干扰平时正常功能提交，bug 修复，提交经常因为不相关的 CVE 问题被阻塞</li>
+<li>大量的手动修复</li>
+</ul>
+<h2 id="所有依赖自动更新"><a href="#所有依赖自动更新" class="headerlink" title="所有依赖自动更新"></a>所有依赖自动更新</h2><p>只要依赖更新版本就尝试更新，不考虑是否是安全更新。尝试解决比 CVE 修复更大的一个问题，自动就解决了 CVE 问题的修复。</p>
+<p>我们的依赖项：</p>
+<ul>
+<li>OS 镜像及其依赖：<code>ubuntu:24.04</code>, <code>apt-get install ....</code></li>
+<li>Go 语言版本，以及代码依赖库</li>
+<li>上游依赖：<code>OVS</code>, <code>OVN</code></li>
+<li>其他协作组件依赖： <code>kubernetes</code>, <code>kubevirt</code>,<code>multus</code>, <code>metallb</code>, <code>cilium</code>, <code>talos</code></li>
+<li>采用比较激进的更新策略，依赖大版本更新我们也会尝试更新</li>
+</ul>
+<p>要做的事情：</p>
+<ul>
+<li>OS 镜像部分增加流水线每天重新构建，自动修复 OS 和 apt 库里解决的问题<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn/blob/master/.github/workflows/build-kube-ovn-base.yaml">https://github.com/kubeovn/kube-ovn/blob/master/.github/workflows/build-kube-ovn-base.yaml</a></li>
+<li>每日自动无需人工干预</li>
+</ul>
+</li>
+<li>Go 相关使用 renovate 进行自动更新<ul>
+<li>Go 版本，<code>go.mod</code> 里的所有依赖版本</li>
+<li>实时更新 + auto merge</li>
+<li>出现合并问题手动处理</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn/pull/5354">https://github.com/kubeovn/kube-ovn/pull/5354</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn/blob/master/renovate.json">https://github.com/kubeovn/kube-ovn/blob/master/renovate.json</a></li>
+<li>不需要特殊配置，按照 renovate 自动检测流程来即可</li>
+</ul>
+</li>
+<li>上游组件依赖<ul>
+<li>OVS OVN 每日构建，策略更激进直接从上游分支构建，上游不发版我们也会更新</li>
+<li>相信上游都是 bugfix，我们这样可以增强稳定性</li>
+</ul>
+</li>
+<li>其他组件<ul>
+<li>使用 renovate 的自定义正则匹配，Dockerfile, Makefile, Action 里所有依赖软件版本自动更新</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn/issues/5291">https://github.com/kubeovn/kube-ovn/issues/5291</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn/blob/master/Makefile">https://github.com/kubeovn/kube-ovn/blob/master/Makefile</a></li>
+</ul>
+</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>大部分 CVE 会在不知道情况下被修复，少量可在一天内自动修复，特殊情况再手动修复</li>
+<li>大量上游的 bugfix，性能提升和新功能被自动合入，软件整体稳定性提升</li>
+<li>大量的版本适配验证工作，如 k8s 版本更新，KubeVirt 版本更新的适配验证也都自动进行，风险提前知晓</li>
+<li>人工干预量较少</li>
+</ul>
+<p>劣势：</p>
+<ul>
+<li>依赖更新多比较吵，需要设置聚合策略</li>
+<li>更新量太大无法人工测试，需要有自动化测试保证</li>
+<li>需要积极适配上游版本变化</li>
+<li>存在上游新版本不稳定风险，目前两年内遇到过两次</li>
+</ul>
+<h2 id="renovate-相比-dependabot-优势"><a href="#renovate-相比-dependabot-优势" class="headerlink" title="renovate 相比 dependabot 优势"></a>renovate 相比 dependabot 优势</h2><ul>
+<li>可以自定义依赖捕获，Dockerfile、Makefile 里的非标准依赖可以捕获</li>
+<li>可以在非 master 分支运行</li>
+<li>有 auto merge 能力</li>
+<li></li>
+</ul>
+<h2 id="还未解决的问题"><a href="#还未解决的问题" class="headerlink" title="还未解决的问题"></a>还未解决的问题</h2><ul>
+<li>自动化测试误报导致无法自动合并</li>
+<li>已发版分支的 Go 相关更新还未自动化<ul>
+<li>renovate 的 security-only 策略效果还未知</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn/blob/master/renovate.json#L45">https://github.com/kubeovn/kube-ovn/blob/master/renovate.json#L45</a></li>
+<li>发版分支可能需要重新定义策略</li>
+</ul>
+</li>
+<li>部分依赖还没有自动更新</li>
+</ul>
+
       </div>
-    
-      <div class="post-item" title="我这阵子读的书-Top5">
-        <div class="time-m-d">2012-04-30</div>
-        <div class="title">
-          <a href="/2012/04/30/the_book_i_read/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>我这阵子读的书-Top5</span>
-              
+              <a href="/2025/05/24/about-training/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2025-06-28 00:02:21
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
-      </div>
+      
+    </div>
     
-      <div class="post-item" title="我也说一下写博客的原因">
-        <div class="time-m-d">2012-04-28</div>
-        <div class="title">
-          <a href="/2012/04/28/the-reason-to-blog/">
-            
-              
-                <span>我也说一下写博客的原因</span>
-              
-            
-          </a>
-        </div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E9%9C%80%E4%BF%AE%E5%A4%8D"><span class="toc-text">按需修复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%8F%E6%AC%A1-Commit-%E6%A3%80%E6%B5%8B%E4%BF%AE%E5%A4%8D"><span class="toc-text">每次 Commit 检测修复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%80%E6%9C%89%E4%BE%9D%E8%B5%96%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0"><span class="toc-text">所有依赖自动更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#renovate-%E7%9B%B8%E6%AF%94-dependabot-%E4%BC%98%E5%8A%BF"><span class="toc-text">renovate 相比 dependabot 优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%98%E6%9C%AA%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">还未解决的问题</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+     crossorigin="anonymous"></script>
+<!-- 横向广告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9141929305076734"
+     data-ad-slot="3076777751"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+
+
       </div>
     
   </div>
-  <nav class="post-navigation">
-    
-      <a href="/page/7/"><i class="iconfont icon-angleleft"></i></a>
-    
-    <span class="page-num">8 / 8</span>
-    
-  </nav>
-</div>
+
 
         
 <div class="footer">
@@ -493,6 +677,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Kube-OVN%20%E6%98%AF%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E4%BF%AE%E5%A4%8D%20CVE%20%E7%9A%84 + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F06%2F28%2Fkube-ovn-autoupdate%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/06/28/kube-ovn-autoupdate/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
