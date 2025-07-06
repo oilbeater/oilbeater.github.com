@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content=" | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="怎样的开源文档规范最合适？ | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content=" | Oilbeater 的自习室" />
+  <meta property="og:title" content="怎样的开源文档规范最合适？ | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -23,10 +23,13 @@
   <meta name="google-adsense-account" content="ca-pub-9141929305076734">
   
   
-    <meta name="robots" content="noindex" />
-  
   
   <title>
+    
+      怎样的开源文档规范最合适？
+      
+      
+      |
     
      Oilbeater 的自习室
   </title>
@@ -133,151 +136,184 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="C++面试题——const 和 static">
-        <div class="time-m-d">2013-05-01</div>
-        <div class="title">
-          <a href="/2013/05/01/Cpp_interview/">
-            
-              
-                <span>C++面试题——const 和 static</span>
-              
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">怎样的开源文档规范最合适？</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-07-06 13:00:10
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/opensource/" title="opensource">
+                    #opensource
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/documents/" title="documents">
+                    #documents
+                  </a>
+                </span>
+                
+              </span>
+          
       </div>
-    
-      <div class="post-item" title="C++ Primer笔记">
-        <div class="time-m-d">2013-04-10</div>
-        <div class="title">
-          <a href="/2013/04/10/note-of-CppPrimer/">
-            
-              
-                <span>C++ Primer笔记</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <p>最近打算把 Kube-OVN 的文档整理一遍，同时思考怎样的文档规范能尽可能做到：</p>
+<ol>
+<li>降低 Maintainer 的维护成本（用户看完文档后不会再去找 Maintainer ）。</li>
+<li>能够充分复用（不看文档的人找过来可以直接甩文档）。</li>
+<li>同时对社区的用户也尽可能有帮助（少走弯路）。</li>
+</ol>
+<p>我决定先按照下面的结构重构一下文档，来看看效果。</p>
+<ol>
+<li><strong>概要</strong>：一两句话描述这个功能达到什么效果，解决什么问题，有什么优势。之前很多文档都是以技术细节开头，反而把真正能实现的效果给模糊掉了。明确功能是什么后，用户就可以确认自己是否还需要继续往下看了。</li>
+<li><strong>局限性</strong>：这个功能不是什么，什么没做到，解决不了什么问题，使用有什么限制条件。这个其实和第一部分一样重要，不然用户可能有不切实际的预期等到很靠后的时候才知道某个功能其实是不符合预期的或者限制条件不满足，也浪费了双方很多时间。有人问为什么不能用的时候也可以甩文档。</li>
+<li><strong>实现原理</strong>：我们用到的 OVN&#x2F;OVS 的哪些能力，简要的介绍以及对应功能的参考文档。到这里我们其实期望用户有一些更深的理解，不至于出了问题毫无思路再去扒代码或者找到 Maintainer。我们也建议真在生产使用 Kube-OVN 的用户要有一些从底层开始排查的能力，Kube-OVN 虽然做了很多抽象让使用变得简单，但是在用户的环境里使用的异常还是需要用户自己有能力排查。</li>
+<li><strong>使用步骤</strong>：之前的常规内容，有了前面的铺垫，这一部分可以尽可能简化，只需要步骤即可。</li>
+</ol>
+<p>大家有什么其他的建议也可以一块来讨论一下。</p>
+
       </div>
-    
-      <div class="post-item" title="正则 in Python">
-        <div class="time-m-d">2013-03-03</div>
-        <div class="title">
-          <a href="/2013/03/03/regex-and-python/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>正则 in Python</span>
-              
+              <a href="/2025/06/28/kube-ovn-autoupdate/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2025-07-06 13:00:10
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/opensource/" title="opensource">
+                        #opensource
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/documents/" title="documents">
+                        #documents
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
-      </div>
+      
+    </div>
     
-      <div class="post-item" title="展望2013">
-        <div class="time-m-d">2013-01-01</div>
-        <div class="title">
-          <a href="/2013/01/01/looking-to-2013/">
-            
-              
-                <span>展望2013</span>
-              
-            
-          </a>
-        </div>
-      </div>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+     crossorigin="anonymous"></script>
+<!-- 横向广告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9141929305076734"
+     data-ad-slot="3076777751"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
     
-      <div class="post-item" title="所谓计划">
-        <div class="time-m-d">2012-11-27</div>
-        <div class="title">
-          <a href="/2012/11/27/socalled_plan/">
-            
-              
-                <span>所谓计划</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="印象杭州">
-        <div class="time-m-d">2012-09-09</div>
-        <div class="title">
-          <a href="/2012/09/09/impressions-of-hangzhou/">
-            
-              
-                <span>印象杭州</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="VS2008编译Qtwebkit">
-        <div class="time-m-d">2012-08-21</div>
-        <div class="title">
-          <a href="/2012/08/21/VS2008-compile-qtwebkit/">
-            
-              
-                <span>VS2008编译Qtwebkit</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="历史的忧思">
-        <div class="time-m-d">2012-07-04</div>
-        <div class="title">
-          <a href="/2012/07/04/the-concern-of-history/">
-            
-              
-                <span>历史的忧思</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="操作系统启动之谜">
-        <div class="time-m-d">2012-06-29</div>
-        <div class="title">
-          <a href="/2012/06/29/the-secret-of-os-startup/">
-            
-              
-                <span>操作系统启动之谜</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="栈溢出和堆溢出">
-        <div class="time-m-d">2012-06-12</div>
-        <div class="title">
-          <a href="/2012/06/12/stackoverflow-and-heapoverflow/">
-            
-              
-                <span>栈溢出和堆溢出</span>
-              
-            
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+
+
       </div>
     
   </div>
-  <nav class="post-navigation">
-    
-      <a href="/page/6/"><i class="iconfont icon-angleleft"></i></a>
-    
-    <span class="page-num">7 / 8</span>
-    
-      <a href="/page/8/"><i class="iconfont icon-angleright"></i></a>
-    
-  </nav>
-</div>
+
 
         
 <div class="footer">
@@ -573,6 +609,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E6%80%8E%E6%A0%B7%E7%9A%84%E5%BC%80%E6%BA%90%E6%96%87%E6%A1%A3%E8%A7%84%E8%8C%83%E6%9C%80%E5%90%88%E9%80%82%EF%BC%9F + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F07%2F06%2Foss-docs-best-practise%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/07/06/oss-docs-best-practise/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
