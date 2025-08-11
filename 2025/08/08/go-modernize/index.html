@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content="GoBGP 快速上手 | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="现代化你的 Go 代码 | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content="GoBGP 快速上手 | Oilbeater 的自习室" />
+  <meta property="og:title" content="现代化你的 Go 代码 | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -26,7 +26,7 @@
   
   <title>
     
-      GoBGP 快速上手
+      现代化你的 Go 代码
       
       
       |
@@ -181,31 +181,25 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">GoBGP 快速上手</div>
+      <div class="post-title">现代化你的 Go 代码</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-          2025-07-08 22:48:00
+          2025-08-08 17:10:00
         </span>
         
               <span class="post-tags">
                 <i class="iconfont icon-tags mr-10" title="标签"></i>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/networking/" title="networking">
-                    #networking
+                  <a href="/tags/golang/" title="golang">
+                    #golang
                   </a>
                 </span>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/gobgp/" title="gobgp">
-                    #gobgp
-                  </a>
-                </span>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/tutorial/" title="tutorial">
-                    #tutorial
+                  <a href="/tags/lint/" title="lint">
+                    #lint
                   </a>
                 </span>
                 
@@ -213,26 +207,90 @@
           
       </div>
       <div class="markdown-body">
-        <p>在做 MetalLB 和 Calico 的一些测试时需要验证 BGP 相关的功能，然而每次测试要去联系运维团队配合网络变更是不太现实的，并且大多数情况我们只要验证 BGP 信息正常交换就可以了，不需要真的去改变物理网络。于是就找到了 <a target="_blank" rel="noopener" href="https://github.com/osrg/gobgp">GoBGP</a> 这个软件路由器进行模拟。</p>
-<p>GoBGP 本身有着很复杂的配置，但是如果你只是像我一样只是想有个虚拟的路由器，让客户端把 BGP 信息发送过来，检查路由表信息是否正确更新，那看这篇文章就可以了。</p>
-<h2 id="下载-GoBGP-二进制文件"><a href="#下载-GoBGP-二进制文件" class="headerlink" title="下载 GoBGP 二进制文件"></a>下载 GoBGP 二进制文件</h2><p>去 <a target="_blank" rel="noopener" href="https://github.com/osrg/gobgp/releases">Release</a> 制品列表里找到对应系统的制品解压即可，重要的只有两个二进制文件： <code>gobgpd</code> 虚拟路由器进程，<code>gobgp</code>命令行工具，用来查看路由对不对。</p>
-<h2 id="启动虚拟路由器"><a href="#启动虚拟路由器" class="headerlink" title="启动虚拟路由器"></a>启动虚拟路由器</h2><p>创建一个 <code>gobgp.toml</code> 文件，最简单的配置就照着我下面这个就好了，大部分基础的云原生领域 BGP 相关的软件测试用这个就够了。</p>
-<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[global.config]</span></span><br><span class="line">  <span class="attr">as</span> = <span class="number">65000</span>                          <span class="comment"># 测试环境随便写一个就好</span></span><br><span class="line">  <span class="attr">router-id</span> = <span class="string">&quot;10.0.0.1&quot;</span>              <span class="comment"># 测试环境随便写一个就好，写 GoBGP 所在节点 IP 日志清晰一些</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[dynamic-neighbors]]</span>                 <span class="comment"># 被动连接模式，省去了配固定客户端</span></span><br><span class="line">  <span class="section">[dynamic-neighbors.config]</span></span><br><span class="line">    <span class="attr">prefix</span>     = <span class="string">&quot;192.168.0.0/24&quot;</span>     <span class="comment"># 允许哪个 IP 范围内的客户端来连接 </span></span><br><span class="line">    <span class="attr">peer-group</span> = <span class="string">&quot;ext-ebgp&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[[peer-groups]]</span>                       <span class="comment"># 复制粘贴就好了</span></span><br><span class="line">  <span class="section">[peer-groups.config]</span></span><br><span class="line">    <span class="attr">peer-group-name</span> = <span class="string">&quot;ext-ebgp&quot;</span></span><br><span class="line">    <span class="attr">peer-as</span>         = <span class="number">65000</span></span><br><span class="line">  <span class="section">[[peer-groups.afi-safis]]</span></span><br><span class="line">    <span class="section">[peer-groups.afi-safis.config]</span></span><br><span class="line">      <span class="attr">afi-safi-name</span> = <span class="string">&quot;ipv4-unicast&quot;</span></span><br></pre></td></tr></table></figure>
+        <blockquote>
+<p>[!note] TL; DR<br><code>go run golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize@latest -test --fix ./...</code></p>
+<ol>
+<li>自动使用现代化语法简化 Go 代码</li>
+<li>目前无法和 golangci-lint 集成，只能这么用</li>
+</ol>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/golang/tools/tree/master/gopls/internal/analysis/modernize/testdata/src">https://github.com/golang/tools/tree/master/gopls/internal/analysis/modernize/testdata/src</a></p>
+<h2 id="efaceany-replace-interface-by-the-‘any’-type-added-in-go1-18"><a href="#efaceany-replace-interface-by-the-‘any’-type-added-in-go1-18" class="headerlink" title="efaceany: replace interface{} by the ‘any’ type added in go1.18."></a>efaceany: replace interface{} by the ‘any’ type added in go1.18.</h2><table>
+<thead><tr><th>Old</th><th>New</th></tr></thead>
+<tbody>
+<tr><td>
 
-<p>启动 <code>gobgpd</code></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gobgpd -f gobgp.toml</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line"><span class="string">``</span><span class="string">``</span></span><br><span class="line"></span><br><span class="line">&lt;/td&gt;&lt;td&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">`go</span></span><br><span class="line"><span class="string">var x any</span></span><br></pre></td></tr></table></figure>
 
-<p>在另一个终端观察当前的路由表</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gobgp global rib</span><br></pre></td></tr></table></figure>
+</td></tr>
+</tbody></table>
 
-<p>这样基本上 MetalLB，Calico 的基础 BGP 能力就可以测试了。如果想更配更复杂的模式，比如 <a target="_blank" rel="noopener" href="https://github.com/osrg/gobgp/blob/master/docs/sources/route-reflector.md">Router Reflector</a>，<a target="_blank" rel="noopener" href="https://github.com/osrg/gobgp/blob/master/docs/sources/evpn.md">EVPN</a> 那就再去翻 <a target="_blank" rel="noopener" href="https://github.com/osrg/gobgp?tab=readme-ov-file#documentation">GoBGP 的文档</a>吧。</p>
+<h2 id="stringsseq-replace-Split-in-“for-range-strings-Split-…-”-by-go1-24’s-more-efficient-SplitSeq-or-Fields-with-FieldSeq"><a href="#stringsseq-replace-Split-in-“for-range-strings-Split-…-”-by-go1-24’s-more-efficient-SplitSeq-or-Fields-with-FieldSeq" class="headerlink" title="stringsseq: replace Split in “for range strings.Split(…)” by go1.24’s more efficient SplitSeq, or Fields with FieldSeq."></a>stringsseq: replace Split in “for range strings.Split(…)” by go1.24’s more efficient SplitSeq, or Fields with FieldSeq.</h2><table>
+<thead><tr><th>Old</th><th>New</th></tr></thead>
+<tbody>
+<tr><td>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, line := <span class="keyword">range</span> strings.Split(<span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>) &#123;</span><br><span class="line">	<span class="built_in">println</span>(line)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _, line := <span class="keyword">range</span> strings.Fields(<span class="string">&quot;&quot;</span>) &#123;</span><br><span class="line">	<span class="built_in">println</span>(line)</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">``</span><span class="string">``</span></span><br><span class="line"></span><br><span class="line">&lt;/td&gt;&lt;td&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">`go</span></span><br><span class="line"><span class="string">for line := range strings.SplitSeq(&quot;&quot;, &quot;&quot;) &#123;</span></span><br><span class="line"><span class="string">	println(line)</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">for line := range strings.FieldsSeq(&quot;&quot;) &#123; </span></span><br><span class="line"><span class="string">	println(line)</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+</td></tr>
+</tbody></table>
+
+<h2 id="mapsloop-replace-a-loop-around-an-m-k-v-map-update-by-a-call-to-one-of-the-Collect-Copy-Clone-or-Insert-functions-from-the-maps-package-added-in-go1-21"><a href="#mapsloop-replace-a-loop-around-an-m-k-v-map-update-by-a-call-to-one-of-the-Collect-Copy-Clone-or-Insert-functions-from-the-maps-package-added-in-go1-21" class="headerlink" title="mapsloop: replace a loop around an m[k]&#x3D;v map update by a call to one of the Collect, Copy, Clone, or Insert functions from the maps package, added in go1.21."></a>mapsloop: replace a loop around an m[k]&#x3D;v map update by a call to one of the Collect, Copy, Clone, or Insert functions from the maps package, added in go1.21.</h2><table>
+<thead><tr><th>Old</th><th>New</th></tr></thead>
+<tbody>
+<tr><td>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">for</span> key, value := <span class="keyword">range</span> src &#123;</span><br><span class="line">		dst[key] = value</span><br><span class="line">	&#125;</span><br><span class="line"><span class="string">``</span><span class="string">``</span></span><br><span class="line"></span><br><span class="line">&lt;/td&gt;&lt;td&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">`go</span></span><br><span class="line"><span class="string">	maps.Copy(dst, src)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	maps.Insert(dst, src)</span></span><br></pre></td></tr></table></figure>
+
+</td></tr>
+</tbody></table>
+
+<h2 id="minmax-replace-an-if-else-conditional-assignment-by-a-call-to-the-built-in-min-or-max-functions-added-in-go1-21"><a href="#minmax-replace-an-if-else-conditional-assignment-by-a-call-to-the-built-in-min-or-max-functions-added-in-go1-21" class="headerlink" title="minmax: replace an if&#x2F;else conditional assignment by a call to the built-in min or max functions added in go1.21."></a>minmax: replace an if&#x2F;else conditional assignment by a call to the built-in min or max functions added in go1.21.</h2><table>
+<thead><tr><th>Old</th><th>New</th></tr></thead>
+<tbody>
+<tr><td>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	x := a </span><br><span class="line">	<span class="keyword">if</span> a &lt; b &#123; </span><br><span class="line">		x = b</span><br><span class="line">	&#125;</span><br><span class="line"><span class="string">``</span><span class="string">``</span></span><br><span class="line"></span><br><span class="line">&lt;/td&gt;&lt;td&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">`go</span></span><br><span class="line"><span class="string">	 x := max(a, b)</span></span><br></pre></td></tr></table></figure>
+
+</td></tr>
+</tbody></table>
+
+<h2 id="rangeint-replace-a-3-clause-“for-i-0-i-n-i-”-loop-by-“for-i-range-n”-added-in-go1-22"><a href="#rangeint-replace-a-3-clause-“for-i-0-i-n-i-”-loop-by-“for-i-range-n”-added-in-go1-22" class="headerlink" title="rangeint: replace a 3-clause “for i :&#x3D; 0; i &lt; n; i++” loop by “for i :&#x3D; range n”, added in go1.22."></a>rangeint: replace a 3-clause “for i :&#x3D; 0; i &lt; n; i++” loop by “for i :&#x3D; range n”, added in go1.22.</h2><table>
+<thead><tr><th>Old</th><th>New</th></tr></thead>
+<tbody>
+<tr><td>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123; </span><br><span class="line">		<span class="built_in">println</span>(i)</span><br><span class="line">	&#125;</span><br><span class="line"><span class="string">``</span><span class="string">``</span></span><br><span class="line"></span><br><span class="line">&lt;/td&gt;&lt;td&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">`go</span></span><br><span class="line"><span class="string">	for i := range 10 &#123; </span></span><br><span class="line"><span class="string">		println(i)</span></span><br><span class="line"><span class="string">	&#125;</span></span><br></pre></td></tr></table></figure>
+
+</td></tr>
+</tbody></table>
+
+<h2 id="slicescontains-replace-‘for-i-elem-range-s-if-elem-needle-…-break-’-by-a-call-to-slices-Contains-added-in-go1-21"><a href="#slicescontains-replace-‘for-i-elem-range-s-if-elem-needle-…-break-’-by-a-call-to-slices-Contains-added-in-go1-21" class="headerlink" title="slicescontains: replace ‘for i, elem :&#x3D; range s { if elem &#x3D;&#x3D; needle { …; break }’ by a call to slices.Contains, added in go1.21."></a>slicescontains: replace ‘for i, elem :&#x3D; range s { if elem &#x3D;&#x3D; needle { …; break }’ by a call to slices.Contains, added in go1.21.</h2><table>
+<thead><tr><th>Old</th><th>New</th></tr></thead>
+<tbody>
+<tr><td>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">for</span> i := <span class="keyword">range</span> slice &#123;</span><br><span class="line">		<span class="keyword">if</span> slice[i] == needle &#123;</span><br><span class="line">			<span class="built_in">println</span>(<span class="string">&quot;found&quot;</span>)</span><br><span class="line">			 <span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="string">``</span><span class="string">``</span></span><br><span class="line"></span><br><span class="line">&lt;/td&gt;&lt;td&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">`go</span></span><br><span class="line"><span class="string">	if slices.Contains(slice, needle) &#123;</span></span><br><span class="line"><span class="string">		println(&quot;found&quot;)</span></span><br><span class="line"><span class="string">	&#125;</span></span><br></pre></td></tr></table></figure>
+
+</td></tr>
+</tbody></table>
+
+<h2 id="slicesdelete-replace-append-s-i-s-i-1-…-by-slices-Delete-s-i-i-1-added-in-go1-21"><a href="#slicesdelete-replace-append-s-i-s-i-1-…-by-slices-Delete-s-i-i-1-added-in-go1-21" class="headerlink" title="slicesdelete: replace append(s[:i], s[i+1]…) by slices.Delete(s, i, i+1), added in go1.21."></a>slicesdelete: replace append(s[:i], s[i+1]…) by slices.Delete(s, i, i+1), added in go1.21.</h2><table>
+<thead><tr><th>Old</th><th>New</th></tr></thead>
+<tbody>
+<tr><td>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	test = <span class="built_in">append</span>(test[:i], test[i+<span class="number">1</span>:]...)</span><br><span class="line"><span class="string">``</span><span class="string">``</span></span><br><span class="line"></span><br><span class="line">&lt;/td&gt;&lt;td&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">`go</span></span><br><span class="line"><span class="string">	test = slices.Delete(test, i, i+1)</span></span><br></pre></td></tr></table></figure>
+
+</td></tr>
+</tbody></table>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2025/07/06/oss-docs-best-practise/" target="_self">
+              <a href="/2025/07/08/gobgp-guide/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>上一页</span>
               </a>
@@ -241,27 +299,21 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-              2025-07-08 22:48:00
+              2025-08-08 17:10:00
             </span>
             
                   <span class="post-tags">
                     <i class="iconfont icon-tags mr-10" title="标签"></i>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/networking/" title="networking">
-                        #networking
+                      <a href="/tags/golang/" title="golang">
+                        #golang
                       </a>
                     </span>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/gobgp/" title="gobgp">
-                        #gobgp
-                      </a>
-                    </span>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/tutorial/" title="tutorial">
-                        #tutorial
+                      <a href="/tags/lint/" title="lint">
+                        #lint
                       </a>
                     </span>
                     
@@ -269,11 +321,6 @@
               
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2025/08/08/go-modernize/" target="_self">
-                <span>下一页</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -287,7 +334,7 @@
     <div class="title">目录</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD-GoBGP-%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6"><span class="toc-text">下载 GoBGP 二进制文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E8%99%9A%E6%8B%9F%E8%B7%AF%E7%94%B1%E5%99%A8"><span class="toc-text">启动虚拟路由器</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#efaceany-replace-interface-by-the-%E2%80%98any%E2%80%99-type-added-in-go1-18"><span class="toc-text">efaceany: replace interface{} by the ‘any’ type added in go1.18.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stringsseq-replace-Split-in-%E2%80%9Cfor-range-strings-Split-%E2%80%A6-%E2%80%9D-by-go1-24%E2%80%99s-more-efficient-SplitSeq-or-Fields-with-FieldSeq"><span class="toc-text">stringsseq: replace Split in “for range strings.Split(…)” by go1.24’s more efficient SplitSeq, or Fields with FieldSeq.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mapsloop-replace-a-loop-around-an-m-k-v-map-update-by-a-call-to-one-of-the-Collect-Copy-Clone-or-Insert-functions-from-the-maps-package-added-in-go1-21"><span class="toc-text">mapsloop: replace a loop around an m[k]&#x3D;v map update by a call to one of the Collect, Copy, Clone, or Insert functions from the maps package, added in go1.21.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#minmax-replace-an-if-else-conditional-assignment-by-a-call-to-the-built-in-min-or-max-functions-added-in-go1-21"><span class="toc-text">minmax: replace an if&#x2F;else conditional assignment by a call to the built-in min or max functions added in go1.21.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rangeint-replace-a-3-clause-%E2%80%9Cfor-i-0-i-n-i-%E2%80%9D-loop-by-%E2%80%9Cfor-i-range-n%E2%80%9D-added-in-go1-22"><span class="toc-text">rangeint: replace a 3-clause “for i :&#x3D; 0; i &lt; n; i++” loop by “for i :&#x3D; range n”, added in go1.22.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#slicescontains-replace-%E2%80%98for-i-elem-range-s-if-elem-needle-%E2%80%A6-break-%E2%80%99-by-a-call-to-slices-Contains-added-in-go1-21"><span class="toc-text">slicescontains: replace ‘for i, elem :&#x3D; range s { if elem &#x3D;&#x3D; needle { …; break }’ by a call to slices.Contains, added in go1.21.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#slicesdelete-replace-append-s-i-s-i-1-%E2%80%A6-by-slices-Delete-s-i-i-1-added-in-go1-21"><span class="toc-text">slicesdelete: replace append(s[:i], s[i+1]…) by slices.Delete(s, i, i+1), added in go1.21.</span></a></li></ol>
       
     </div>
   </div>
@@ -649,12 +696,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + GoBGP%20%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F07%2F08%2Fgobgp-guide%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E7%8E%B0%E4%BB%A3%E5%8C%96%E4%BD%A0%E7%9A%84%20Go%20%E4%BB%A3%E7%A0%81 + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F08%2F08%2Fgo-modernize%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/07/08/gobgp-guide/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/08/08/go-modernize/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
