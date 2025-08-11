@@ -10,8 +10,9 @@ tags:
 
 > [!note] TL; DR
 > `go run golang.org/x/tools/gopls/internal/analysis/modernize/cmd/modernize@latest -test --fix ./...`
-> 1. 自动使用现代化语法简化 Go 代码
-> 2. 目前无法和 golangci-lint 集成，只能这么用 
+> 1. 自动使用现代化语法简化 Go 代码。
+> 2. 目前无法和 golangci-lint 集成，只能这么用。
+> 3. 新的 `slices` 和 `maps` 标准库包含大量通过泛型和迭代器的实现，可以简化之前代码。
 
 https://github.com/golang/tools/tree/master/gopls/internal/analysis/modernize/testdata/src
 
@@ -45,11 +46,11 @@ var x any
 <tr><td>
 
 ```go
-for _, line := range strings.Split("", "") {
+for _, line := range strings.Split("a,b,c", ",") {
 	println(line)
 }
 
-for _, line := range strings.Fields("") {
+for _, line := range strings.Fields("a b c") {
 	println(line)
 }
 ````
@@ -57,11 +58,11 @@ for _, line := range strings.Fields("") {
 </td><td>
 
 ```go
-for line := range strings.SplitSeq("", "") {
+for line := range strings.SplitSeq("a,b,c", ",") {
 	println(line)
 }
 
-for line := range strings.FieldsSeq("") { 
+for line := range strings.FieldsSeq("a b c") { 
 	println(line)
 }
 ```
@@ -86,6 +87,8 @@ for line := range strings.FieldsSeq("") {
 </td><td>
 
 ```go
+	dst := maps.Clone(src)
+
 	maps.Copy(dst, src)
 
 	maps.Insert(dst, src)
@@ -186,6 +189,26 @@ for line := range strings.FieldsSeq("") {
 
 ```go
 	test = slices.Delete(test, i, i+1)
+```
+
+</td></tr>
+</tbody></table>
+
+## sortslice: replace sort.Slice(s, func(i, j int) bool { return s[i] < s[j] }) by a call to slices.Sort(s), added in go1.21.
+
+<table>
+<thead><tr><th>Old</th><th>New</th></tr></thead>
+<tbody>
+<tr><td>
+
+```go
+	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+````
+
+</td><td>
+
+```go
+	slices.Sort(s)
 ```
 
 </td></tr>
