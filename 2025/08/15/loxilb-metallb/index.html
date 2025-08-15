@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content=" | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="LoxiLB -- More than MetalLB | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content=" | Oilbeater 的自习室" />
+  <meta property="og:title" content="LoxiLB -- More than MetalLB | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -23,10 +23,13 @@
   <meta name="google-adsense-account" content="ca-pub-9141929305076734">
   
   
-    <meta name="robots" content="noindex" />
-  
   
   <title>
+    
+      LoxiLB -- More than MetalLB
+      
+      
+      |
     
      Oilbeater 的自习室
   </title>
@@ -133,151 +136,203 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="Ruby on Rails Ubuntu下从零开始到在线网站">
-        <div class="time-m-d">2013-06-11</div>
-        <div class="title">
-          <a href="/2013/06/11/ruby_on_rail_from_scratch/">
-            
-              
-                <span>Ruby on Rails Ubuntu下从零开始到在线网站</span>
-              
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">LoxiLB -- More than MetalLB</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-08-15 14:48:00
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/metallb/" title="metallb">
+                    #metallb
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/loxilb/" title="loxilb">
+                    #loxilb
+                  </a>
+                </span>
+                
+              </span>
+          
       </div>
-    
-      <div class="post-item" title="小弱找实习">
-        <div class="time-m-d">2013-05-19</div>
-        <div class="title">
-          <a href="/2013/05/19/interview/">
-            
-              
-                <span>小弱找实习</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <p><a target="_blank" rel="noopener" href="https://github.com/metallb/metallb">MetalLB</a> 目前几乎成了私有云场景下 Kubernetes 提供 LoadBalancer 类型 Service 的事实标准。他的实现逻辑简单清晰，并且功能单一，基于 Gossip 的分布式选主也保证了 VIP 的漂移可以做到迅速且不依赖 Kubernetes 的状态。但是它在专注的情况下也缺少了一些在生产环境极为重要的功能，这也是为什么我最近在调研其他的开源项目，并发现了 <a target="_blank" rel="noopener" href="https://github.com/loxilb-io/loxilb">LoxiLB</a> 这个很不错的 MetalLB 替代项目。</p>
+<h2 id="MetalLB-的缺陷"><a href="#MetalLB-的缺陷" class="headerlink" title="MetalLB 的缺陷"></a>MetalLB 的缺陷</h2><p>MetalLB 虽有 LB 之名，但实际上并不处理任何转发平面的工作。严格来说它只提供了 VIP 的对外通告能力，所有转发平面的事情都是依赖 kube-proxy 或者各类的 kube-proxy 的替代 来实现。这样的好处是它可以专注在提供各种类型的 VIP 宣告方式，并且能和 Kubernetes 本身的行为保持最大的兼容性，但同时由于 kube-proxy 本身孱弱的能力，也限制了 MetalLB 本身的功能。</p>
+<h3 id="缺乏主动健康检查"><a href="#缺乏主动健康检查" class="headerlink" title="缺乏主动健康检查"></a>缺乏主动健康检查</h3><p>这是 Kubernetes 由来已久的一个问题，Service 后端的 Endpoint 健康状态依赖 Pod 本身的 ReadinessProbe&#x2F;LivenessProbe，Probe 的执行依赖当前节点的 kubelet。造成的结果就是断电或类似的直接宕机情况下 kubelet 无法更新 Pod 的健康状态，需要等到触发 node not ready 的超时才会修改 Pod 监控状态，通常在大集群这个超时可能会有数分钟，导致这段时间内访问 Service 会出现失败。</p>
+<p>严格来说这并不是 MetalLB 的问题，但是由于 MetalLB 本身对数据转发平面没有任何控制能力，无法主动探测 Pod 真实健康情况也无法修改 Pod 健康状态，只能被动接受这种机制。</p>
+<p>虽然通过 <a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-readiness-gate">Pod ReadinessGates</a> 可以使用额外的 controller 主动探测来控制 Pod 健康状态，间接解决这个问题，但对于 MetalLB 来说这个也和它没有什么关系，并没有能开箱即用的方案，这对生产环境还是个很大的隐患。</p>
+<h3 id="缺乏有效的监控"><a href="#缺乏有效的监控" class="headerlink" title="缺乏有效的监控"></a>缺乏有效的监控</h3><p>这同样是依赖 kube-proxy 实现导致的一个问题，kube-proxy 的多种实现方式都没有流量层面的监控，导致的后果就是如果你看 MetalLB 提供的<a target="_blank" rel="noopener" href="https://metallb.universe.tf/prometheus-metrics/">监控指标</a>就会发现里面没有任何流量的指标。这种几乎没有任何数据平面监控的 LB 要上生产，就有点过于松弛了。</p>
+<h2 id="LoxiLB-的改进"><a href="#LoxiLB-的改进" class="headerlink" title="LoxiLB 的改进"></a>LoxiLB 的改进</h2><p>LoxiLB 本身是一个为电信场景的特殊需求，使用 eBPF 打造的专用 LB，它完全实现了控制平面和数据平面是一个完整的 LB 实现。LoxiLB 本身的功能十分多，尤其在 SCTP 领域有十分多专属能力，这里不赘述只是重点看一下针对 MetalLB 缺陷的补足。</p>
+<h3 id="主动健康检查"><a href="#主动健康检查" class="headerlink" title="主动健康检查"></a>主动健康检查</h3><p>LoxiLB 可以给每个 Service 配置<a target="_blank" rel="noopener" href="https://docs.loxilb.io/latest/cmd/#create-end-point-for-health-probing">主动健康检查</a>，支持 ping, tcp, udp, sctp, http, https 也支持超时，重试之类的细粒度配置，虽然称不上多优秀，但 MetalLB 就是没有这个功能，这就显得很尴尬。</p>
+<h3 id="监控指标"><a href="#监控指标" class="headerlink" title="监控指标"></a>监控指标</h3><p>这一点就是 eBPF 的强项了，LoxiLB 内置了不少 <a target="_blank" rel="noopener" href="https://docs.loxilb.io/latest/loxilb-incluster-grafana/">Metrics 和 Grafana 面板</a>，此外由于数据平面是自己实现的，添加各类监控指标也相对容易一些。</p>
+<h3 id="潜在的风险"><a href="#潜在的风险" class="headerlink" title="潜在的风险"></a>潜在的风险</h3><p>整体来看 LoxiLB 是一个我很喜欢的项目，甚至很多关于 SCTP 协议的理解我都是看了它的一些配置才能理解是怎么回事。但是他还是有着一些不足的地方：</p>
+<ul>
+<li>选主的逻辑目前还是 Kubernetes 那套 Leader Election 逻辑，但我更喜欢 MetalLB 那种与 Kubernetes 解耦的选主逻辑。</li>
+<li>文档整体比较凌乱，虽然文档内容很多但是组织的不是很好，好多配置得靠搜索才能找到，一些文档格式也存在问题。</li>
+<li>虽然该项目是 CNCF 沙箱项目，但是整体的活跃度和参与度还是偏低，能感觉出来该项目应该还是个比较成熟的内部项目拿了出来，但是如果社区采用度比较低的话未来还是有些隐患。</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>MetalLB 依然是一个我很喜欢的项目，它极其精准地解决了 VIP 宣告及高可用的问题，但是如果达到生产上完备的状态还需要配合其他组件。LoxiLB 则是一套完整的 LB 解决方案，但是社区的发展还处于早期，还有待更多人的参与。</p>
+
       </div>
-    
-      <div class="post-item" title="C++面试题——const 和 static">
-        <div class="time-m-d">2013-05-01</div>
-        <div class="title">
-          <a href="/2013/05/01/Cpp_interview/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>C++面试题——const 和 static</span>
-              
+              <a href="/2025/07/08/gobgp-guide/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2025-08-15 14:48:00
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/metallb/" title="metallb">
+                        #metallb
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/loxilb/" title="loxilb">
+                        #loxilb
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
-      </div>
+      
+    </div>
     
-      <div class="post-item" title="C++ Primer笔记">
-        <div class="time-m-d">2013-04-10</div>
-        <div class="title">
-          <a href="/2013/04/10/note-of-CppPrimer/">
-            
-              
-                <span>C++ Primer笔记</span>
-              
-            
-          </a>
-        </div>
-      </div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MetalLB-%E7%9A%84%E7%BC%BA%E9%99%B7"><span class="toc-text">MetalLB 的缺陷</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E4%B9%8F%E4%B8%BB%E5%8A%A8%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5"><span class="toc-text">缺乏主动健康检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E4%B9%8F%E6%9C%89%E6%95%88%E7%9A%84%E7%9B%91%E6%8E%A7"><span class="toc-text">缺乏有效的监控</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LoxiLB-%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="toc-text">LoxiLB 的改进</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E5%8A%A8%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5"><span class="toc-text">主动健康检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E6%8C%87%E6%A0%87"><span class="toc-text">监控指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BD%9C%E5%9C%A8%E7%9A%84%E9%A3%8E%E9%99%A9"><span class="toc-text">潜在的风险</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+     crossorigin="anonymous"></script>
+<!-- 横向广告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9141929305076734"
+     data-ad-slot="3076777751"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
     
-      <div class="post-item" title="正则 in Python">
-        <div class="time-m-d">2013-03-03</div>
-        <div class="title">
-          <a href="/2013/03/03/regex-and-python/">
-            
-              
-                <span>正则 in Python</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="展望2013">
-        <div class="time-m-d">2013-01-01</div>
-        <div class="title">
-          <a href="/2013/01/01/looking-to-2013/">
-            
-              
-                <span>展望2013</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="所谓计划">
-        <div class="time-m-d">2012-11-27</div>
-        <div class="title">
-          <a href="/2012/11/27/socalled_plan/">
-            
-              
-                <span>所谓计划</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="印象杭州">
-        <div class="time-m-d">2012-09-09</div>
-        <div class="title">
-          <a href="/2012/09/09/impressions-of-hangzhou/">
-            
-              
-                <span>印象杭州</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="VS2008编译Qtwebkit">
-        <div class="time-m-d">2012-08-21</div>
-        <div class="title">
-          <a href="/2012/08/21/VS2008-compile-qtwebkit/">
-            
-              
-                <span>VS2008编译Qtwebkit</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="历史的忧思">
-        <div class="time-m-d">2012-07-04</div>
-        <div class="title">
-          <a href="/2012/07/04/the-concern-of-history/">
-            
-              
-                <span>历史的忧思</span>
-              
-            
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+
+
       </div>
     
   </div>
-  <nav class="post-navigation">
-    
-      <a href="/page/6/"><i class="iconfont icon-angleleft"></i></a>
-    
-    <span class="page-num">7 / 8</span>
-    
-      <a href="/page/8/"><i class="iconfont icon-angleright"></i></a>
-    
-  </nav>
-</div>
+
 
         
 <div class="footer">
@@ -573,6 +628,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + LoxiLB%20--%20More%20than%20MetalLB + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F08%2F15%2Floxilb-metallb%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/08/15/loxilb-metallb/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
