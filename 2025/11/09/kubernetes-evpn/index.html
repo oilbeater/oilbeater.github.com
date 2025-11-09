@@ -216,10 +216,10 @@
         <p>目前社区在 Kubernetes 实现网络多租户主流选型是 <a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn">Kube-OVN</a> 和 <a target="_blank" rel="noopener" href="https://github.com/ovn-kubernetes/ovn-kubernetes">ovn-kubernetes</a>，这两个方案本质上都是在物理网络上通过 OVS 和 OVN 的能力构建了一层 Overlay 虚拟网络。这种方案不太关心底层物理网络架构，有着比较好的兼容性，但是双层网络架构也加大了整体架构的复杂度。</p>
 <p>最近我在调研 EVPN 这种物理网络多租户的方案，发现了 <a target="_blank" rel="noopener" href="https://github.com/openperouter/openperouter">OpenPERouter</a> 这个开源项目，他把 EVPN 的理念引入了容器网络，提供了一种新的在 Kubernetes 上实现多租户的方案。该方案不仅能统一软硬件网络架构，还在一定程度上能兼容现有 Calico 这种通过 BGP 方式发布路由的 CNI，我甚至已经看到通过少量工作就可以让 Calico 具备多租户能力的前景。虽然这个项目还在早期，但我认为这是一个相当不错的方向，未来很可能会成为构建大规模数据中心的一个有竞争力选型。</p>
 <h2 id="OVN-类方案的局限性"><a href="#OVN-类方案的局限性" class="headerlink" title="OVN 类方案的局限性"></a>OVN 类方案的局限性</h2><p>OVN 类方案的主要局限性有两个一个是集中式控制平面的规模限制，另一个就是网络复杂度。</p>
-<h2 id="集中式控制平面"><a href="#集中式控制平面" class="headerlink" title="集中式控制平面"></a>集中式控制平面</h2><p>尽管 Kube-OVN 在社区已经存在了上千节点的大规模案例，但是由于 OVN 这种集中式控制面的架构，会导致控制面存在比较大的压力，成为整个集群的瓶颈。特别是在控制面节点断电或者故障时，可能会需要较长时间网络控制面才能恢复。</p>
+<h3 id="集中式控制平面"><a href="#集中式控制平面" class="headerlink" title="集中式控制平面"></a>集中式控制平面</h3><p>尽管 Kube-OVN 在社区已经存在了上千节点的大规模案例，但是由于 OVN 这种集中式控制面的架构，会导致控制面存在比较大的压力，成为整个集群的瓶颈。特别是在控制面节点断电或者故障时，可能会需要较长时间网络控制面才能恢复。</p>
 <p><img src="/../images/ovn-limit.png" alt="ovn-limit"></p>
 <p>这个问题主要是由 OVN 集中式控制平面的架构带来的，无法完全规避。ovn-kubernetes 中采用了每个节点一个 OVN 控制平面，多节点之间通过 OVN-IC 互联的方案来规避这个瓶颈。但是这个方案同时也会导致架构的复杂，并且相当于主动弃用了 OVN 本身的集群网络能力，使得大量的 OVN 能力无法使用。</p>
-<h2 id="网络复杂度"><a href="#网络复杂度" class="headerlink" title="网络复杂度"></a>网络复杂度</h2><p>另一个问题就在于 OVS&#x2F;OVN 这套体系本身的复杂度，使用者需要重新再构建一套 OVN 规范下的网络拓扑，流表的知识体系才能保证自己面对实际问题时不会手足无措。而这套体系和底层的物理网络往往又是不同的，实际中相当于存在两套网络体系，这不仅会使问题排查变得更复杂，还会导致需要物理网络团队和容器网络团队两套人马，双方往往都无法理解彼此的工作内容，无法有效协同。</p>
+<h3 id="网络复杂度"><a href="#网络复杂度" class="headerlink" title="网络复杂度"></a>网络复杂度</h3><p>另一个问题就在于 OVS&#x2F;OVN 这套体系本身的复杂度，使用者需要重新再构建一套 OVN 规范下的网络拓扑，流表的知识体系才能保证自己面对实际问题时不会手足无措。而这套体系和底层的物理网络往往又是不同的，实际中相当于存在两套网络体系，这不仅会使问题排查变得更复杂，还会导致需要物理网络团队和容器网络团队两套人马，双方往往都无法理解彼此的工作内容，无法有效协同。</p>
 <p>以上两个局限性更多的是选型上的取舍，如果希望能够软件集中控制，希望容器网络能不关心底层物理网络，那这样的选择必然就会带来这样的局限性。</p>
 <h2 id="EVPN"><a href="#EVPN" class="headerlink" title="EVPN"></a>EVPN</h2><p>在和 OVS 这种纯软件方案平行的另一个硬件世界，有另一套硬件版本的多租户网络方案，那就是 EVPN。</p>
 <p>在 EVPN 的世界里，在数据平面交换机之间通过 Vxlan 对数据包做封装，通过在 Vxlan 的 Header 中设置 VNI 来区分不同租户的流量，实现了流量的隔离。</p>
@@ -297,7 +297,7 @@
     <div class="title">目录</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OVN-%E7%B1%BB%E6%96%B9%E6%A1%88%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-text">OVN 类方案的局限性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8F%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-text">集中式控制平面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">网络复杂度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EVPN"><span class="toc-text">EVPN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenPERouter"><span class="toc-text">OpenPERouter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OVN-%E7%B1%BB%E6%96%B9%E6%A1%88%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-text">OVN 类方案的局限性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8F%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-text">集中式控制平面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">网络复杂度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EVPN"><span class="toc-text">EVPN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenPERouter"><span class="toc-text">OpenPERouter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol>
       
     </div>
   </div>
