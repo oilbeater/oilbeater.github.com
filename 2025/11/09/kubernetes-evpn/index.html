@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Oilbeater" />
+  <meta name="description" content="" />
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="Oilbeater 的自习室" />
+  <meta name="twitter:creator" content="@Oilbeater">
+  <meta name="twitter:title" content="OpenPERouter：把 EVPN 带入 Kubernetes | Oilbeater 的自习室" />
+  <meta name="twitter:description" content="" />
+
+  <meta property="og:site_name" content="Oilbeater 的自习室">
+  <meta property="og:title" content="OpenPERouter：把 EVPN 带入 Kubernetes | Oilbeater 的自习室" />
+  <meta property="og:type" content="article" />
+  <meta property="og:locale" content="zh-CN" />
+  <meta property="og:description" content="" />
+
+  <meta name="google-adsense-account" content="ca-pub-9141929305076734">
+  
+  
+  
+  <title>
+    
+      OpenPERouter：把 EVPN 带入 Kubernetes
+      
+      
+      |
+    
+     Oilbeater 的自习室
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/oilbeater.png">
+    <link rel="icon" href="/images/oilbeater.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-31254339-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-31254339-1');
+    </script>
+  
+
+  
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+  crossorigin="anonymous"></script>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Oilbeater 的自习室" type="application/atom+xml">
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/oilbeater.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oilbeater</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+        <li class="nav-item" data-path="/running_page/">
+          <a href="/running_page/">Running Page</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">OpenPERouter：把 EVPN 带入 Kubernetes</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-11-09 04:29:02
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/EVPN/" title="EVPN">
+                    #EVPN
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Kubernetes/" title="Kubernetes">
+                    #Kubernetes
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Network/" title="Network">
+                    #Network
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>目前社区在 Kubernetes 实现网络多租户主流选型是 <a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn">Kube-OVN</a> 和 <a target="_blank" rel="noopener" href="https://github.com/ovn-kubernetes/ovn-kubernetes">ovn-kubernetes</a>，这两个方案本质上都是在物理网络上通过 OVS 和 OVN 的能力构建了一层 Overlay 虚拟网络。这种方案不太关心底层物理网络架构，有着比较好的兼容性，但是双层网络架构也加大了整体架构的复杂度。</p>
+<p>最近我在调研 EVPN 这种物理网络多租户的方案，发现了 <a target="_blank" rel="noopener" href="https://github.com/openperouter/openperouter">OpenPERouter</a> 这个开源项目，他把 EVPN 的理念引入了容器网络，提供了一种新的在 Kubernetes 上实现多租户的方案。该方案不仅能统一软硬件网络架构，还在一定程度上能兼容现有 Calico 这种通过 BGP 方式发布路由的 CNI，我甚至已经看到通过少量工作就可以让 Calico 具备多租户能力的前景。虽然这个项目还在早期，但我认为这是一个相当不错的方向，未来很可能会成为构建大规模数据中心的一个有竞争力选型。</p>
+<h2 id="OVN-类方案的局限性"><a href="#OVN-类方案的局限性" class="headerlink" title="OVN 类方案的局限性"></a>OVN 类方案的局限性</h2><p>OVN 类方案的主要局限性有两个一个是集中式控制平面的规模限制，另一个就是网络复杂度。</p>
+<h2 id="集中式控制平面"><a href="#集中式控制平面" class="headerlink" title="集中式控制平面"></a>集中式控制平面</h2><p>尽管 Kube-OVN 在社区已经存在了上千节点的大规模案例，但是由于 OVN 这种集中式控制面的架构，会导致控制面存在比较大的压力，成为整个集群的瓶颈。特别是在控制面节点断电或者故障时，可能会需要较长时间网络控制面才能恢复。</p>
+<p><img src="/../images/ovn-limit.png" alt="ovn-limit"></p>
+<p>这个问题主要是由 OVN 集中式控制平面的架构带来的，无法完全规避。ovn-kubernetes 中采用了每个节点一个 OVN 控制平面，多节点之间通过 OVN-IC 互联的方案来规避这个瓶颈。但是这个方案同时也会导致架构的复杂，并且相当于主动弃用了 OVN 本身的集群网络能力，使得大量的 OVN 能力无法使用。</p>
+<h2 id="网络复杂度"><a href="#网络复杂度" class="headerlink" title="网络复杂度"></a>网络复杂度</h2><p>另一个问题就在于 OVS&#x2F;OVN 这套体系本身的复杂度，使用者需要重新再构建一套 OVN 规范下的网络拓扑，流表的知识体系才能保证自己面对实际问题时不会手足无措。而这套体系和底层的物理网络往往又是不同的，实际中相当于存在两套网络体系，这不仅会使问题排查变得更复杂，还会导致需要物理网络团队和容器网络团队两套人马，双方往往都无法理解彼此的工作内容，无法有效协同。</p>
+<p>以上两个局限性更多的是选型上的取舍，如果希望能够软件集中控制，希望容器网络能不关心底层物理网络，那这样的选择必然就会带来这样的局限性。</p>
+<h2 id="EVPN"><a href="#EVPN" class="headerlink" title="EVPN"></a>EVPN</h2><p>在和 OVS 这种纯软件方案平行的另一个硬件世界，有另一套硬件版本的多租户网络方案，那就是 EVPN。</p>
+<p>在 EVPN 的世界里，在数据平面交换机之间通过 Vxlan 对数据包做封装，通过在 Vxlan 的 Header 中设置 VNI 来区分不同租户的流量，实现了流量的隔离。</p>
+<p>同时，交换机之间通过 BGP 在控制平面来同步 L2&#x2F;L3 的路由以及 VNI 的信息，能够快速的学习整个网络拓扑中的地址，路由和租户信息。 </p>
+<p><img src="/../images/evpn.png" alt="EVPN"></p>
+<p>通过这种方式，大型数据中心可以自动化分布式的实现多租户网络。这套方案在很多大型数据中心都已经落地了，主流的交换机目前也都已经支持。那么在容器领域有没有基于这种技术架构做网络的呢？这就是我最近发现的 OpenPERouter 了。</p>
+<h2 id="OpenPERouter"><a href="#OpenPERouter" class="headerlink" title="OpenPERouter"></a>OpenPERouter</h2><p>OpenPERouter 的核心理念是将 EVPN 交换机的逻辑下沉到节点，在每台机器上运行一个 FRR 通过直接和物理交换机建立 BGP 和 VXLAN 隧道，将容器网络直接打通到已有的 EVPN 架构的物理网络。</p>
+<p><img src="/../images/openperouter.png"></p>
+<p>现有的容器网络想接入 OpenPERouter 也并不算复杂，基于 BGP 的 CNI 需要和 OpenPERouter 建立 BGP Peer；对于基于 veth 和网桥的 CNI，需要把原来在宿主机一侧的 veth 改为接入到 OpenPERouter 所在的 net ns 即可。</p>
+<p>这个方案带来了一些独特的优点：</p>
+<ol>
+<li>统一了底层网络和容器网络，两者采用了相同的 EVPN 架构，虽然在具体操作，软件使用上还有区别，但整体的思路已经基本一致了。</li>
+<li>极其轻量的方式就实现了 Underlay 和多租户这两个在容器网络里比较困难的功能，由于主要的控制面和数据面都在硬件层，容器网络只是做接入，理论上 CNI 层可以做的十分轻量化。</li>
+<li>可以将已有的 CNI 转换为多租户的 CNI，尽管项目的开发者没有具体提这个事情，但是我已经看到了给 Calico 的 IPPool 增加一个 VNI 的配置就能快速把 Calico 改造成一个多租户网络的可能性。</li>
+</ol>
+<p>当然这个方案当前也有它的局限性：</p>
+<ol>
+<li>统一的网络也就意味着容器网络完全侵入了底层物理网络，这需要有统一的团队管理，这在当前的环境可能会产生很多办公室政治问题</li>
+<li>OpenPERouter 目前自己并没有做 CNI 相关的事情，而是尝试接入其他网络项目。这可能是考虑到当前已有多种主流方案可供选择，但从我来看接入其他 CNI 反而会让这个简洁的 EVPN 方案变的比原来更复杂，未来发生不兼容和冲突也是大概率事件。基于这个思路从头做一个轻量化的专门面向 EVPN 设计的 CNI 会是个更优雅的选择。</li>
+</ol>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在我看来，EVPN 会是未来容器网络里的一个极其有竞争力的技术方案，但是当下并没有很成熟的开源项目，OpenPERouter 做了很好的尝试，我也很希望看到未来有一款专门为 EVPN 架构设计的 CNI 能够大幅简化全局的网络设计。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2025/08/15/loxilb-metallb/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2025-11-09 04:29:02
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/EVPN/" title="EVPN">
+                        #EVPN
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Kubernetes/" title="Kubernetes">
+                        #Kubernetes
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Network/" title="Network">
+                        #Network
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OVN-%E7%B1%BB%E6%96%B9%E6%A1%88%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-text">OVN 类方案的局限性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8F%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-text">集中式控制平面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">网络复杂度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EVPN"><span class="toc-text">EVPN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenPERouter"><span class="toc-text">OpenPERouter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+     crossorigin="anonymous"></script>
+<!-- 横向广告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9141929305076734"
+     data-ad-slot="3076777751"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/oilbeater">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="mailto:liumengxinfly@gmail.com">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" target="_blank" rel="noopener" href="https://twitter.com/liumengxinfly">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="linkedin" target="_blank" rel="noopener" href="https://www.linkedin.com/in/oilbeater/">
+            <i class="iconfont icon-linkedin"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/oilbeater/oilbeater.github.com">Copyright © 2025 Oilbeater</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+    <div class="footer-views">
+      
+          本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        
+      
+          本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+        
+      
+          本站访客数<span id="busuanzi_value_site_uv"></span>人
+        
+      
+    </div>
+  
+</div>
+
+      </div>
+
+      <div style="position: fixed;right: 2.2rem;top: 2.2rem;font-weight: bold;font-size: 1.6rem;">
+        <a href="https://oilbeater.com/en/">EN</a>
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + OpenPERouter%EF%BC%9A%E6%8A%8A%20EVPN%20%E5%B8%A6%E5%85%A5%20Kubernetes + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F11%2F09%2Fkubernetes-evpn%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/11/09/kubernetes-evpn/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
