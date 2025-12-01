@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content="OpenPERouter：把 EVPN 带入 Kubernetes | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="从 NetworkPolicy 到 ClusterNetworkPolicy | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content="OpenPERouter：把 EVPN 带入 Kubernetes | Oilbeater 的自习室" />
+  <meta property="og:title" content="从 NetworkPolicy 到 ClusterNetworkPolicy | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -26,7 +26,7 @@
   
   <title>
     
-      OpenPERouter：把 EVPN 带入 Kubernetes
+      从 NetworkPolicy 到 ClusterNetworkPolicy
       
       
       |
@@ -181,31 +181,25 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">OpenPERouter：把 EVPN 带入 Kubernetes</div>
+      <div class="post-title">从 NetworkPolicy 到 ClusterNetworkPolicy</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-          2025-11-09 04:29:02
+          2025-11-30 09:45:00
         </span>
         
               <span class="post-tags">
                 <i class="iconfont icon-tags mr-10" title="标签"></i>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/EVPN/" title="EVPN">
-                    #EVPN
+                  <a href="/tags/network/" title="network">
+                    #network
                   </a>
                 </span>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/Kubernetes/" title="Kubernetes">
-                    #Kubernetes
-                  </a>
-                </span>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/Network/" title="Network">
-                    #Network
+                  <a href="/tags/opensource/" title="opensource">
+                    #opensource
                   </a>
                 </span>
                 
@@ -213,41 +207,54 @@
           
       </div>
       <div class="markdown-body">
-        <p>目前社区在 Kubernetes 实现网络多租户主流选型是 <a target="_blank" rel="noopener" href="https://github.com/kubeovn/kube-ovn">Kube-OVN</a> 和 <a target="_blank" rel="noopener" href="https://github.com/ovn-kubernetes/ovn-kubernetes">ovn-kubernetes</a>，这两个方案本质上都是在物理网络上通过 OVS 和 OVN 的能力构建了一层 Overlay 虚拟网络。这种方案不太关心底层物理网络架构，有着比较好的兼容性，但是双层网络架构也加大了整体架构的复杂度。</p>
-<p>最近我在调研 EVPN 这种物理网络多租户的方案，发现了 <a target="_blank" rel="noopener" href="https://github.com/openperouter/openperouter">OpenPERouter</a> 这个开源项目，他把 EVPN 的理念引入了容器网络，提供了一种新的在 Kubernetes 上实现多租户的方案。该方案不仅能统一软硬件网络架构，还在一定程度上能兼容现有 Calico 这种通过 BGP 方式发布路由的 CNI，我甚至已经看到通过少量工作就可以让 Calico 具备多租户能力的前景。虽然这个项目还在早期，但我认为这是一个相当不错的方向，未来很可能会成为构建大规模数据中心的一个有竞争力选型。</p>
-<h2 id="OVN-类方案的局限性"><a href="#OVN-类方案的局限性" class="headerlink" title="OVN 类方案的局限性"></a>OVN 类方案的局限性</h2><p>OVN 类方案的主要局限性有两个一个是集中式控制平面的规模限制，另一个就是网络复杂度。</p>
-<h3 id="集中式控制平面"><a href="#集中式控制平面" class="headerlink" title="集中式控制平面"></a>集中式控制平面</h3><p>尽管 Kube-OVN 在社区已经存在了上千节点的大规模案例，但是由于 OVN 这种集中式控制面的架构，会导致控制面存在比较大的压力，成为整个集群的瓶颈。特别是在控制面节点断电或者故障时，可能会需要较长时间网络控制面才能恢复。</p>
-<p><img src="/../images/ovn-limit.png" alt="ovn-limit"></p>
-<p>这个问题主要是由 OVN 集中式控制平面的架构带来的，无法完全规避。ovn-kubernetes 中采用了每个节点一个 OVN 控制平面，多节点之间通过 OVN-IC 互联的方案来规避这个瓶颈。但是这个方案同时也会导致架构的复杂，并且相当于主动弃用了 OVN 本身的集群网络能力，使得大量的 OVN 能力无法使用。</p>
-<h3 id="网络复杂度"><a href="#网络复杂度" class="headerlink" title="网络复杂度"></a>网络复杂度</h3><p>另一个问题就在于 OVS&#x2F;OVN 这套体系本身的复杂度，使用者需要重新再构建一套 OVN 规范下的网络拓扑，流表的知识体系才能保证自己面对实际问题时不会手足无措。而这套体系和底层的物理网络往往又是不同的，实际中相当于存在两套网络体系，这不仅会使问题排查变得更复杂，还会导致需要物理网络团队和容器网络团队两套人马，双方往往都无法理解彼此的工作内容，无法有效协同。</p>
-<p>以上两个局限性更多的是选型上的取舍，如果希望能够软件集中控制，希望容器网络能不关心底层物理网络，那这样的选择必然就会带来这样的局限性。</p>
-<h2 id="EVPN"><a href="#EVPN" class="headerlink" title="EVPN"></a>EVPN</h2><p>在和 OVS 这种纯软件方案平行的另一个硬件世界，有另一套硬件版本的多租户网络方案，那就是 EVPN。</p>
-<p>在 EVPN 的世界里，在数据平面交换机之间通过 Vxlan 对数据包做封装，通过在 Vxlan 的 Header 中设置 VNI 来区分不同租户的流量，实现了流量的隔离。</p>
-<p>同时，交换机之间通过 BGP 在控制平面来同步 L2&#x2F;L3 的路由以及 VNI 的信息，能够快速的学习整个网络拓扑中的地址，路由和租户信息。 </p>
-<p><img src="/../images/evpn.png" alt="EVPN"></p>
-<p>通过这种方式，大型数据中心可以自动化分布式的实现多租户网络。这套方案在很多大型数据中心都已经落地了，主流的交换机目前也都已经支持。那么在容器领域有没有基于这种技术架构做网络的呢？这就是我最近发现的 OpenPERouter 了。</p>
-<h2 id="OpenPERouter"><a href="#OpenPERouter" class="headerlink" title="OpenPERouter"></a>OpenPERouter</h2><p>OpenPERouter 的核心理念是将 EVPN 交换机的逻辑下沉到节点，在每台机器上运行一个 FRR 通过直接和物理交换机建立 BGP 和 VXLAN 隧道，将容器网络直接打通到已有的 EVPN 架构的物理网络。</p>
-<p><img src="/../images/openperouter.png"></p>
-<p>现有的容器网络想接入 OpenPERouter 也并不算复杂，基于 BGP 的 CNI 需要和 OpenPERouter 建立 BGP Peer；对于基于 veth 和网桥的 CNI，需要把原来在宿主机一侧的 veth 改为接入到 OpenPERouter 所在的 net ns 即可。</p>
-<p>这个方案带来了一些独特的优点：</p>
-<ol>
-<li>统一了底层网络和容器网络，两者采用了相同的 EVPN 架构，虽然在具体操作，软件使用上还有区别，但整体的思路已经基本一致了。</li>
-<li>极其轻量的方式就实现了 Underlay 和多租户这两个在容器网络里比较困难的功能，由于主要的控制面和数据面都在硬件层，容器网络只是做接入，理论上 CNI 层可以做的十分轻量化。</li>
-<li>可以将已有的 CNI 转换为多租户的 CNI，尽管项目的开发者没有具体提这个事情，但是我已经看到了给 Calico 的 IPPool 增加一个 VNI 的配置就能快速把 Calico 改造成一个多租户网络的可能性。</li>
-</ol>
-<p>当然这个方案当前也有它的局限性：</p>
-<ol>
-<li>统一的网络也就意味着容器网络完全侵入了底层物理网络，这需要有统一的团队管理，这在当前的环境可能会产生很多办公室政治问题</li>
-<li>OpenPERouter 目前自己并没有做 CNI 相关的事情，而是尝试接入其他网络项目。这可能是考虑到当前已有多种主流方案可供选择，但从我来看接入其他 CNI 反而会让这个简洁的 EVPN 方案变的比原来更复杂，未来发生不兼容和冲突也是大概率事件。基于这个思路从头做一个轻量化的专门面向 EVPN 设计的 CNI 会是个更优雅的选择。</li>
-</ol>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在我看来，EVPN 会是未来容器网络里的一个极其有竞争力的技术方案，但是当下并没有很成熟的开源项目，OpenPERouter 做了很好的尝试，我也很希望看到未来有一款专门为 EVPN 架构设计的 CNI 能够大幅简化全局的网络设计。</p>
+        <p><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/services-networking/network-policies/">NetworkPolicy</a> 作为 Kubernetes 早期的 API 看似美好，实际使用过程中就会发现它功能有限，不易扩展，不易理解且不易使用。因此 Kubernetes 成立了 <a target="_blank" rel="noopener" href="https://network-policy-api.sigs.k8s.io/">Network Policy API Working Group</a> 来制订下一代的 API 规范，而 <a target="_blank" rel="noopener" href="https://network-policy-api.sigs.k8s.io/api-overview/#the-clusternetworkpolicy-resource">ClusterNetworkPolicy</a> 就是目前探讨出来的最新成果，未来可能会成为新的规范。</p>
+<h2 id="NetworkPolicy-的局限性"><a href="#NetworkPolicy-的局限性" class="headerlink" title="NetworkPolicy 的局限性"></a>NetworkPolicy 的局限性</h2><p>NetworkPolicy 是 Namespace 级资源，本质上是“应用视角”的策略。它通过 podSelector、namespaceSelector 来选中一批 Pod，然后对这些 Pod 的 Ingress、Egress 做限制。这带来了几个实际的问题：</p>
+<h3 id="缺少-Cluster-级别的控制"><a href="#缺少-Cluster-级别的控制" class="headerlink" title="缺少 Cluster 级别的控制"></a>缺少 Cluster 级别的控制</h3><p>由于策略的作用域是 Namespace，集群管理员无法定义集群级别的默认网络策略，只能在每个 Namespace 里都创建相同的网络策略。这样一方面每次更新策略需要对所有 Namespace 下的资源进行更新，另一方面，很容易和开发者创建的网络策略产生冲突。管理员设置的策略，应用侧很容易就可以通过新的策略绕过去。</p>
+<p>本质上在于 NetworkPolicy 这种应用视角的策略和管理员集群视角的策略存在冲突，当用户的安全模型并不是应用视角的时候 NetworkPolicy 就会变得难以应用。而集群管理员管控集群整体的安全策略是个现实中很常见的场景。</p>
+<h3 id="语义不清晰"><a href="#语义不清晰" class="headerlink" title="语义不清晰"></a>语义不清晰</h3><p>NetworkPolicy 的语义有几个“坑”，新手和运维人员都容易踩：</p>
+<ul>
+<li><p>隐式隔离。<br>  一旦有任何 NetworkPolicy 选中了某个 Pod，那么“未被允许”的流量就会被默认拒绝。这种隐式的行为需要靠心算来推导，很难一眼看懂。</p>
+</li>
+<li><p>只有允许，没有显式拒绝。<br>  标准 NetworkPolicy 只能写 allow 类型的规则，想要“拒绝某个来源”，通常要通过补充其他 allow 规则间接实现，或者依赖某些 CNI 厂商特有的扩展。</p>
+</li>
+<li><p>没有优先级。<br>  多个 NetworkPolicy 选择同一批 Pod 时，规则是加法而不是覆盖关系。最终行为往往需要把所有策略合在一起看，排查问题时非常困难。</p>
+</li>
+</ul>
+<p>这些特点叠加在一起，就会导致 NetworkPolicy 理解起来困难，调试起来更困难。</p>
+<h2 id="ClusterNetworkPolicy-的解决方案"><a href="#ClusterNetworkPolicy-的解决方案" class="headerlink" title="ClusterNetworkPolicy 的解决方案"></a>ClusterNetworkPolicy 的解决方案</h2><p>为了解决 NetworkPolicy 固有的问题，Network Policy API 工作组提出了一个新的 API —— ClusterNetworkPolicy (CNP)，它的目标是在不破坏现有 NetworkPolicy 用法的前提下，给集群管理员提供一个更清晰、更强大的网络控制能力。</p>
+<p>其最核心的思路是引入策略分层，在现有的 NetworkPolicy 之前和之后分别引入独立的策略层，将集群管理员的策略和应用的策略分开，提供了更丰富的视角和更灵活的使用。<br>![[Pasted image 20251201104247.png]]</p>
+<p>一个示例如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">policy.networking.k8s.io/v1alpha2</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ClusterNetworkPolicy</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">sensitive-ns-deny-from-others</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">tier:</span> <span class="string">Admin</span></span><br><span class="line">  <span class="attr">priority:</span> <span class="number">10</span></span><br><span class="line">  <span class="attr">subject:</span></span><br><span class="line">    <span class="attr">namespaces:</span></span><br><span class="line">      <span class="attr">matchLabels:</span></span><br><span class="line">        <span class="attr">kubernetes.io/metadata.name:</span> <span class="string">sensitive-ns</span></span><br><span class="line">  <span class="attr">ingress:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">action:</span> <span class="string">Deny</span></span><br><span class="line">      <span class="attr">from:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">namespaces:</span></span><br><span class="line">            <span class="attr">matchLabels:</span> &#123;&#125; </span><br><span class="line">      <span class="attr">name:</span> <span class="string">deny-all-from-other-namespaces</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="集群管理员视角"><a href="#集群管理员视角" class="headerlink" title="集群管理员视角"></a>集群管理员视角</h3><p>新引入的 ClusterNetworkPolicy 是集群级别资源，管理员可以直接选中多个 Namespace 下的 Pod 进行策略控制。同时 Admin Tier 的策略可以先于 NetworkPolicy 生效，这样集群管理员只需要少量的 Admin Tier 策略就可以控制住整个集群的红线行为。</p>
+<p>而 Baseline Tier 的策略在所有 NetworkPolicy 都不匹配后执行，相当于提供了一个兜底策略。</p>
+<p>简单来说：</p>
+<ul>
+<li><code>tier: Admin</code> 的策略用来定义<strong>绝对不能做</strong>的事情。</li>
+<li><code>tier: Baseline</code> 的策略用来定义<strong>默认不建议做</strong>的事情，用户可以通过 NetworkPolicy 来放行。</li>
+</ul>
+<h3 id="明确的优先级"><a href="#明确的优先级" class="headerlink" title="明确的优先级"></a>明确的优先级</h3><p>ClusterNetworkPolicy 中新增了 <code>priority</code> 字段，这样在同一个 Tier 中多个规则的范围出现重叠时，可以通过优先级清晰的界定哪个规则该生效，不会再出现 NetworkPolicy 里那种隐式覆盖，需要互相猜测的情况。</p>
+<h3 id="清晰的动作语义：Accept-Deny-Pass"><a href="#清晰的动作语义：Accept-Deny-Pass" class="headerlink" title="清晰的动作语义：Accept &#x2F; Deny &#x2F; Pass"></a>清晰的动作语义：Accept &#x2F; Deny &#x2F; Pass</h3><p>和 NetworkPolicy 只有“允许”语义不同，ClusterNetworkPolicy 的每条规则都有一个显式的 <code>action</code> 字段，可以取值：</p>
+<ul>
+<li><code>Accept</code>：允许这条规则选中的流量，并停止后续策略评估</li>
+<li><code>Deny</code>：拒绝这条规则选中的流量，并停止后续策略评估</li>
+<li><code>Pass</code>：在当前 tier 里跳过后续 ClusterNetworkPolicy，交给下一层继续评估</li>
+</ul>
+<p>同时，文档中特别强调：</p>
+<ul>
+<li>ClusterNetworkPolicy 不再有 NetworkPolicy 那种“隐式隔离”的效果</li>
+<li>所有行为都来自你写的规则本身，读策略时看到什么就是什么</li>
+</ul>
+<p>结合优先级的配置，规则的理解就不再会产生模糊的情况，理解上也变得不那么困难。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>ClusterNetworkPolicy 一定程度上回归了传统的分层网络策略的架构，在解决了 NetworkPolicy 问题的情况下没有带来破坏性的变化，可以说是一个很不错的设计，希望能尽快看到这个规范的成熟和落地。</p>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2025/08/15/loxilb-metallb/" target="_self">
+              <a href="/2025/11/09/kubernetes-evpn/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>上一页</span>
               </a>
@@ -256,27 +263,21 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-              2025-11-09 04:29:02
+              2025-11-30 09:45:00
             </span>
             
                   <span class="post-tags">
                     <i class="iconfont icon-tags mr-10" title="标签"></i>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/EVPN/" title="EVPN">
-                        #EVPN
+                      <a href="/tags/network/" title="network">
+                        #network
                       </a>
                     </span>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/Kubernetes/" title="Kubernetes">
-                        #Kubernetes
-                      </a>
-                    </span>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/Network/" title="Network">
-                        #Network
+                      <a href="/tags/opensource/" title="opensource">
+                        #opensource
                       </a>
                     </span>
                     
@@ -284,11 +285,6 @@
               
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2025/11/30/networkpolicy-to-clusternetworkpolicy/" target="_self">
-                <span>下一页</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -302,7 +298,7 @@
     <div class="title">目录</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OVN-%E7%B1%BB%E6%96%B9%E6%A1%88%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-text">OVN 类方案的局限性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8F%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-text">集中式控制平面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">网络复杂度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EVPN"><span class="toc-text">EVPN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenPERouter"><span class="toc-text">OpenPERouter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#NetworkPolicy-%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-text">NetworkPolicy 的局限性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E5%B0%91-Cluster-%E7%BA%A7%E5%88%AB%E7%9A%84%E6%8E%A7%E5%88%B6"><span class="toc-text">缺少 Cluster 级别的控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E4%B9%89%E4%B8%8D%E6%B8%85%E6%99%B0"><span class="toc-text">语义不清晰</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ClusterNetworkPolicy-%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">ClusterNetworkPolicy 的解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E7%AE%A1%E7%90%86%E5%91%98%E8%A7%86%E8%A7%92"><span class="toc-text">集群管理员视角</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%8E%E7%A1%AE%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-text">明确的优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%85%E6%99%B0%E7%9A%84%E5%8A%A8%E4%BD%9C%E8%AF%AD%E4%B9%89%EF%BC%9AAccept-Deny-Pass"><span class="toc-text">清晰的动作语义：Accept &#x2F; Deny &#x2F; Pass</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol>
       
     </div>
   </div>
@@ -664,12 +660,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + OpenPERouter%EF%BC%9A%E6%8A%8A%20EVPN%20%E5%B8%A6%E5%85%A5%20Kubernetes + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F11%2F09%2Fkubernetes-evpn%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E4%BB%8E%20NetworkPolicy%20%E5%88%B0%20ClusterNetworkPolicy + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F11%2F30%2Fnetworkpolicy-to-clusternetworkpolicy%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/11/09/kubernetes-evpn/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/11/30/networkpolicy-to-clusternetworkpolicy/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
