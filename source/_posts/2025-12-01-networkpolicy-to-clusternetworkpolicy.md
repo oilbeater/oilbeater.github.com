@@ -38,7 +38,8 @@ NetworkPolicy 的语义有几个“坑”，新手和运维人员都容易踩：
 为了解决 NetworkPolicy 固有的问题，Network Policy API 工作组提出了一个新的 API —— ClusterNetworkPolicy (CNP)，它的目标是在不破坏现有 NetworkPolicy 用法的前提下，给集群管理员提供一个更清晰、更强大的网络控制能力。
 
 其最核心的思路是引入策略分层，在现有的 NetworkPolicy 之前和之后分别引入独立的策略层，将集群管理员的策略和应用的策略分开，提供了更丰富的视角和更灵活的使用。
-![[Pasted image 20251201104247.png]]
+
+![](../images/20251201104247.png)
 
 一个示例如下：
 
