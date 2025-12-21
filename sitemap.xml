@@ -11,6 +11,114 @@
   </url>
   
   <url>
+    <loc>http://oilbeater.com/2025/12/21/weekly-2-oss-ai/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/about/index.html</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2024/05/24/5-way-kubernetes-multcluster-communication/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2024/08/25/ai-gateway-cloudflare/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2024/10/31/docker-pull/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2024/08/26/kong-gloo-higress/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2025/01/12/kubevirt-network-binding/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2025/03/14/deepseek-from-llm-to-r1/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2025/03/29/deepseek-moe/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2025/04/14/deepseek-mla/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2025/04/06/llama-4-chaos/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2025/04/23/surpass-openshift/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://oilbeater.com/2025/05/24/about-training/</loc>
     
     <lastmod>2025-12-21</lastmod>
@@ -29,15 +137,6 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2025/07/06/oss-docs-best-practise/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://oilbeater.com/2025/07/08/gobgp-guide/</loc>
     
     <lastmod>2025-12-21</lastmod>
@@ -47,7 +146,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2025/11/09/kubernetes-evpn/</loc>
+    <loc>http://oilbeater.com/2025/08/15/loxilb-metallb/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -56,7 +155,16 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2025/08/15/loxilb-metallb/</loc>
+    <loc>http://oilbeater.com/2025/07/06/oss-docs-best-practise/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2025/11/09/kubernetes-evpn/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -83,7 +191,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2025/12/21/weekly-2-oss-ai/</loc>
+    <loc>http://oilbeater.com/2023/01/15/how-remote-coding-improve-productivity/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -92,7 +200,79 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/about/index.html</loc>
+    <loc>http://oilbeater.com/2022/12/30/2022-summary/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2023/02/26/2023-Weekly-2/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2023/02/19/2023-weekly-1/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2023/05/19/memory-with-haochen/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2023/06/24/optimization-without-changing-code-pgo/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2023/07/19/pre-alloc-slice-for-golang/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2023/07/24/big-tcp/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2023/07/27/local-cpu-llm/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2023/07/30/xmasq-overlay-without-encap/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -146,312 +326,6 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2024/05/24/5-way-kubernetes-multcluster-communication/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2024/08/25/ai-gateway-cloudflare/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2024/08/26/kong-gloo-higress/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2024/10/31/docker-pull/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2025/01/12/kubevirt-network-binding/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2025/03/14/deepseek-from-llm-to-r1/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2025/03/29/deepseek-moe/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2025/04/06/llama-4-chaos/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2025/04/14/deepseek-mla/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2025/04/23/surpass-openshift/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2016/10/07/most-difficult-release/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2016/10/07/do-we-need-qa/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2016/10/23/god-is-a-coder/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2016/10/30/code-as-expirement/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2016/10/30/decode-god-code/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2016/11/21/google-loadbalancert/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2016/12/18/consist-hash/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2016/12/11/westworld-and-frued/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2022/12/30/2022-summary/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2023/01/15/how-remote-coding-improve-productivity/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2023/02/19/2023-weekly-1/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2023/02/26/2023-Weekly-2/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2023/05/19/memory-with-haochen/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2023/06/24/optimization-without-changing-code-pgo/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2023/07/24/big-tcp/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2023/07/27/local-cpu-llm/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2023/07/19/pre-alloc-slice-for-golang/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2023/07/30/xmasq-overlay-without-encap/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2014/05/08/from-url-to-webpage/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2014/06/13/why-you-should-care-about-docker/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2014/06/05/summary-of-study/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2014/06/28/what-is-docker/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2014/09/08/linux-performance-tools/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/2014/09/14/linux-performance-tools-2/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://oilbeater.com/2014/11/11/docker-libcontainer-reading/</loc>
     
     <lastmod>2025-12-21</lastmod>
@@ -470,7 +344,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2015/01/11/the-summary-of-blog/</loc>
+    <loc>http://oilbeater.com/2015/03/22/recovery-services/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -479,7 +353,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2015/03/22/recovery-services/</loc>
+    <loc>http://oilbeater.com/2015/01/11/the-summary-of-blog/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -524,7 +398,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2012/09/09/impressions-of-hangzhou/</loc>
+    <loc>http://oilbeater.com/2016/10/07/most-difficult-release/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -533,7 +407,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2012/11/27/socalled_plan/</loc>
+    <loc>http://oilbeater.com/2016/10/23/god-is-a-coder/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -542,7 +416,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2013/01/01/looking-to-2013/</loc>
+    <loc>http://oilbeater.com/2016/10/07/do-we-need-qa/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -551,7 +425,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2013/03/03/regex-and-python/</loc>
+    <loc>http://oilbeater.com/2016/10/30/decode-god-code/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -560,7 +434,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2013/05/01/Cpp_interview/</loc>
+    <loc>http://oilbeater.com/2016/10/30/code-as-expirement/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -569,7 +443,25 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2013/04/10/note-of-CppPrimer/</loc>
+    <loc>http://oilbeater.com/2016/11/21/google-loadbalancert/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2016/12/18/consist-hash/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2016/12/11/westworld-and-frued/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -587,15 +479,6 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2013/06/11/ruby_on_rail_from_scratch/</loc>
-    
-    <lastmod>2025-12-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://oilbeater.com/2013/06/13/Gemfile-introduction/</loc>
     
     <lastmod>2025-12-21</lastmod>
@@ -605,7 +488,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2013/11/26/the-air-of-beijing/</loc>
+    <loc>http://oilbeater.com/2013/06/11/ruby_on_rail_from_scratch/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -624,6 +507,15 @@
   
   <url>
     <loc>http://oilbeater.com/2014/02/10/the-summary-of-2013/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2013/11/26/the-air-of-beijing/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -668,6 +560,60 @@
   </url>
   
   <url>
+    <loc>http://oilbeater.com/2014/06/05/summary-of-study/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2014/05/08/from-url-to-webpage/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2014/06/13/why-you-should-care-about-docker/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2014/06/28/what-is-docker/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2014/09/08/linux-performance-tools/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2014/09/14/linux-performance-tools-2/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://oilbeater.com/2012/04/28/the-reason-to-blog/</loc>
     
     <lastmod>2025-12-21</lastmod>
@@ -704,7 +650,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2012/06/12/stackoverflow-and-heapoverflow/</loc>
+    <loc>http://oilbeater.com/2012/05/29/linux_pipe/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -713,7 +659,7 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/2012/05/29/linux_pipe/</loc>
+    <loc>http://oilbeater.com/2012/06/12/stackoverflow-and-heapoverflow/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -741,6 +687,60 @@
   
   <url>
     <loc>http://oilbeater.com/2012/08/21/VS2008-compile-qtwebkit/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2012/09/09/impressions-of-hangzhou/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2012/11/27/socalled_plan/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2013/01/01/looking-to-2013/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2013/03/03/regex-and-python/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2013/04/10/note-of-CppPrimer/</loc>
+    
+    <lastmod>2025-12-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/2013/05/01/Cpp_interview/</loc>
     
     <lastmod>2025-12-21</lastmod>
     
@@ -1220,20 +1220,6 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/tags/opensource/</loc>
-    <lastmod>2025-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/tags/documents/</loc>
-    <lastmod>2025-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://oilbeater.com/tags/gobgp/</loc>
     <lastmod>2025-12-21</lastmod>
     <changefreq>weekly</changefreq>
@@ -1242,6 +1228,34 @@
   
   <url>
     <loc>http://oilbeater.com/tags/tutorial/</loc>
+    <lastmod>2025-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/tags/metallb/</loc>
+    <lastmod>2025-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/tags/loxilb/</loc>
+    <lastmod>2025-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/tags/opensource/</loc>
+    <lastmod>2025-12-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://oilbeater.com/tags/documents/</loc>
     <lastmod>2025-12-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1263,20 +1277,6 @@
   
   <url>
     <loc>http://oilbeater.com/tags/Network/</loc>
-    <lastmod>2025-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/tags/metallb/</loc>
-    <lastmod>2025-12-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://oilbeater.com/tags/loxilb/</loc>
     <lastmod>2025-12-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1355,14 +1355,14 @@
   </url>
   
   <url>
-    <loc>http://oilbeater.com/categories/%E5%B0%8F%E5%B7%A5%E5%85%B7/</loc>
+    <loc>http://oilbeater.com/categories/%E5%B7%A5%E4%BD%9C%E5%BF%83%E5%BE%97/</loc>
     <lastmod>2025-12-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://oilbeater.com/categories/%E5%B7%A5%E4%BD%9C%E5%BF%83%E5%BE%97/</loc>
+    <loc>http://oilbeater.com/categories/%E5%B0%8F%E5%B7%A5%E5%85%B7/</loc>
     <lastmod>2025-12-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
