@@ -47,6 +47,6 @@ tags:
 
 ![](../images/68598f7ac4dc3dcf030684b75d8e4af5.jpg)
 
-去了平西府地铁站新开的小站公园，公园用的一个任务形象名字是“下腰女孩（Tireless Girl）”。虽然我能勉强搞明白下腰和 Tireless 的关系，但这个翻译实在是太奇怪了。
+去了平西府地铁站新开的小站公园，公园用的一个人物形象名字是“下腰女孩（Tireless Girl）”。虽然我能勉强搞明白下腰和 Tireless 的关系，但这个翻译实在是太奇怪了。
 
 ![](../images/6ad0dd8d1e1f02966a5221d9cd2ab8ac.jpg)
