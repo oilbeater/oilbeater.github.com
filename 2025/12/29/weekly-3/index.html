@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content=" | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="周报 3 —— 痔疮上身 | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content=" | Oilbeater 的自习室" />
+  <meta property="og:title" content="周报 3 —— 痔疮上身 | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -26,8 +26,8 @@
   
   <title>
     
-      标签
-       : documents
+      周报 3 —— 痔疮上身
+      
       
       |
     
@@ -136,39 +136,198 @@
 
 
       <div class="flex-container">
-        <!-- 标签详情页，展示某个标签下的文章列表，url形式：https://yoursite/tags/某个标签/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<div class="container tag-details">
-  <div class="content-title">
-    <h2>
-      <span>documents</span>
-    </h2>
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">周报 3 —— 痔疮上身</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+          2025-12-29 08:25:00
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="标签"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/opensource/" title="opensource">
+                    #opensource
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/documents/" title="documents">
+                    #documents
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h2 id="痔疮"><a href="#痔疮" class="headerlink" title="痔疮"></a>痔疮</h2><p>居家办公三周后莫名其妙的得了痔疮，前几天都只能躺着了。查了下资料说现代人可能是因为长时间坐马桶导致的，可是我并没有。稍微好一些之后发现只要坐平时办工坐的椅子就会疼，仔细观察发现这个椅子由于长时间胶皮老化中间凹下去了，所以做起来就类似一个马桶两边高中间低，换成个平板椅子就好多了。</p>
+<h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><p>对着上周看的 <a target="_blank" rel="noopener" href="https://abseil.io/fast/hints.html">Performance Hints</a> 里的一条<a target="_blank" rel="noopener" href="https://abseil.io/fast/hints.html#unnecessarily-nested-maps">unnecessarily-nested-maps</a>，拿着锤子找钉子，去 Prometheus 里看看有没有什么蹭 PR 的机会。最终发现这个优化方法还是有很多细节要考虑的，并不是完全没有副作用，尤其在 Prometheus 的场景里有时候完全不适用还会导致性能严重下降，之后可能会单写一个博客来说明。不过好在 Prometheus 里还有一处是完美适合这个优化的，提交了一个 PR <a target="_blank" rel="noopener" href="https://github.com/prometheus/prometheus/pull/17732">perf(promql): update matchedSigs to a flat map reduce memory by 97% for GROUP_LEFT</a>，能优化一个常见场景 13% 的 CPU 和 97% 的内存分配。</p>
+<p>看了<a target="_blank" rel="noopener" href="https://nesbitt.io/2025/12/26/how-uv-got-so-fast.html">How uv got so fast</a>，和第一直觉认为的 Rust 比 Python 快，所以 uv 才能这么快不同，uv 的快主要还是来自实现架构层面的选择。一方面是 Python 的包管理出了更高效的标准，另一方面 uv 选择放弃了大量的历史兼容性，专注于标准路径的优化。此外还有很多语言无关的优化，比如并行下载，硬链接等等其实是其他语言的依赖管理都有的功能，只是 pip 的历史包袱太大了，一直都没有这方面的优化。</p>
+<p>在逛 Prometheus Issues 是发现一个 <a target="_blank" rel="noopener" href="https://github.com/prometheus/prometheus/pull/17734">WIP: tsdb: persist series metadata to Parquet files</a> 需要找时间看一下 Parquet 是个什么存储。</p>
+<h2 id="生活"><a href="#生活" class="headerlink" title="生活"></a>生活</h2><p>周末和孩子去了<a target="_blank" rel="noopener" href="https://j.map.baidu.com/5c/3FQk">城市农场</a>，一开始以为是个什么网红景点，去了后发现是个正经的科研机构，中国奶牛的育种就是从这里开始的。里面都是些看上去六七十年代的老房子，有科研人员专门负责讲解，体验还是很不错的。另一方面想到自己小时候没有盒装奶还都是牧场每天早上和报纸一块送的鲜牛奶要拿回家去煮。</p>
+<p>里面有从刚出生到三四岁的奶牛，可以自己去喂，小孩抱着草料来回跑喂了快一个小时。</p>
+<p><img src="/../images/585200c8615451436d3d3387ab65f7591.jpg"></p>
+<h2 id="娱乐"><a href="#娱乐" class="headerlink" title="娱乐"></a>娱乐</h2><ul>
+<li>打仗就是修路 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qwBWBXE32/?spm_id_from=333.1391.0.0">【不懂地理打不了仗】3D地形全面复盘蜀汉立国之战——汉中之战！</a> </li>
+<li>可汗的充电视频 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1oMBUBREK8/?spm_id_from=333.1391.0.0">赠予沙阿（上） 伊朗·1951</a></li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2025/12/21/weekly-2-oss-ai/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
+              2025-12-29 08:25:00
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="标签"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/opensource/" title="opensource">
+                        #opensource
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/documents/" title="documents">
+                        #documents
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
   </div>
-  
-    <div class="post-list">
-      <div class="post-item" title="周报 3 —— 痔疮上身">
-        <span class="time-m-d">2025-12-29</span>
-        <a href="/2025/12/29/weekly-3/">
-          <span>周报 3 —— 痔疮上身</span>
-        </a>
-      </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%97%94%E7%96%AE"><span class="toc-text">痔疮</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF"><span class="toc-text">技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%B4%BB"><span class="toc-text">生活</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A8%B1%E4%B9%90"><span class="toc-text">娱乐</span></a></li></ol>
+      
     </div>
+  </div>
+
   
-    <div class="post-list">
-      <div class="post-item" title="怎样的开源文档规范最合适？">
-        <span class="time-m-d">2025-07-06</span>
-        <a href="/2025/07/06/oss-docs-best-practise/">
-          <span>怎样的开源文档规范最合适？</span>
-        </a>
+<script src="/js/catalog.js"></script>
+
+
+
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9141929305076734"
+     crossorigin="anonymous"></script>
+<!-- 横向广告 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9141929305076734"
+     data-ad-slot="3076777751"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+  <div id="gitalk-container"></div>
+
+  <script>
+    function loadGitalkSuc() {
+      const gitalk = new Gitalk({
+        clientID: 'fa956f38daf8cc1f8222',
+        clientSecret: '8e37dcda7dc6d86518fc00b06f8d7008ef8542c6',
+        repo: 'oilbeater.github.com',
+        owner: 'oilbeater',
+        admin: ['oilbeater'],
+        id: location.pathname,
+        distractionFreeMode: false
+      })
+
+      gitalk.render('gitalk-container')
+    }
+  </script>
+  
+    <link rel="stylesheet" href="/plugins/gitalk.css">
+    <script type="text/javascript" src="/plugins/gitalk.min.js" onload="loadGitalkSuc(this)"></script>
+  
+
+
+
       </div>
-    </div>
-  
-  <nav class="post-navigation">
     
-    <span class="page-num">1 / 1</span>
-    
-  </nav>
-</div>
+  </div>
+
 
         
 <div class="footer">
@@ -464,6 +623,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%91%A8%E6%8A%A5%203%20%E2%80%94%E2%80%94%20%E7%97%94%E7%96%AE%E4%B8%8A%E8%BA%AB + '&url=' + http%3A%2F%2Foilbeater.com%2F2025%2F12%2F29%2Fweekly-3%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2025/12/29/weekly-3/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
