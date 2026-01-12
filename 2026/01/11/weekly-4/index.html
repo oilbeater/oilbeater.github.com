@@ -208,7 +208,7 @@
 <h2 id="健身"><a href="#健身" class="headerlink" title="健身"></a>健身</h2><p>引体向上现在站在台阶上不用跳可以拉上去了，不过全程还是拉不上去。</p>
 <p>最近做动作膝盖和肩关节的弹响越来越明显了，看了些视频一方面要加强后侧肌肉的训练，还要专门练习一下肩胛骨的活动度。</p>
 <p>睡眠对力量训练的影响还是很大的，稍微一熬夜大重量拉起来就很费劲了。研究一下说是力量除了和肌肉相关也和神经募集能力相关，如果睡眠不足会导致神经无法募集足够的肌肉来发力，从这个角度看健身可能比写代码更费脑子。</p>
-<h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><p>Kubernetes 的 <code>managedFileds</code> 在 Informer 缓存的时候可以删掉来节省 client 端的内存占用。我之前一直以为这时候在根据缓存做对象的 Update 操作会出问题，经同事指点其实 APIServer 会在 Update 和 Patch 是忽略没有 <code>managedFileds</code> 的情况，具体可以参考 <a target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/using-api/server-side-apply/#clearing-managedfields">Server Side Apply: clearing managedFields</a></p>
+<h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><p>Kubernetes 的 <code>managedFileds</code> 在 Informer 缓存的时候可以删掉来节省 client 端的内存占用。我之前一直以为这时候再根据缓存做对象的 Update 操作会出问题，经同事指点其实 APIServer 会在 Update 和 Patch 时忽略没有 <code>managedFileds</code> 的情况，具体可以参考 <a target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/using-api/server-side-apply/#clearing-managedfields">Server Side Apply: clearing managedFields</a></p>
 <p>之前为了标记生成的 Go 二进制对应的是代码的哪个 commit 会在 build 的时候把这个参数传进去，但是 Go 在 1.18 之后的 runtime 里其实默认就带了 VCS 的相关信息，只需要使用 <code>go version -m xxx</code> 就可以从二进制文件里直接获取构建信息了，更多参考 <a target="_blank" rel="noopener" href="https://shibumi.dev/posts/go-18-feature/">Go 1.18 debug&#x2F;buildinfo features</a></p>
 <h2 id="AI"><a href="#AI" class="headerlink" title="AI"></a>AI</h2><p>发现了两个适合让 codex 来做的任务：</p>
 <ol>
