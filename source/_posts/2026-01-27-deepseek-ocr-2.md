@@ -2,7 +2,7 @@
 title: DeepSeek OCR 2 —— 一个新的视觉模型架构
 date: 2026-01-27 15:23:51
 tags:
-- deepseek
+- DeepSeek
 - paper
 ---
 
