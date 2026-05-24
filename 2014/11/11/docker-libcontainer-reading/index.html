@@ -233,7 +233,7 @@
 &#125;
 </code></pre>
 <p>可以看出这段代码只是定义了一个接口，任何实现这些方法的对象就会变成一个 docker 认可的 container。其中比较关键的一个函数就是 Start 了，他是在 container 里启动进程的方法，可以看到接口的要求是传进一个所要启动进程相关的配置，返回一个进程 pid 和一个接受退出信息的 channel。</p>
-<p>下一步自然就是去找这个接口的实现去看看究竟是怎么做的，然后一个坑就来了。由于 go 语言不要求对象向 java 那样显示的声明自己实现哪个接口，只要自己默默实现了对应的方法就默认变成了哪个接口类型的对象。所以没有什么直观的方法来找到哪些对象实现了这个接口，翻了一下 libcontainer 文件夹下的文件感觉哪个都不像。感觉有些不详的预兆，装了个 Cygwin 去 grep Start 这个函数，结果意外的发现没有，于是又在整个 docker 目录下去 grep 发现还是没有。</p>
+<p>下一步自然就是去找这个接口的实现去看看究竟是怎么做的，然后一个坑就来了。由于 go 语言不要求对象向 java 那样显示的声明自己实现哪个接口，只要自己默默实现了对应的方法就默认变成了哪个接口类型的对象。所以没有什么直观的方法来找到哪些对象实现了这个接口，翻了一下 libcontainer 文件夹下的文件感觉哪个都不像。感觉有些不祥的预兆，装了个 Cygwin 去 grep Start 这个函数，结果意外的发现没有，于是又在整个 docker 目录下去 grep 发现还是没有。</p>
 <p>我就奇怪了，不是说 docker 1.2 之后就支持 native 的 container 了么，他连 libcontainer 里的 container 接口都没实现他是怎么调用 native 的 container 的。既然自底向上的找不到，那就只能自顶向下的从上层往下跟去找找怎么回事了。</p>
 <h2 id="driver"><a href="#driver" class="headerlink" title="driver"></a>driver</h2><p>docker 支持 lxc 和 native 两套容器实现，是通过 driver 这个接口的两个实现来完成的。在 \daemon\execdriver 中可以看到有 lxc 和 native 两个文件夹，里面就是相关的代码。不过在 \daemon\ 目录下可以看到还有一个 container.go 里面是有个 container 对象，可是并没有实现 libcontainer 里对应的接口，难道 libcontainer 里的那个 interface 只是一个幌子？</p>
 <p>先看一下 driver 这个接口</p>
@@ -251,7 +251,7 @@
     Clean(id string) error// clean all traces of container exec
 &#125;
 </code></pre>
-<p>有没有感觉名字虽说和上面的 container interface 不太一样，不过意思是差不多的。resume 变成了 unpause， destory 变成了 teminate，processes 变成了 getpidsforcontainer,start 也变成了 run 和 exec 两个函数。看到这不得不说 docker 的代码的一致性和可读性还是惨了点，codereview 需要更严格一些呀。</p>
+<p>有没有感觉名字虽说和上面的 container interface 不太一样，不过意思是差不多的。resume 变成了 unpause， destroy 变成了 terminate，processes 变成了 getpidsforcontainer,start 也变成了 run 和 exec 两个函数。看到这不得不说 docker 的代码的一致性和可读性还是惨了点，codereview 需要更严格一些呀。</p>
 <p>再进到 native 的 driver.go 就可以看到具体的实现了。在文件头部发现了一长串 import，其中有几个比较抓眼球：</p>
 <pre><code>import (
     ....
@@ -325,7 +325,7 @@
 <p>看到这里整个人都不好了，我觉得 docker 这个项目要是这样下去会出问题的，就算你喜欢匿名函数也不要这么偏执好么。我甚至怀疑 docker 在用什么黑科技来隐藏他的真实代码了。于是我决定放弃这行代码直接看 namespaces.Exec 去了。在\verdor\src\github.com\libcontainer\namespaces\exec.go里</p>
 <pre><code>func Exec(container *libcontainer.Config, stdin io.Reader, stdout, stderr io.Writer, console, dataPath string, args []string, createCommand CreateCommand, startCallback func()) (int, error) 
 </code></pre>
-<p>不太确定一个函数 8 个参数真的好么，但是我更纳闷的是在主项目里既然都有 pipe 这个结构把 stdin，stdout，stderr 放在一起为啥到这里就要分开写了，6 个虽然也不少，但是比 8 个要好点。回过头来说一下 namespace ，这又是另一种隔离机制。顾名思义，隔离的是名字空间，这要的话本来属于全局可见的名字资源，如 pid，network，mountpoint 之类的资源虚拟出多份，每个 namespace 一份，每组进程占用一个 namespace。这样的话容器内程序都看不到外部其他进程，攻击的难度自然也就加大了。</p>
+<p>不太确定一个函数 8 个参数真的好么，但是我更纳闷的是在主项目里既然都有 pipe 这个结构把 stdin，stdout，stderr 放在一起为啥到这里就要分开写了，6 个虽然也不少，但是比 8 个要好点。回过头来说一下 namespace ，这又是另一种隔离机制。顾名思义，隔离的是名字空间，这样的话本来属于全局可见的名字资源，如 pid，network，mountpoint 之类的资源虚拟出多份，每个 namespace 一份，每组进程占用一个 namespace。这样的话容器内程序都看不到外部其他进程，攻击的难度自然也就加大了。</p>
 <p>然后这里面最关键的执行的一句倒是很简单了。</p>
 <pre><code>if err := command.Start(); err != nil &#123;
     child.Close()
@@ -334,7 +334,7 @@
 </code></pre>
 <p>其中的 command 是系统调用类 exec.Cmd 的一个对象，而之前的关于程序的配置信息已经在那个一行的执行代码里都整合进 command 里了，在这里只要 start 一下程序就跑起来了。然后我就疑惑了，这个函数不是 namespaces 包下的么，咋没有 namespaces 设置的相关代码呢。其实你仔细看那一行的执行代码可以发现 namespaces 的设置也在里面了，换句话说这个 namespaces 包下的 exec 其实没有做什么和 namespaces 相关的事情，只是 start 了一下。这种代码逻辑结构可是给读代码的人带来了不小的困惑啊。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这次读代码的起点是想搞懂容器是如何做隔离和保证安全的。从代码来看 docker 并没有另起炉灶新开发机制，而是将现有经过考验的隔离安全机制能用的全用上，包括 cgroups，capability，namespaces，apparmor 和 seLinux。这样一套组合拳打出来的效果理论上看还是很好的，即使其中一个机制出了漏洞，但是要利用这个漏洞的方法很可能会被其他机制限制住，要找到一种同时绕过所有隔离机制的方法难度就要大多了。</p>
-<p>但是从读代码的角度来看，docker 的代码的质量就让人很难恭维了，即使 libcontainer 是一个独立的部分，但本事同根生的名字都不一致，不知道之后会不会更混乱。而一些代码风格和逻辑上也实在让人读起来很费劲，代码质量要提高的地方还有很多。毕竟是开源的项目，即使功能很强大，但是大家如果发现代码质量有问题，恐怕也不大敢用在生产吧。</p>
+<p>但是从读代码的角度来看，docker 的代码的质量就让人很难恭维了，即使 libcontainer 是一个独立的部分，但本是同根生的名字都不一致，不知道之后会不会更混乱。而一些代码风格和逻辑上也实在让人读起来很费劲，代码质量要提高的地方还有很多。毕竟是开源的项目，即使功能很强大，但是大家如果发现代码质量有问题，恐怕也不大敢用在生产吧。</p>
 <p>而至于 libcontainer 尽管从 docker 中独立出去发展，但是可以看出和主项目还有一些没有切分干净的地方，而且 docker 主项目目前也没有采用 libcontainer 中的 container 方式，只是在调用里面的一些机制方法，看样子目前还处于一个逐步替换的过程中。libcontainer 和一个独立完整的产品还有一段距离，诸位有兴趣的也可以参与进去，万一这就是下一个伟大的项目呢？</p>
 
       </div>

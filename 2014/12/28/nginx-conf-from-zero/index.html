@@ -208,7 +208,7 @@
       </div>
       <div class="markdown-body">
         <p>作为一个 nginx 的初学者记录一下从零起步的点滴。</p>
-<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>Nginx 最常的用途是提供反向代理服务，那么什么反向代理呢？正向代理相信很多大陆同胞都在这片神奇的土地上用过了，原理大致如下图：</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>Nginx 最常用的用途是提供反向代理服务，那么什么是反向代理呢？正向代理相信很多大陆同胞都在这片神奇的土地上用过了，原理大致如下图：</p>
 <p><img src="http://oilbeater.qiniudn.com/reverseproxy.png"></p>
 <p>代理服务器作为客户端这边的中介接受请求，隐藏掉真实的客户，向服务器获取资源。如果代理服务器在长城外的话还能顺便帮助我们实现翻越长城的目的。而反向代理顾名思义就是反过来代理服务器作为服务器的中介，隐藏掉真实提供服务的服务器，原理大致如下图：</p>
 <p><img src="http://oilbeater.qiniudn.com/proxy.png"></p>
@@ -220,7 +220,7 @@
 <p>安装好之后可以直接通过：</p>
 <pre><code>sudo service nginx start
 </code></pre>
-<p>来启动 nginx 服务，nginx 默认设置了 80 端口的转发，我们可以再浏览器访问 <a target="_blank" rel="noopener" href="http://locallhost/">http://locallhost</a> 来进行检查。</p>
+<p>来启动 nginx 服务，nginx 默认设置了 80 端口的转发，我们可以在浏览器访问 <a target="_blank" rel="noopener" href="http://localhost/">http://localhost</a> 来进行检查。</p>
 <h2 id="初始配置"><a href="#初始配置" class="headerlink" title="初始配置"></a>初始配置</h2><p>nginx 的默认配置文件位于</p>
 <pre><code>/etc/nginx/nginx.conf
 </code></pre>
@@ -248,8 +248,8 @@
 <p>在这里 location 匹配 &#x2F; 开始的所有请求，即 localhost 下的 &#x2F;xxx 或者 &#x2F;yyy 都要走下面的配置,除了这种简单粗暴的匹配，nginx 也支持正则和完全相等及其他的精细匹配方式。而 try_files 意思是 nginx 会按照接下来的顺序去访问文件，将第一个匹配的返回。比如你去请求 localhost&#x2F;test,他会去寻找 &#x2F;test 文件，找不到再去找 &#x2F;test&#x2F; 再找不到就返回一个 404。此外我们还可以在 location 的配置里用 proxy_pass 实现反向代理和负载均衡，不过这个最简单的配置并没有涉及。</p>
 <p>其中 root 是指将本地的一个文件夹作为所有 url 请求的根路径。比如用户请求了一个 localhost&#x2F;test,那么 nginx 就会去需找 &#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html 文件夹下的 test 文件返回。</p>
 <p>而 index 就是默认的访问页面了，当我们访问 localhost 时，他会自动按顺序寻找 root 文件路径下的 index.html 和 index.htm 将第一个找到的结果返回。</p>
-<h2 id="location-进阶配置"><a href="#location-进阶配置" class="headerlink" title="location 进阶配置"></a>location 进阶配置</h2><p>上面的配置只是将用户的 url 映射到本地的文件，并没有实现传说中的反向代理和负载均衡（当然 nginx 做静态文件的分发也是想到的厉害），下面我们就来进一步配置 location 看看怎么实现。</p>
-<p>配置起来很简单比如我要将所有的请求到转移到真正提供服务的一台机器的 8080 端口，只要这样：</p>
+<h2 id="location-进阶配置"><a href="#location-进阶配置" class="headerlink" title="location 进阶配置"></a>location 进阶配置</h2><p>上面的配置只是将用户的 url 映射到本地的文件，并没有实现传说中的反向代理和负载均衡（当然 nginx 做静态文件的分发也是相当厉害），下面我们就来进一步配置 location 看看怎么实现。</p>
+<p>配置起来很简单比如我要将所有的请求转移到真正提供服务的一台机器的 8080 端口，只要这样：</p>
 <pre><code>location / &#123;
     proxy_pass 123.34.56.67:8080;
 &#125;
@@ -270,7 +270,7 @@ location / &#123;
 <p>要让配置生效，我们不必重启 nginx 只需要 reload 配置即可。</p>
 <pre><code>sudo service nginx reload
 </code></pre>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上是最简单的通过 nginx 实现静态文件转发、反向代理和负载均衡的配置。在 nginx 中所有的功能都是通过模块来实现的，比如当我们配置 upstream 时是对 upstream 模块，而 server 和 location 是在 http core 模块，其他的还有流控的 limt 模块，邮件的 mail 模块，https 的 ssl 模块。他们的配置都是类似的可以再 nginx 的<a target="_blank" rel="noopener" href="http://wiki.nginx.org/Modules">模块文档</a>中找到详细的配置说明。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上是最简单的通过 nginx 实现静态文件转发、反向代理和负载均衡的配置。在 nginx 中所有的功能都是通过模块来实现的，比如当我们配置 upstream 时是对 upstream 模块，而 server 和 location 是在 http core 模块，其他的还有流控的 limt 模块，邮件的 mail 模块，https 的 ssl 模块。他们的配置都是类似的可以在 nginx 的<a target="_blank" rel="noopener" href="http://wiki.nginx.org/Modules">模块文档</a>中找到详细的配置说明。</p>
 
       </div>
       

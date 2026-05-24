@@ -201,10 +201,10 @@
           
       </div>
       <div class="markdown-body">
-        <h2 id="痔疮"><a href="#痔疮" class="headerlink" title="痔疮"></a>痔疮</h2><p>居家办公三周后莫名其妙的得了痔疮，前几天都只能躺着了。查了下资料说现代人可能是因为长时间坐马桶导致的，可是我并没有。稍微好一些之后发现只要坐平时办工坐的椅子就会疼，仔细观察发现这个椅子由于长时间胶皮老化中间凹下去了，所以做起来就类似一个马桶两边高中间低，换成个平板椅子就好多了。</p>
+        <h2 id="痔疮"><a href="#痔疮" class="headerlink" title="痔疮"></a>痔疮</h2><p>居家办公三周后莫名其妙的得了痔疮，前几天都只能躺着了。查了下资料说现代人可能是因为长时间坐马桶导致的，可是我并没有。稍微好一些之后发现只要坐平时办公坐的椅子就会疼，仔细观察发现这个椅子由于长时间胶皮老化中间凹下去了，所以坐起来就类似一个马桶两边高中间低，换成个平板椅子就好多了。</p>
 <h2 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h2><p>对着上周看的 <a target="_blank" rel="noopener" href="https://abseil.io/fast/hints.html">Performance Hints</a> 里的一条<a target="_blank" rel="noopener" href="https://abseil.io/fast/hints.html#unnecessarily-nested-maps">unnecessarily-nested-maps</a>，拿着锤子找钉子，去 Prometheus 里看看有没有什么蹭 PR 的机会。最终发现这个优化方法还是有很多细节要考虑的，并不是完全没有副作用，尤其在 Prometheus 的场景里有时候完全不适用还会导致性能严重下降，之后可能会单写一个博客来说明。不过好在 Prometheus 里还有一处是完美适合这个优化的，提交了一个 PR <a target="_blank" rel="noopener" href="https://github.com/prometheus/prometheus/pull/17732">perf(promql): update matchedSigs to a flat map reduce memory by 97% for GROUP_LEFT</a>，能优化一个常见场景 13% 的 CPU 和 97% 的内存分配。</p>
 <p>看了<a target="_blank" rel="noopener" href="https://nesbitt.io/2025/12/26/how-uv-got-so-fast.html">How uv got so fast</a>，和第一直觉认为的 Rust 比 Python 快，所以 uv 才能这么快不同，uv 的快主要还是来自实现架构层面的选择。一方面是 Python 的包管理出了更高效的标准，另一方面 uv 选择放弃了大量的历史兼容性，专注于标准路径的优化。此外还有很多语言无关的优化，比如并行下载，硬链接等等其实是其他语言的依赖管理都有的功能，只是 pip 的历史包袱太大了，一直都没有这方面的优化。</p>
-<p>在逛 Prometheus Issues 是发现一个 <a target="_blank" rel="noopener" href="https://github.com/prometheus/prometheus/pull/17734">WIP: tsdb: persist series metadata to Parquet files</a> 需要找时间看一下 Parquet 是个什么存储。</p>
+<p>在逛 Prometheus Issues 时发现一个 <a target="_blank" rel="noopener" href="https://github.com/prometheus/prometheus/pull/17734">WIP: tsdb: persist series metadata to Parquet files</a> 需要找时间看一下 Parquet 是个什么存储。</p>
 <h2 id="生活"><a href="#生活" class="headerlink" title="生活"></a>生活</h2><p>周末和孩子去了<a target="_blank" rel="noopener" href="https://j.map.baidu.com/5c/3FQk">城市农场</a>，一开始以为是个什么网红景点，去了后发现是个正经的科研机构，中国奶牛的育种就是从这里开始的。里面都是些看上去六七十年代的老房子，有科研人员专门负责讲解，体验还是很不错的。另一方面想到自己小时候没有盒装奶还都是牧场每天早上和报纸一块送的鲜牛奶要拿回家去煮。</p>
 <p>里面有从刚出生到三四岁的奶牛，可以自己去喂，小孩抱着草料来回跑喂了快一个小时。</p>
 <p><img src="/../images/585200c8615451436d3d3387ab65f7591.jpg"></p>

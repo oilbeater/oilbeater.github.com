@@ -224,7 +224,7 @@
 <li>知识共享 Expert</li>
 </ul>
 <h2 id="更多更小的-Expert"><a href="#更多更小的-Expert" class="headerlink" title="更多更小的 Expert"></a>更多更小的 Expert</h2><p><img src="/../images/20250329165838.png"></p>
-<p>使用更多更小的 Expert 来增加每个 Expert 的专业性看似是个很符合直观的思路，但是之前主流 MoE 都是 8 个或者 16 个 Expert。可以想象 LLM 要处理的问题类型千千万，这个数量规模的 Expert 显然不可能做到高度的专业化，每个 Expert 都会有大量当前任务无关的知识。</p>
+<p>使用更多更小的 Expert 来增加每个 Expert 的专业性看似是个很符合直观的思路，但是之前主流 MoE 都是 8 个或者 16 个 Expert。可以想象 LLM 要处理的问题类型千千万，这个数量规模的 Expert 显然不可能做到高度的专业化，每个 Expert 都会有大量与当前任务无关的知识。</p>
 <p>但是随着 Expert 的数量变大，训练的难度也会变大，Router 很容易只选择少数几个 Expert 导致负载的极度不均衡。最终，理论上的 MoE 架构可能会变成每次只激活同一组 Expert 的小模型。因此，之前大部分 MoE 架构的 Expert 数量都不会太多。</p>
 <p>DeepSeek 经过一组设计的损失函数，给重复选择同一个 Expert 增加了惩罚，从而迫使 Router 更均衡的去选择 Expert。通过这个方式 DeepSeek 解决了训练的问题，开始一步步尝试 scale Expert 的数量。从这篇论文里的 64 选 6，扩展到 128 选 12，到 V2 的 160 选 6，再到 V3 的 256 选 8。</p>
 <p>可以看到 DeepSeek 一步步将 Expert 数量扩展，而且所需要选中的 Expert 比例也从 9% 一步步降低到 2%，证明了确实在 Expert 足够专业化后只需要更少部分的激活就可以完成对应的任务。</p>

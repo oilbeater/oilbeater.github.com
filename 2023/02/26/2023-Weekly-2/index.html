@@ -205,7 +205,7 @@
 <ul>
 <li>根据代码变动选择运行的测试和构建。比如在 <code>Kube-OVN</code> 中 <code>NetworkPolicy</code> 兼容性测试花费时间较长，那就可以根据代码目录判断，如果变动代码和 NetworkPolicy 无关，这部分测试就不运行了。</li>
 <li>Github public repo 最大并发数是 20，如果 workflow 拆分的太细，超过 20 个并发，那么准备阶段的开销可能会大于并发节省的时间，需要在并发数量和每次任务的准备时间之间做权衡。</li>
-<li>Cache 的 restore 和 save 都需要花时间，1G 内容 restore 大概 45s，save 要 3min，要考虑流水线的情况选择使哪些使用 cache，哪些就不用了。</li>
+<li>Cache 的 restore 和 save 都需要花时间，1G 内容 restore 大概 45s，save 要 3min，要考虑流水线的情况选择哪些使用 cache，哪些就不用了。</li>
 <li><code>kind</code> 起一个 <code>Kubernetes</code> 集群大概要 1m，<code>k3d</code> 差不多 10s，我们的环境有些兼容性问题，如果没有兼容性问题 CI 测试可以优先使用 <code>k3d</code>。</li>
 <li><code>Ginkgo</code> 有并发测试的选项，很多 <code>Kubernetes</code> 的测试需要等待状态就绪，CPU 消耗并不大，可以适度增加并发度。</li>
 <li>同样是因为 <code>Kubernetes</code> 中有很多等待状态的 <code>sleep</code>，可以把 <code>sleep</code> 间隔调小。比如 <code>sleep</code> 从 5s 调到 1s，那平均下来每次运行会节省 2s。</li>

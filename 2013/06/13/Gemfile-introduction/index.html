@@ -259,13 +259,13 @@ gem &quot;rails&quot;, :github =&gt; &quot;rails/rails&quot;
 </code></pre>
 <p>其中path通常指本地一个路径，git和github可以指定一个git库并通过branch，tag，和ref指定版本库中的一个特定版本。</p>
 <p>#####platform</p>
-<p>指定平台相关的tem，通常是某个操作系统或某个ruby引擎下的特有gem例如：</p>
+<p>指定平台相关的gem，通常是某个操作系统或某个ruby引擎下的特有gem例如：</p>
 <pre><code>gem &quot;weakling&quot;,   :platforms =&gt; :jruby
 gem &quot;ruby-debug&quot;, :platforms =&gt; :mri_18
 gem &quot;nokogiri&quot;,   :platforms =&gt; [:mri_18, :jruby]
 </code></pre>
 <p>###块控制语句</p>
-<p>如group，git，path和path这类语句可以一次控制很多gem，例如：</p>
+<p>如group，git，path和platform这类语句可以一次控制很多gem，例如：</p>
 <pre><code>git &quot;git://github.com/rails/rails.git&quot; do
   gem &quot;activesupport&quot;
   gem &quot;actionpack&quot;

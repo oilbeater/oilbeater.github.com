@@ -214,7 +214,7 @@
 <li>没有很好的和云原生对接，通常需要在 Kubernetes 集群外独立部署专有的软硬件，无法做到统一管理。</li>
 <li>成本高，且有厂商锁定的风险。</li>
 </ol>
-<h3 id="公有云全局负载均衡"><a href="#公有云全局负载均衡" class="headerlink" title="公有云全局负载均衡"></a>公有云全局负载均衡</h3><p>公有云为了解决流量多地域分发会提供多集群负载均衡的产品，例如 AWS 的 <a target="_blank" rel="noopener" href="https://aws.amazon.com/global-accelerator/">Global Accelerator</a> 和 GCP 的 <a target="_blank" rel="noopener" href="https://cloud.google.com/load-balancing/docs/https">External Application Load Balancer</a>。GCP 上甚至还有一组自定义的 <a target="_blank" rel="noopener" href="https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-ingress">Multi Cluster Ingress</a> 资源，可以很好的和 Kubernetes 里的 Ingress 进行对接。但是他们也有一下几个问题：</p>
+<h3 id="公有云全局负载均衡"><a href="#公有云全局负载均衡" class="headerlink" title="公有云全局负载均衡"></a>公有云全局负载均衡</h3><p>公有云为了解决流量多地域分发会提供多集群负载均衡的产品，例如 AWS 的 <a target="_blank" rel="noopener" href="https://aws.amazon.com/global-accelerator/">Global Accelerator</a> 和 GCP 的 <a target="_blank" rel="noopener" href="https://cloud.google.com/load-balancing/docs/https">External Application Load Balancer</a>。GCP 上甚至还有一组自定义的 <a target="_blank" rel="noopener" href="https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-ingress">Multi Cluster Ingress</a> 资源，可以很好的和 Kubernetes 里的 Ingress 进行对接。但是他们也有以下几个问题：</p>
 <ol>
 <li>虽然是多集群负载均衡，但是多个集群必须是同一个公有云，不能在多云间进行流量调度。</li>
 <li>私有云无法使用这个方案。</li>

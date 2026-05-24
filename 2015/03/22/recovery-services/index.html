@@ -206,7 +206,7 @@
 <p>一个服务还好，但是一个机房这么多服务敲命令要累死了，怎么办？写个脚本执行启动命令，放到开机启动脚本 rc.local 里好了。</p>
 <p>可是掉的不止你一个服务，可能你启动依赖的服务也掉了，启动的还比你晚，启动根本就起不来怎么办？</p>
 <p>一个简单粗暴的方式，不断重试就好了。在 cron.d 下面放个任务每分钟执行一次，一看服务进程不存在就尝试重启。一方面不考虑依赖问题，另一方面还顺道解决了服务 crash 后的自恢复。</p>
-<p>可实际中有的服务在依赖没启动时是可以起来的，但是工作会不正常，而且不能再依赖启动之后自动恢复，还是需要手动重启。严重的时候不正常的服务还会导致依赖它的服务异常，这该怎么办呢？</p>
+<p>可实际中有的服务在依赖没启动时是可以起来的，但是工作会不正常，而且不能在依赖启动之后自动恢复，还是需要手动重启。严重的时候不正常的服务还会导致依赖它的服务异常，这该怎么办呢？</p>
 <p>看样子似乎是无法摆脱依赖顺序而随心所欲的启动程序。那么就只能所有的服务各自汇报自己的服务上下游给一个人，然后那个人画一个启动流程图，告诉大家先干这个，再干那个么？嗯，一个如果机房里业务固定还好，如果不固定，今天加一个新应用，明天减一个旧应用，那么图就要改一遍。应用改个依赖，图又要改一遍，而且要这个画图的人时刻了解服务依赖的变化，想想就头疼。那么就没有个自动化的方法么？</p>
 <p>可以先参考一个类似的问题，systemd 是如何解决单机上开机程序之间的依赖问题。程序之间的依赖本质上来讲就是需要进行进程间的通信，而开机程序的进程间通信主要是通过 socket 和 dbus 来完成。systemd 的做法是预先建立好这些 socket 和 dbus，这样当一个程序发起通信时即使依赖程序还没启动完成，至少 socket 是打开的，可以先把请求 queue 住。这样发起请求的程序就会等待，而等依赖就绪就会处理这个请求，源程序就可以继续运行。这样理论上讲大多数情况下我们都不需要考虑程序间依赖，只需要把所有程序启动起来就好了。</p>
 <p>实现一个分布式的 systemd 还是有些困难的，但是这种思想很有启发。我们可以脱离集中化控制的思想，把分布式系统的重启任务分布式的解决。分布式服务之间的依赖本质上也是进程间通信，而且绝大多数都是 tcp&#x2F;udp 请求。简单的来说一个服务只需要判断他的上游服务是否 ready 来判断自己要不要启动，每个服务只需要在自己的机器上验证这个条件，不断地重试，整个服务就可以自动的按照顺序自发启动。</p>
@@ -220,10 +220,10 @@
 <li>Service restarts before dependencies getting ready and restart may crash.</li>
 <li>Service restarts before dependencies getting ready and the service can not work correctly.</li>
 </ol>
-<p>What we want is ordered restart.But as more and more services connect together,it’s complex to find and maintain a global order. What we provide here is a simple way to deal with th problem.</p>
+<p>What we want is ordered restart.But as more and more services connect together,it’s complex to find and maintain a global order. What we provide here is a simple way to deal with the problem.</p>
 <h1 id="How-it-work"><a href="#How-it-work" class="headerlink" title="How it work?"></a>How it work?</h1><p>A centralized restart system may hard to implement,but same effect can be achieved by other method.Let’s have a look at how systemd deal with the process dependency at startup time.</p>
-<p>Processe dependency is caused by inter-process communication (IPC) in essence. Socket and dbus are two main way of IPC during startup time.What systemd dose are pre-create these sockets and dbus,parallelizd all process and queued the request before corresponding process get ready.The process will be blocked when dependency is not ready and continue work as dependency starts to work and finishes the request.By this way most time no order need to be explicitly pointed out.</p>
-<p>Inspired by systemd, we can deal with distribute services restart distributly.Every service checks its directly dependency and start as they are ready.No more global order is needed,different service can restart automatically.Most service are connected by tcp socket or an application layer http protocal,Linux command nc and curl can be used to check these services.</p>
+<p>Processe dependency is caused by inter-process communication (IPC) in essence. Socket and dbus are two main way of IPC during startup time.What systemd does are pre-create these sockets and dbus,parallelized all process and queued the request before corresponding process get ready.The process will be blocked when dependency is not ready and continue work as dependency starts to work and finishes the request.By this way most time no order need to be explicitly pointed out.</p>
+<p>Inspired by systemd, we can deal with distribute services restart distributly.Every service checks its directly dependency and start as they are ready.No more global order is needed,different service can restart automatically.Most service are connected by tcp socket or an application layer http protocol,Linux command nc and curl can be used to check these services.</p>
 <p>This program Autoheal provide an easy way to generate a script combining checking process liveness,checking dependencies and restarting process together.</p>
 <h1 id="Running"><a href="#Running" class="headerlink" title="Running"></a>Running</h1><ol>
 <li><p>Installing the pyyaml dependency</p>
@@ -232,7 +232,7 @@
 </li>
 <li><p>Writing conf.yaml as following example:</p>
 <pre><code> nginx:                                                                # process 1
-     pname: nginx                                                      # use progess name to check process exist
+     pname: nginx                                                      # use process name to check process exist
      script: sudo -u admin /home/admin/cai/bin/nginx-proxy -s restart  # restart the process
  web_service:                                                          # process 2
      pid_file: /home/admin/web_server/conf/.web_server.pid             # use pid file to check process exist
