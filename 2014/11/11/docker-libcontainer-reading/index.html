@@ -238,31 +238,31 @@
 <h2 id="driver"><a href="#driver" class="headerlink" title="driver"></a>driver</h2><p>docker 支持 lxc 和 native 两套容器实现，是通过 driver 这个接口的两个实现来完成的。在 \daemon\execdriver 中可以看到有 lxc 和 native 两个文件夹，里面就是相关的代码。不过在 \daemon\ 目录下可以看到还有一个 container.go 里面是有个 container 对象，可是并没有实现 libcontainer 里对应的接口，难道 libcontainer 里的那个 interface 只是一个幌子？</p>
 <p>先看一下 driver 这个接口</p>
 <pre><code>type Driver interface &#123;
-    Run(c *Command, pipes *Pipes, startCallback StartCallback) (int, error) // Run executes the process and blocks until the process exits and returns the exit code
-    // Exec executes the process in a running container, blocks until the process exits and returns the exit code
-    Exec(c *Command, processConfig *ProcessConfig, pipes *Pipes, startCallback StartCallback) (int, error)
-    Kill(c *Command, sig int) error
-    Pause(c *Command) error
-    Unpause(c *Command) error
-    Name() string // Driver name
-    Info(id string) Info  // &quot;temporary&quot; hack (until we move state from core to plugins)
-    GetPidsForContainer(id string) ([]int, error) // Returns a list of pids for the given container.
-    Terminate(c *Command) error   // kill it with fire
-    Clean(id string) error// clean all traces of container exec
+	Run(c *Command, pipes *Pipes, startCallback StartCallback) (int, error) // Run executes the process and blocks until the process exits and returns the exit code
+	// Exec executes the process in a running container, blocks until the process exits and returns the exit code
+	Exec(c *Command, processConfig *ProcessConfig, pipes *Pipes, startCallback StartCallback) (int, error)
+	Kill(c *Command, sig int) error
+	Pause(c *Command) error
+	Unpause(c *Command) error
+	Name() string // Driver name
+	Info(id string) Info  // &quot;temporary&quot; hack (until we move state from core to plugins)
+	GetPidsForContainer(id string) ([]int, error) // Returns a list of pids for the given container.
+	Terminate(c *Command) error   // kill it with fire
+	Clean(id string) error// clean all traces of container exec
 &#125;
 </code></pre>
 <p>有没有感觉名字虽说和上面的 container interface 不太一样，不过意思是差不多的。resume 变成了 unpause， destroy 变成了 terminate，processes 变成了 getpidsforcontainer,start 也变成了 run 和 exec 两个函数。看到这不得不说 docker 的代码的一致性和可读性还是惨了点，codereview 需要更严格一些呀。</p>
 <p>再进到 native 的 driver.go 就可以看到具体的实现了。在文件头部发现了一长串 import，其中有几个比较抓眼球：</p>
 <pre><code>import (
-    ....
-    &quot;github.com/docker/libcontainer&quot;
-    &quot;github.com/docker/libcontainer/apparmor&quot;
-    &quot;github.com/docker/libcontainer/cgroups/fs&quot;
-    &quot;github.com/docker/libcontainer/cgroups/systemd&quot;
-    consolepkg &quot;github.com/docker/libcontainer/console&quot;
-    &quot;github.com/docker/libcontainer/namespaces&quot;
-    _ &quot;github.com/docker/libcontainer/namespaces/nsenter&quot;
-    &quot;github.com/docker/libcontainer/system&quot;
+	....
+	&quot;github.com/docker/libcontainer&quot;
+	&quot;github.com/docker/libcontainer/apparmor&quot;
+	&quot;github.com/docker/libcontainer/cgroups/fs&quot;
+	&quot;github.com/docker/libcontainer/cgroups/systemd&quot;
+	consolepkg &quot;github.com/docker/libcontainer/console&quot;
+	&quot;github.com/docker/libcontainer/namespaces&quot;
+	_ &quot;github.com/docker/libcontainer/namespaces/nsenter&quot;
+	&quot;github.com/docker/libcontainer/system&quot;
 )
 </code></pre>
 <p>从这里似乎可以看出一点端倪了。libcontainer 的目的是提供一个平台无关的原生容器，这需要包括资源隔离，权限控制等一系列通用组件，所以 libcontainer 就来提供这些通用组件，所以他叫 “lib”。而每个平台想实现自己的容器的话就可以借用这些组件，当然可以只用一部分而不全用， docker 就相当于用了包括 apparmor、cgroups、namespaces 等等组件，然后没用 libcontainer 的 container 接口和其他一些组件，自己写了其他部分完成的所谓 native 的容器。</p>
@@ -271,24 +271,24 @@
 </code></pre>
 <p>其中 execdriver.Pipes 是一个定义标准输入输出和错误指向的结构，startCallback 是在进程结束或者退出时调用的一个回调函数，最重要的结构是 execdriver.Command 他定义了容器内运行程序的各种环境和约束条件。可以在 daemon 下的 driver.go 中找到对应的定义。</p>
 <h2 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h2><pre><code>type Command struct &#123;
-    ID string	`json:&quot;id&quot;`
-    Rootfs string	`json:&quot;rootfs&quot;`   // root fs of the container
-    InitPath   string	`json:&quot;initpath&quot;` // dockerinit
-    WorkingDir string	`json:&quot;working_dir&quot;`
-    ConfigPath string	`json:&quot;config_path&quot;` // this should be able to be removed when the lxc template is moved into the driver
-    Network	*Network  `json:&quot;network&quot;`
-    Resources  *Resources	`json:&quot;resources&quot;`
-    Mounts []Mount   `json:&quot;mounts&quot;`
-    AllowedDevices []*devices.Device `json:&quot;allowed_devices&quot;`
-    AutoCreatedDevices []*devices.Device `json:&quot;autocreated_devices&quot;`
-    CapAdd []string  `json:&quot;cap_add&quot;`
-    CapDrop[]string  `json:&quot;cap_drop&quot;`
-    ContainerPid   int   `json:&quot;container_pid&quot;`  // the pid for the process inside a container
-    ProcessConfig  ProcessConfig `json:&quot;process_config&quot;` // Describes the init process of the container.
-    ProcessLabel   string	`json:&quot;process_label&quot;`
-    MountLabel string	`json:&quot;mount_label&quot;`
-    LxcConfig  []string  `json:&quot;lxc_config&quot;`
-    AppArmorProfile	string	`json:&quot;apparmor_profile&quot;`
+	ID string	`json:&quot;id&quot;`
+	Rootfs string	`json:&quot;rootfs&quot;`   // root fs of the container
+	InitPath   string	`json:&quot;initpath&quot;` // dockerinit
+	WorkingDir string	`json:&quot;working_dir&quot;`
+	ConfigPath string	`json:&quot;config_path&quot;` // this should be able to be removed when the lxc template is moved into the driver
+	Network	*Network  `json:&quot;network&quot;`
+	Resources  *Resources	`json:&quot;resources&quot;`
+	Mounts []Mount   `json:&quot;mounts&quot;`
+	AllowedDevices []*devices.Device `json:&quot;allowed_devices&quot;`
+	AutoCreatedDevices []*devices.Device `json:&quot;autocreated_devices&quot;`
+	CapAdd []string  `json:&quot;cap_add&quot;`
+	CapDrop[]string  `json:&quot;cap_drop&quot;`
+	ContainerPid   int   `json:&quot;container_pid&quot;`  // the pid for the process inside a container
+	ProcessConfig  ProcessConfig `json:&quot;process_config&quot;` // Describes the init process of the container.
+	ProcessLabel   string	`json:&quot;process_label&quot;`
+	MountLabel string	`json:&quot;mount_label&quot;`
+	LxcConfig  []string  `json:&quot;lxc_config&quot;`
+	AppArmorProfile	string	`json:&quot;apparmor_profile&quot;`
 &#125;
 </code></pre>
 <p>其中和进程隔离相关的有 Resources 规定了 cpu 和 memory 的资源分配，可供 cgroups 将来调用。 CapAdd 和 CapDrop 这个和 linux Capability 相关来控制 root 的某些系统调用权限不会被容器内的程序使用。ProcessLabel 为容器内的进程打上一个 Lable 这样的话 seLinux 将来就可以通过这个 lable 来做权限控制。Apparomoprofile 指向 docker 默认的 apparmor profile 路径，一般为&#x2F;etc&#x2F;apparmor.d&#x2F;docker，用来控制程序对文件系统的访问权限。</p>
@@ -296,31 +296,31 @@
 <p>而我们真正要在容器中执行的程序在 ProcessConfig 这个结构体中的 Entrypoint。由此可见所谓的容器就是一个穿着各种隔离外套的程序，用这些隔离外套保护这个程序可以活在自己的小天地里，不知有汉无论魏晋。</p>
 <h2 id="Exec"><a href="#Exec" class="headerlink" title="Exec"></a>Exec</h2><p>还是回到 run 里面看看究竟是怎么 run 的吧，看完了一系列的初始化和异常判断后终于到了真正运行的代码，只有一行，长得是这个样子的：</p>
 <pre><code>return namespaces.Exec(container, c.ProcessConfig.Stdin, c.ProcessConfig.Stdout, c.ProcessConfig.Stderr, c.ProcessConfig.Console, dataPath, args, func(container *libcontainer.Config, console, dataPath, init string, child *os.File, args []string) *exec.Cmd &#123;
-        c.ProcessConfig.Path = d.initPath
-        c.ProcessConfig.Args = append([]string&#123;
-            DriverName,
-            &quot;-console&quot;, console,
-            &quot;-pipe&quot;, &quot;3&quot;,
-            &quot;-root&quot;, filepath.Join(d.root, c.ID),
-            &quot;--&quot;,
-        &#125;, args...)
+		c.ProcessConfig.Path = d.initPath
+		c.ProcessConfig.Args = append([]string&#123;
+			DriverName,
+			&quot;-console&quot;, console,
+			&quot;-pipe&quot;, &quot;3&quot;,
+			&quot;-root&quot;, filepath.Join(d.root, c.ID),
+			&quot;--&quot;,
+		&#125;, args...)
 
-        // set this to nil so that when we set the clone flags anything else is reset
-        c.ProcessConfig.SysProcAttr = &amp;syscall.SysProcAttr&#123;
-            Cloneflags: uintptr(namespaces.GetNamespaceFlags(container.Namespaces)),
-        &#125;
-        c.ProcessConfig.ExtraFiles = []*os.File&#123;child&#125;
+		// set this to nil so that when we set the clone flags anything else is reset
+		c.ProcessConfig.SysProcAttr = &amp;syscall.SysProcAttr&#123;
+			Cloneflags: uintptr(namespaces.GetNamespaceFlags(container.Namespaces)),
+		&#125;
+		c.ProcessConfig.ExtraFiles = []*os.File&#123;child&#125;
 
-        c.ProcessConfig.Env = container.Env
-        c.ProcessConfig.Dir = container.RootFs
+		c.ProcessConfig.Env = container.Env
+		c.ProcessConfig.Dir = container.RootFs
 
-        return &amp;c.ProcessConfig.Cmd
-    &#125;, func() &#123;
-        if startCallback != nil &#123;
-            c.ContainerPid = c.ProcessConfig.Process.Pid
-            startCallback(&amp;c.ProcessConfig, c.ContainerPid)
-        &#125;
-    &#125;)
+		return &amp;c.ProcessConfig.Cmd
+	&#125;, func() &#123;
+		if startCallback != nil &#123;
+			c.ContainerPid = c.ProcessConfig.Process.Pid
+			startCallback(&amp;c.ProcessConfig, c.ContainerPid)
+		&#125;
+	&#125;)
 </code></pre>
 <p>看到这里整个人都不好了，我觉得 docker 这个项目要是这样下去会出问题的，就算你喜欢匿名函数也不要这么偏执好么。我甚至怀疑 docker 在用什么黑科技来隐藏他的真实代码了。于是我决定放弃这行代码直接看 namespaces.Exec 去了。在\verdor\src\github.com\libcontainer\namespaces\exec.go里</p>
 <pre><code>func Exec(container *libcontainer.Config, stdin io.Reader, stdout, stderr io.Writer, console, dataPath string, args []string, createCommand CreateCommand, startCallback func()) (int, error) 
@@ -328,8 +328,8 @@
 <p>不太确定一个函数 8 个参数真的好么，但是我更纳闷的是在主项目里既然都有 pipe 这个结构把 stdin，stdout，stderr 放在一起为啥到这里就要分开写了，6 个虽然也不少，但是比 8 个要好点。回过头来说一下 namespace ，这又是另一种隔离机制。顾名思义，隔离的是名字空间，这样的话本来属于全局可见的名字资源，如 pid，network，mountpoint 之类的资源虚拟出多份，每个 namespace 一份，每组进程占用一个 namespace。这样的话容器内程序都看不到外部其他进程，攻击的难度自然也就加大了。</p>
 <p>然后这里面最关键的执行的一句倒是很简单了。</p>
 <pre><code>if err := command.Start(); err != nil &#123;
-    child.Close()
-    return -1, err
+	child.Close()
+	return -1, err
 &#125;
 </code></pre>
 <p>其中的 command 是系统调用类 exec.Cmd 的一个对象，而之前的关于程序的配置信息已经在那个一行的执行代码里都整合进 command 里了，在这里只要 start 一下程序就跑起来了。然后我就疑惑了，这个函数不是 namespaces 包下的么，咋没有 namespaces 设置的相关代码呢。其实你仔细看那一行的执行代码可以发现 namespaces 的设置也在里面了，换句话说这个 namespaces 包下的 exec 其实没有做什么和 namespaces 相关的事情，只是 start 了一下。这种代码逻辑结构可是给读代码的人带来了不小的困惑啊。</p>
