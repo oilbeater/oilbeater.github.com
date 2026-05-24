@@ -11,7 +11,7 @@ published: true
 
 为了证明自己这一个月没有打酱油，不过一个月写出这么个环境搭建的东西也只能证明我打酱油了，也为了回去能把环境搭起来，还是写那么两笔吧。官方的安装指导在[这里](http://trac.webkit.org/wiki/BuildingQtOnWindows)但是按照这个指导是肯定编译不过去的，所以还是看我的吧。安装环境的过程其实一点也不麻烦
 ### 安装VS2008
- 官方链接在[这里](http://www.microsoft.com/zh-cn/download/details.aspx?id=3713)第一次找的时候不知道为什么脑抽筋直接下了一个MSDN，装完后还傻傻的找启动程序在那里？在哪里？
+ 官方链接在[这里](http://www.microsoft.com/zh-cn/download/details.aspx?id=3713)第一次找的时候不知道为什么脑抽筋直接下了一个MSDN，装完后还傻傻的找启动程序在哪里？在哪里？
 ### 安装Qt for VS2008
  网上很多教程都说要自己从编译Qt，实践证明直接用安装包就好了，链接在[这里](http://qt.nokia.com/downloads/windows-cpp-vs2008)安装好后记得要在环境变量PATH里把qt安装目录下面的bin路径加入到PATH中，因为vs编译的时候需要找到qmake的路径。
 ### 下载qtwebkit源码
@@ -21,7 +21,7 @@ published: true
 将 pthreadVC2.lib  pthreadVC2.lib 和pthread.h （看一下是x86版还是x64版）扔到qt安装目录下的lib中
 ### 下载WebKit Support Library 
   一个水果公司提供的库文件去[这里](https://developer.apple.com/opensource/internet/webkit_sptlib_agree.html)下载，**不用解压**，直接放到webkit源码目录下即可
-### 安装GUN 工具包
+### 安装GNU 工具包
 **记住安装路径中不能有空格** 
 由于某些众所周知的原因下面的链接可能打不开
 
@@ -37,7 +37,7 @@ published: true
 Perl在[这里](http://www.activestate.com/activeperl/downloads)
 Python 需要2.x版，链接在[这里](http://www.python.org/download/)由于某些众所周知的原因你可能打不开。然后再把python的安装路径和perl的bin路径加到PATH中就不需要再安装别的东西了。需要安装的东西一点也不多。
 ###修改代码bug
-像这么光荣伟大正确的开源工程release出来的代码怎么可能会有问题能，绝对不可能有问题，一定是下载程序出错了。
+像这么光荣伟大正确的开源工程release出来的代码怎么可能会有问题呢，绝对不可能有问题，一定是下载程序出错了。
 打开QtWebKit-2.2.0/Source/JavaScriptCore/JavaScriptCore.pri 把95行的LIBS += -lwinmm 改为LIBS += -lwinmm -lAdvapi32。不然的话链接时会出错，这一定是下载程序偷懒少下造成的。然后还有一个错误，具体在哪里我给忘了，不过是个编译的时候看一眼就知道怎么改的bug还是先编译吧。
 ###编译Qtwebkit
 在源码文件夹里新建WebkitBuild文件夹，在里面再新建Debug和Release两个文件夹，注意大小写。

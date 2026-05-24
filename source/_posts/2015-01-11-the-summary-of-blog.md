@@ -18,7 +18,7 @@ tags:
 
 感谢[七牛](http://qiniu.com)提供的存储及图片外链服务，几经辗转终于在国内找到优秀靠谱的服务。
 
-感谢 [Google Analytisc](http://www.google.com/analytics/) 为本片博文提供的数据，以及长久来的统计服务。
+感谢 [Google Analytics](http://www.google.com/analytics/) 为本篇博文提供的数据，以及长久来的统计服务。
 
 感谢 [dnspod](http://www.dnspod.cn) 的域名解析，你们的切换速度越来越快了。
 

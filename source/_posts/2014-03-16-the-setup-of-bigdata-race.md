@@ -64,7 +64,7 @@ img: "http://lh4.googleusercontent.com/-um7AnWJx3Is/T9cH3NM4QXI/AAAAAAAAASc/mR1b
                 cur_result = [tid]
         result.close()
 
-然后就是把这几个函数都整合起来，就可以省成初步的训练集，验证集，和最终结果了
+然后就是把这几个函数都整合起来，就可以生成初步的训练集，验证集，和最终结果了
 
     SEPERATEDAY = date(2013, 7, 15)
     BEGINDAY = date(2013, 4, 15)

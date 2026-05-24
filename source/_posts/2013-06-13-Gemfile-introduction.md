@@ -88,7 +88,7 @@ gem的下载源例如
 
 #####platform
 
-指定平台相关的tem，通常是某个操作系统或某个ruby引擎下的特有gem例如：
+指定平台相关的gem，通常是某个操作系统或某个ruby引擎下的特有gem例如：
 
     gem "weakling",   :platforms => :jruby
     gem "ruby-debug", :platforms => :mri_18
@@ -96,7 +96,7 @@ gem的下载源例如
 
 ###块控制语句
 
-如group，git，path和path这类语句可以一次控制很多gem，例如：
+如group，git，path和platform这类语句可以一次控制很多gem，例如：
 
     git "git://github.com/rails/rails.git" do
       gem "activesupport"

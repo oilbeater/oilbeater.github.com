@@ -21,7 +21,7 @@ GSLB 并不是一个新出的概念，所以不少商业公司都在这方面有
 
 ### 公有云全局负载均衡
 
-公有云为了解决流量多地域分发会提供多集群负载均衡的产品，例如 AWS 的 [Global Accelerator](https://aws.amazon.com/global-accelerator/) 和 GCP 的 [External Application Load Balancer](https://cloud.google.com/load-balancing/docs/https)。GCP 上甚至还有一组自定义的 [Multi Cluster Ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-ingress) 资源，可以很好的和 Kubernetes 里的 Ingress 进行对接。但是他们也有一下几个问题：
+公有云为了解决流量多地域分发会提供多集群负载均衡的产品，例如 AWS 的 [Global Accelerator](https://aws.amazon.com/global-accelerator/) 和 GCP 的 [External Application Load Balancer](https://cloud.google.com/load-balancing/docs/https)。GCP 上甚至还有一组自定义的 [Multi Cluster Ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/multi-cluster-ingress) 资源，可以很好的和 Kubernetes 里的 Ingress 进行对接。但是他们也有以下几个问题：
 
 1. 虽然是多集群负载均衡，但是多个集群必须是同一个公有云，不能在多云间进行流量调度。
 2. 私有云无法使用这个方案。

@@ -96,7 +96,7 @@ I	忽略大小写flag
 
 M	多行模式flag
 
-search(paattern,string,flag)	匹配并返回match对象
+search(pattern,string,flag)	匹配并返回match对象
 
 split(pattern,string,maxsplit,flags)	按pattern分割，pattern加括号会将分隔符输出
 

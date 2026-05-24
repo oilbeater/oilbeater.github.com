@@ -44,4 +44,4 @@ img: "http://lh5.googleusercontent.com/-78iIVZ1OVj4/UpQwxHvWCEI/AAAAAAAAAeg/2erF
 
 ![day summary](http://lh3.googleusercontent.com/-DpCWU3maeRw/UpQwhXPgRHI/AAAAAAAAAeA/zDOJL1t-pS4/w779-h399-no/day_summary.png)
 
-由于24 hour average的标准更严格，好天气的比例相对于每小时的比例严重缩水了，其实在124天的样本里只有一天的水平到了Good,也就是每个季度里只有一天达到了Good的标准，即便算上了moderate也只有22天，就是说样本数据里六分之一的天气还是正常的，剩下六分之五都是不健康的天气，实在是为生活在水深火热的美帝人民感到悲哀。你们于其天天和中国谈人权问题，还是先治理一下自己国家的空气吧。
+由于24 hour average的标准更严格，好天气的比例相对于每小时的比例严重缩水了，其实在124天的样本里只有一天的水平到了Good,也就是每个季度里只有一天达到了Good的标准，即便算上了moderate也只有22天，就是说样本数据里六分之一的天气还是正常的，剩下六分之五都是不健康的天气，实在是为生活在水深火热的美帝人民感到悲哀。你们与其天天和中国谈人权问题，还是先治理一下自己国家的空气吧。

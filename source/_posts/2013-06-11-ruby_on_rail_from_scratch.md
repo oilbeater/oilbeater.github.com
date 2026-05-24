@@ -166,7 +166,7 @@ img: "http://lh5.googleusercontent.com/-kUKhpCIDfsA/Ui06U9kkjpI/AAAAAAAAAZ0/zhk8
 
     heroku create
 
-加当前代码加入git库中
+将当前代码加入git库中
 
     git init
     git add .

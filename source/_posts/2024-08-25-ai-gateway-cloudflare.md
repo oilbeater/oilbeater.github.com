@@ -26,12 +26,12 @@ Cloudflare 的这款 AI Gateway 主要功能其实就是一个反向代理，看
 这个方案有下面几个优点：
 - 接入很简单，改一下 baseURL 就接入进来了，API 格式也没有任何变化。并且完全是 Serverless 的，不需要自己额外管理任何服务器，这个功能现在是免费的，直接就白嫖了监控数据。
 - 借助 Cloudflare 的全球网络可以实现一定的用户接入加速，不过这个用户接入的加速相比 LLM 本身的延迟比重应该很小，顶多在首个 Token 的延迟会有明显变化。
-- 通用借助 Cloudflare 的全球网络可以一定程度隐藏掉源 IP，对于一些 OpenAI API 访问受限的区域用这个可以绕过去。
+- 通过借助 Cloudflare 的全球网络可以一定程度隐藏掉源 IP，对于一些 OpenAI API 访问受限的区域用这个可以绕过去。
 
 但对应的也有下面的缺点：
 - 所有请求信息包括 API Key 都要在 Cloudflare 上过一道，会有安全方面的一些隐患。
 - Gateway 本身没有什么插件机制，想扩展功能的话会比较麻烦，只能在外面再套一层。
-- 同样是因为 Cloudflare 的全球网路欧，如果一个 Key 一直变换 IP 地址访问，不知道会不会触发 OpenAI 那边的拉黑。 
+- 同样是因为 Cloudflare 的全球网络，如果一个 Key 一直变换 IP 地址访问，不知道会不会触发 OpenAI 那边的拉黑。 
 
 # 主要能力
 
@@ -62,6 +62,6 @@ query，这样当前面的 Provider 请求失败时会自动调用下一个 Prov
 
 # 总结
 
-整体来看 Cloudflare AI Gateway 胜在简单易用，对于之前没有使用 AI Gateway 的用户可以两三分钟就接进来，提供了基础的监控和缓存能力。而且 Cloudflare 还有一些其他配套的 AI 服务例如 Works AI 提供了大量的开源模型的 Serving 和 Worker 提供边缘计算，几个一结合就能搭一套完全 Serverless 的 AI 系统。
+整体来看 Cloudflare AI Gateway 胜在简单易用，对于之前没有使用 AI Gateway 的用户可以两三分钟就接进来，提供了基础的监控和缓存能力。而且 Cloudflare 还有一些其他配套的 AI 服务例如 Workers AI 提供了大量的开源模型的 Serving 和 Worker 提供边缘计算，几个一结合就能搭一套完全 Serverless 的 AI 系统。
 
 他的问题主要在于更深入的功能提供的比较少，而且功能扩展比较麻烦，只能在外围通过 Worker 再来包一层。与其这样 Cloudflare 还不如直接把 AI Gateway 开源出来变成一个模板，用户可以根据自己需求去更改代码或者写插件，没准还能形成一个新的生态。毕竟我高度怀疑现在的 AI Gateway 其实就是个 Worker 模板。

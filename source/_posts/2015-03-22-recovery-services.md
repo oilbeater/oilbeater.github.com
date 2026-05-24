@@ -18,7 +18,7 @@ tags:
 
 一个简单粗暴的方式，不断重试就好了。在 cron.d 下面放个任务每分钟执行一次，一看服务进程不存在就尝试重启。一方面不考虑依赖问题，另一方面还顺道解决了服务 crash 后的自恢复。
 
-可实际中有的服务在依赖没启动时是可以起来的，但是工作会不正常，而且不能再依赖启动之后自动恢复，还是需要手动重启。严重的时候不正常的服务还会导致依赖它的服务异常，这该怎么办呢？
+可实际中有的服务在依赖没启动时是可以起来的，但是工作会不正常，而且不能在依赖启动之后自动恢复，还是需要手动重启。严重的时候不正常的服务还会导致依赖它的服务异常，这该怎么办呢？
 
 看样子似乎是无法摆脱依赖顺序而随心所欲的启动程序。那么就只能所有的服务各自汇报自己的服务上下游给一个人，然后那个人画一个启动流程图，告诉大家先干这个，再干那个么？嗯，一个如果机房里业务固定还好，如果不固定，今天加一个新应用，明天减一个旧应用，那么图就要改一遍。应用改个依赖，图又要改一遍，而且要这个画图的人时刻了解服务依赖的变化，想想就头疼。那么就没有个自动化的方法么？
 
@@ -42,15 +42,15 @@ All services will crash after a power cut.When power comes back, services recove
 2. Service restarts before dependencies getting ready and restart may crash.
 2. Service restarts before dependencies getting ready and the service can not work correctly.
 
-What we want is ordered restart.But as more and more services connect together,it's complex to find and maintain a global order. What we provide here is a simple way to deal with th problem.
+What we want is ordered restart.But as more and more services connect together,it's complex to find and maintain a global order. What we provide here is a simple way to deal with the problem.
 
 # How it work?
 
 A centralized restart system may hard to implement,but same effect can be achieved by other method.Let's have a look at how systemd deal with the process dependency at startup time.
 
-Processe dependency is caused by inter-process communication (IPC) in essence. Socket and dbus are two main way of IPC during startup time.What systemd dose are pre-create these sockets and dbus,parallelizd all process and queued the request before corresponding process get ready.The process will be blocked when dependency is not ready and continue work as dependency starts to work and finishes the request.By this way most time no order need to be explicitly pointed out.
+Processe dependency is caused by inter-process communication (IPC) in essence. Socket and dbus are two main way of IPC during startup time.What systemd does are pre-create these sockets and dbus,parallelized all process and queued the request before corresponding process get ready.The process will be blocked when dependency is not ready and continue work as dependency starts to work and finishes the request.By this way most time no order need to be explicitly pointed out.
 
-Inspired by systemd, we can deal with distribute services restart distributly.Every service checks its directly dependency and start as they are ready.No more global order is needed,different service can restart automatically.Most service are connected by tcp socket or an application layer http protocal,Linux command nc and curl can be used to check these services.
+Inspired by systemd, we can deal with distribute services restart distributly.Every service checks its directly dependency and start as they are ready.No more global order is needed,different service can restart automatically.Most service are connected by tcp socket or an application layer http protocol,Linux command nc and curl can be used to check these services.
 
 This program Autoheal provide an easy way to generate a script combining checking process liveness,checking dependencies and restarting process together.
 # Running
@@ -62,7 +62,7 @@ This program Autoheal provide an easy way to generate a script combining checkin
 2. Writing conf.yaml as following example:
 
         nginx:                                                                # process 1
-            pname: nginx                                                      # use progess name to check process exist
+            pname: nginx                                                      # use process name to check process exist
             script: sudo -u admin /home/admin/cai/bin/nginx-proxy -s restart  # restart the process
         web_service:                                                          # process 2
             pid_file: /home/admin/web_server/conf/.web_server.pid             # use pid file to check process exist

@@ -55,7 +55,7 @@ mv ../llama-2-7b-chat.ggmlv3.q8_0.bin models/
 
 # 为什么要本地运行大模型
 
-其实我手头 OpenAI 的 GPT3/GPT3，Google Bard，Claude 2 的 API 使用权都有，那为啥还要费心思在本地用 CPU 跑质量并不如他们的大模型呢？
+其实我手头 OpenAI 的 GPT3/GPT4，Google Bard，Claude 2 的 API 使用权都有，那为啥还要费心思在本地用 CPU 跑质量并不如他们的大模型呢？
 
 第一个原因是穷，和我想做的事情相关。我想用大模型做代码分析和信息摘要，一个项目可能有上万个 commit 跑一遍就破产了。
 
