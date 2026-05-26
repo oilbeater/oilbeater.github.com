@@ -214,6 +214,7 @@
       </div>
       <div class="markdown-body">
         <p>Claude Code 在 2.139 版本引入了 <a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/agent-view">Agent View</a>，可以在一个界面里直接浏览多个项目下所有运行中和已结束的 session，方便更好地进行 session 管理和并行开发，在单个 terminal tab 下就能完成大量并发工作。</p>
+<p><img src="/../images/agent-views.png"></p>
 <p>在我看来，这是一个 Agent 交互体验模式的重大提升，现阶段人们对它的重要性是大大低估了。</p>
 <p>尽管这不是一个模型或者能力层面的更新，但这种用户体验的重新组织，极大提升了并行开发的效率。我之前其实已经回退到了线性开发的模式，因为我发现自己很难在多个任务之间进行快速的切换和响应。但是用了 Agent View 之后，我发现我可以开始大量并发工作了。</p>
 <h2 id="它解决了什么"><a href="#它解决了什么" class="headerlink" title="它解决了什么"></a>它解决了什么</h2><p><strong>多 session 无法快速并发。</strong> 之前如果想并发，需要不断地开窗口、开 Claude Code 再执行任务。但这个流程普通人很难适应。在我的意识里，开窗口是个很重的操作，而且当下发一个任务后，模型很快就开始输出了，注意力很自然就被吸引过去了，很难不去看直接开下一个窗口。而在 Agent View 里，任务默认是异步的，输入完 prompt 后直接后台执行，留下的输入框是给下一个任务准备的，不会有当前任务的干扰，很自然地就过渡到了下一个任务。避免了窗口的创建，对心智成本是一个很大的下降，把”启动”这一步变得容易了。</p>
