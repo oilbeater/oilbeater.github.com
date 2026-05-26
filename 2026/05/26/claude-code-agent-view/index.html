@@ -11,11 +11,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="Oilbeater 的自习室" />
   <meta name="twitter:creator" content="@Oilbeater">
-  <meta name="twitter:title" content="Borg 论文阅读笔记 | Oilbeater 的自习室" />
+  <meta name="twitter:title" content="Claude Code Agent View —— 被低估的交互模式升级 | Oilbeater 的自习室" />
   <meta name="twitter:description" content="" />
 
   <meta property="og:site_name" content="Oilbeater 的自习室">
-  <meta property="og:title" content="Borg 论文阅读笔记 | Oilbeater 的自习室" />
+  <meta property="og:title" content="Claude Code Agent View —— 被低估的交互模式升级 | Oilbeater 的自习室" />
   <meta property="og:type" content="article" />
   <meta property="og:locale" content="zh-CN" />
   <meta property="og:description" content="" />
@@ -26,7 +26,7 @@
   
   <title>
     
-      Borg 论文阅读笔记
+      Claude Code Agent View —— 被低估的交互模式升级
       
       
       |
@@ -181,31 +181,31 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">Borg 论文阅读笔记</div>
+      <div class="post-title">Claude Code Agent View —— 被低估的交互模式升级</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-          2015-10-06 14:30:55
+          2026-05-26 10:00:00
         </span>
         
               <span class="post-tags">
                 <i class="iconfont icon-tags mr-10" title="标签"></i>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/%E6%8A%80%E6%9C%AF/" title="技术">
-                    #技术
+                  <a href="/tags/AI/" title="AI">
+                    #AI
                   </a>
                 </span>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/Google/" title="Google">
-                    #Google
+                  <a href="/tags/Claude-Code/" title="Claude Code">
+                    #Claude Code
                   </a>
                 </span>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="论文阅读">
-                    #论文阅读
+                  <a href="/tags/%E5%B7%A5%E5%85%B7/" title="工具">
+                    #工具
                   </a>
                 </span>
                 
@@ -213,57 +213,31 @@
           
       </div>
       <div class="markdown-body">
-        <p>Borg 是在传说中流传已久的 Google 内部集群管理系统，现在火热的 Mesos 和 Kubernetes 都是源自于 Borg。今年 Google 把论文放出来了，第一遍读感觉通篇细节没有什么太多值得玩味的，在这个行当干了一阵再读发现细节是魔鬼，每个细节都对应这一个实际中难解的问题，再读第三遍，不得不做一些笔记了。</p>
-<p>这篇论文发布在 EuroSys’15,可以去 这里 下载。虽说 EuroSys 已经算是极好的会议了，但是以 Google 的规模和 Borg 的名气没有中 OSDI&#x2F;SOSP 大概是论文写得不好吧。建议从事容器和集群管理相关的同学都仔细看看这篇论文。</p>
-<p>##概述</p>
-<p>集群管理带来的好处大致都是那些东西（1）隐藏了底层故障的细节（2）高可靠高可用（3）在线离线任务混部，提高资源使用率。这套系统 Google 发展了十多年，从论文角度来看不是第一个这样的集群管理系统了，Mesos 和 Yarn 都很早就把论文放出来了。但是其实这两个系统都深受 Google 的影响，而且 Borg 可以调度上万台机器的集群，是现阶段唯一一个达到这个规模的系统。</p>
-<p>###机器情况</p>
-<p>介绍了一堆 cell，cluster，site 的概念，一个中等规模的 cell 有 10k 异构机器，一个 cluster 通常包含一个这样的 cell 和一些规模稍小的其他用途 cell，多个 cluster 构成了一个 site。机器的异构维度十分多，甚至包括 cpu 类型，是否有外部 IP， 是否有 flash，系统版本等等。值得注意的是 cell 中绝大多数的机器是没有虚拟化的，主要原因是在 Google 的规模虚拟化所带来的性能开销是不能忍受的，出于成本的考虑这些机器的处理器甚至是没有虚拟化功能的。</p>
-<p>###负载</p>
-<p>long running, latency-sensitive 服务，诸如 Gmail, Google Docs, Search, Big Table, latency 一般在几微秒到几百毫秒。（prod）</p>
+        <p>Claude Code 在 2.139 版本引入了 <a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/agent-view">Agent View</a>，可以在一个界面里直接浏览多个项目下所有运行中和已结束的 session，方便更好地进行 session 管理和并行开发，在单个 terminal tab 下就能完成大量并发工作。</p>
+<p>在我看来，这是一个 Agent 交互体验模式的重大提升，现阶段人们对它的重要性是大大低估了。</p>
+<p>尽管这不是一个模型或者能力层面的更新，但这种用户体验的重新组织，极大提升了并行开发的效率。我之前其实已经回退到了线性开发的模式，因为我发现自己很难在多个任务之间进行快速的切换和响应。但是用了 Agent View 之后，我发现我可以开始大量并发工作了。</p>
+<h2 id="它解决了什么"><a href="#它解决了什么" class="headerlink" title="它解决了什么"></a>它解决了什么</h2><p><strong>多 session 无法快速并发。</strong> 之前如果想并发，需要不断地开窗口、开 Claude Code 再执行任务。但这个流程普通人很难适应。在我的意识里，开窗口是个很重的操作，而且当下发一个任务后，模型很快就开始输出了，注意力很自然就被吸引过去了，很难不去看直接开下一个窗口。而在 Agent View 里，任务默认是异步的，输入完 prompt 后直接后台执行，留下的输入框是给下一个任务准备的，不会有当前任务的干扰，很自然地就过渡到了下一个任务。避免了窗口的创建，对心智成本是一个很大的下降，把”启动”这一步变得容易了。</p>
+<p><strong>多 session 难以管理。</strong> 我之前为了并行处理，甚至写了个简单的 hook 让 Claude 每次执行完发铃声并且弹窗让我知道状态，但在多窗口的情况下还是很容易错过消息，忘记哪个窗口现在是什么状态。现在的 Agent View 里可以按状态展示 session，很轻松地看到哪个 session 等待我的输入，哪个还在工作，哪个已经完成。同样在一个窗口里快速浏览状态进行下一步操作，避免了窗口的切换。</p>
+<p><strong>git worktree 管理困难。</strong> 其实之前也可以通过 git worktree 来实现并发代码修改的隔离，但是 git worktree 的使用模式和普通开发流程还是有区别，并且还要求每次启动 Claude Code 的时候添加对应的参数，增加了额外的心智负担。而且之前的 session 是和 worktree 绑定的，很容易出现找不到的情况。在 Agent View 里的 session 如果涉及更改会自动启用 worktree 做隔离，对于使用者来说完全不知道有 worktree 的存在，极大降低了使用门槛。</p>
+<p><strong>多个项目并发管理困难。</strong> 现在直接在输入框 @ 项目名，就可以在项目目录下执行 Claude Code 操作，会直接使用对应目录的 Claude Code 配置，同样无需开窗口切换项目，减少了对人类上下文切换的开销。</p>
+<h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h2><p>此外 Claude Code 还设计了一系列快捷操作来让 Agent View 更加方便。比如非 Agent View 管理的 session 可以通过 <code>/bg</code> 命令直接加入到 Agent View；通过键盘 <code>&lt;-</code> 快速切换回 Agent View；通过 <code>Space</code> 展示 session 最近的会话并快速回复。一切的设计其实都是希望用户尽可能停留在 Agent View 页面，而不是进入到具体的某个 session 里。</p>
+<p>这个设计理念很值得注意，它不是在现有模式上加一个管理面板，而是在尝试重新定义人与 Agent 的交互方式：从一个对话窗口变成一个有状态的任务面板。</p>
+<h2 id="现阶段的问题"><a href="#现阶段的问题" class="headerlink" title="现阶段的问题"></a>现阶段的问题</h2><p>当然，我也发现了它存在的几个问题：</p>
 <ol>
-<li><p>batch jobs，latency 一般在几秒到数天。（non-prod）</p>
-</li>
-<li><p>其中 prod 类型的任务占据了 70% 的 CPU 资源和 60% 的内存资源。</p>
-</li>
+<li>会有一个 daemon 常驻进程，我已经遇到了好几次把 CPU 打满的情况。</li>
+<li>每个 session 都会启动一个 Claude Code 进程，但是这个进程何时关闭并不清楚，很容易出现大量 Claude Code 进程把资源占满。</li>
+<li>输入框的交互和 session 内存在区别，比如无法 @ 文件，无法搜索历史。</li>
+<li>slash command 只支持 skill，其他的内置命令比如看 usage 还是要进到 session 里去执行。</li>
+<li>worktree 存在失效的情况，这个和我本地的 git 管理可能相关，如果之前的 CLAUDE.md 里规定了分支策略，就有可能 worktree 不被触发。</li>
 </ol>
-<p>论文中列举了 Borg 上运行的应用 MapReduce，FlumeJava, Millwheel， Pregel 这些之前都发表过论文的系统都在 Borg 上运行，分布式存储系统诸如 GFS，CFS，Bigtable，Megastore 也是在 Borg 中运行。论文里把之前发表过的系统都引了一遍，鄙视这种无意义刷引用数的行为。</p>
-<p>由此可见像 Mapreduce 集群系统 GFS 分布式存储系统这种比较复杂的系统 Borg 都是可以支持的，而现在市面上的 CaaS 系统大多只支持简单的 Web 和单机的有状态服务，很多人也认为数据类和复杂的集群类服务不适合用 CaaS 来运行，Borg 论文中虽然没有解释如何支持这类服务，但至少告诉人们是有可行解决方案的。</p>
-<h3 id="任务情况"><a href="#任务情况" class="headerlink" title="任务情况"></a>任务情况</h3><p>熟悉 docker 的这一部分接受起来应该会比较容易。每个 job 运行时需要指定所需资源，包括端口号，CPU 核数，内存，磁盘等等。每个 job 的 binary 都是静态链接的，这和 docker 的 image 很相似都是为了最大程度的减少环境依赖，做到一次 build 处处执行。</p>
-<p>Borg 的使用者（主要是 Google 的 SRE（Site Reliable Engineer））多数情况下通过一个 CLI 来操作 Borg，感觉和 docker client 很像。对于复杂的编排需要使用 BCL 这种语言来编写脚本，BCL 还带有 lambda 可以提供数值计算，在 Google 中有大量这样的脚本，很多脚本都有 1k 行以上。感觉和 compose 有些像，论文里的说法是和 Aurora 的配置文件更像一些。<br><img src="http://7xl5hp.com1.z0.glb.clouddn.com/lifecycle.png"><br>附上论文中的任务运行的生命周期图，和 docker 容器的生命周期十分类似，包括 kill 的时候先发送 SIGTERM 一段时间后再发送 SIGKILL 的设计都十分类似。</p>
-<h3 id="服务发现及监控"><a href="#服务发现及监控" class="headerlink" title="服务发现及监控"></a>服务发现及监控</h3><p>服务发现用的是 chubby 保存对应服务的主机名和端口，lb 设备通过查询 chubby 来获取最新的路由。这和现在外面普遍的 haproxy + etcd 的做法基本一致，不过 etcd 和 zk 虽说源自 chubby 的论文，但是 chubby 可以支撑这种上万服务的动态变化，不知道 zk 或者 etcd 现在的性能有没有这么好。</p>
-<p>监控这块本以为会有什么出彩的设计，毕竟容器监控这块还是很棘手的，没想到 Google 简单粗暴要求每个 task 都需要运行一个 HTTP server 向外发布自己的状态信息和性能指标，果然是私有云可以靠标准化解决很多问题。</p>
-<p>至于 Borg 本身的监控，Borg 会记录所有的 event 和细粒度的资源使用情况并用 Dremel 来进行数据分析和处理，顺便帮 Dremel 刷了一篇引用数。</p>
-<h3 id="一些杂项"><a href="#一些杂项" class="headerlink" title="一些杂项"></a>一些杂项</h3><p>Allocs 这个概念论文没说的太明白，感觉是类似于 Mesos 中 reserved offer 的概念，将一部分资源预留给之后的任务使用，减少了调度的时间。并可以将一组任务分配到一个 alloc 中，而一个 alloc 又是一个单机模型的概念，感觉又和 k8s 中的 pod 很类似，可以方便处理一些需要在同一台机器上运行的一组不同服务，例如一个 web server 和一个针对这个 web server 的 log 收集服务可以运行在同一个 alloc 中，就保证了他们在同一台机器运行。</p>
-<p>Priority，quota，admission control 这些没有什么太特殊的，都是一些细枝末节的东西，感觉是为了撑字数。</p>
-<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><p><img src="http://7xl5hp.com1.z0.glb.clouddn.com/borg_arthicture"><br>Borg 这种多 master 互备，在 slave 上部署 agent 的架构现在还是很常见的，Borg 的很多细节方面的设计使得它可以撑起 Google 级别的集群。Borg 所有的组件都是用 C++ 编写的。</p>
-<h3 id="Borgmaster"><a href="#Borgmaster" class="headerlink" title="Borgmaster"></a>Borgmaster</h3><p>每个 Borgmaster 由两个进程组成，master 和 scheduler。负责接收 client 的请求，管理所有任务的状态变化并和 borglet 进行通信。Borgmaster 由五个节点组成，其中一个是 leader 另外四个为 replica 保存大部分的状态，此外所有的状态都被被分到一个基于 Paxos 的存储系统中（不知道为啥这里又不用 chubby 了，难道 google 还有什么小秘密）。此外定时 checkpoint，故障恢复都是和 Paxos 协议所介绍的类似，没有什么太多值得说的。</p>
-<p>有意思的是 Google 做了一个 Fauxmaster 可以读取 Borgmaster 的 checkpoint 文件并接收 client 的请求进行模拟仿真，客户端就仿佛和一个真的 Borgmaster 通信操作真实集群一样，这对于在线调试和一些生产环境操作的演练来说是个极好的工具。</p>
-<h3 id="调度"><a href="#调度" class="headerlink" title="调度"></a>调度</h3><p>调度分为两部分（1）找到一组可以运行 task 的机器 （2）对每个机器打分，挑选最合适的机器运行任务。第一步很好理解，找到一组有剩余资源的机器，第二步考虑的因素就很多了，是否可能发生抢占，是否有当前任务的 binary package，是否在不同的可用域，当前机器的负载情况等等都会影响分数。在此之上再结合了 worst fit 和 best fit 两种打分机制进行打分。</p>
-<p>在打分模型中最重要的因素是机器是否存在当前 task 的 binary package。按照论文的数据，每个任务的平均启动时间为 25s，其中 80% 的时间用于 package installation，可以近似理解为 docker pull image 的时间。因此 package 的局部性成为打分模型中最重要的因素。为了加速 package 的分发，Borg 内使用了树协议和 torrent-like 协议进行分发。现在 docker registry 也在致力于 p2p 的方式来 pull image，可能也是借鉴 Borg 的思想。</p>
-<p>个人感觉 Borg 的 package 似乎没用 layer filesystem 的技术，不然可以标准化 package 的 base image，这样分发速度应该会快很多。而 docker 也跟着学 p2p 就有点看不懂它要干什么了，毕竟现在 pull 的瓶颈主要在 image 的解压。也有可能 docker 官方想通过这种方式降低 hub 流量的开销，或者想变相翻墙也是有可能的。</p>
-<h3 id="Borglet"><a href="#Borglet" class="headerlink" title="Borglet"></a>Borglet</h3><p>Borg 在每台机器上的 agent，除了管理 task 的生命周期外还做了资源管理，日志处理，系统监控等等一堆东西，感觉是个 mesos slave + docker daemon + logstash + cadvisor 多功能合一的重 agent。 Borglet 消息的汇报通过 master 轮询 Borglet 来实现，这样 master 可以控制访问的速度，避免在特殊情况下踩踏事件的发生，毕竟机器规模太大了， push 的方式很可能会出问题。此外 master 的 replica 并不是单纯的做 backup 为了分担 master 的压力，每个 replica 会分担一部分的 Borglet 通信任务，再由 master 进行汇总。</p>
-<h3 id="扩展性"><a href="#扩展性" class="headerlink" title="扩展性"></a>扩展性</h3><p>按照论文的说法作者也不知道 Borg 这种集中控制的架构极限在哪里，因为他们总是能克服性能瓶颈。目前的处理速率为每分钟一万个 task，大概消耗 10~14 个 CPU 以及 50 GB 内存，这么看来一台稍微好点的机器就可以扛住了。</p>
-<p>论文中提到了一些提高扩展性的改进，包括前面提到的将任务分散到 replica 中，使用类似于 Omega 的乐观并行调度，以及为不同类型的负载指定不同的调度器。</p>
-<p>在提高响应速度方面主要是利用缓存保存调度计算的合适机器和每台机器的分数，避免重复的计算并且在计算出足够数量的机器后就停止计算，避免了遍历集群中所有机器。有了这些措施后每个调度基本可以在半秒内完成。</p>
-<h3 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h3><p>可用性达到 4 个 9，举了很多很细的例子，来说明如何提高可用性。包括自动的 reschedule，分可用域部署 job，限制同时并发的任务数来避免踩踏，job 的无状态化 等等。其中最重要的一个设计是保证已经运行的任务不会因为 Borgmaster 的挂掉而停止，这个也是 Mesos 在设计中的一个比较重要的原则。基本上按照最近的说法从 3 个 9 还可以靠运气和堆人肉，4 个 9 就需要进行良好的设计和自动化了，论文这一部分有很多很细节的方法都很值得参考。</p>
-<h2 id="经验教训"><a href="#经验教训" class="headerlink" title="经验教训"></a>经验教训</h2><p>这一部分说是经验教训，其实是花了一页的论文来给 k8s 做广告。</p>
-<h3 id="The-bad"><a href="#The-bad" class="headerlink" title="The bad"></a>The bad</h3><p>缺乏对多任务编排的能力，看描述的意思是一个 job 内部只能是同一个 task，当需要不同服务之间交互时需要一些复杂的 hack。k8s 提出的 pod 的概念就是为了解决这一类问题。</p>
-<p>一台机器上的 task 共享 一个 IP 会把事情复杂化。调度系统需要将机器的 port 当做资源来对待，每个 job 也必须事先说明自己需要哪些 ports，Borglet 上需要对端口进行隔离（个人感觉这其实算不上太大的问题）。k8s 中利用了 Linux namespaces, IPv6 以及 SDN 技术来解决这个问题，每个 pod 和 服务都可以拿到唯一属于自己的 IP。</p>
-<p>为 power user 提供了太多的选项使得普通用户使用起来比较麻烦（⊙﹏⊙ 我不懂为什么要写这条）。BCL 的 spec 里面有 230 个参数，为了方便普通用户专门有一个工具可以自动化的生成根据实验结果最优的配置。</p>
-<h3 id="The-good"><a href="#The-good" class="headerlink" title="The good"></a>The good</h3><p>Allocs 很有用，所以我们在 k8s 提供了 pod 作为 allocs 的更高级形式。</p>
-<p>集群管理不只是任务管理，naming 以及 lb 都是集群管理中不可缺少的，所以我们在 k8s 中也提供了 naming 和 lb 机制。</p>
-<p>各种监控和 debug 的工具十分重要，Borg 为整个 Google 提供服务，出问题都找 Borg 的维护人员会疯掉的，所以 Borg 提供了工具方便用户自己 debug 来解决问题。所以我们在 k8s 中提供了 cAdvisor，基于 Elasticsearch&#x2F;Kibana&#x2F;Fluentd 的日志汇集工具，master 状态快照等一系列 debug 工具。</p>
-<p>Borg master 是分布式系统的核心，k8s 更进一步提供了 API server 并且是微服务的架构的可以更好的对机器生命周期进行管理。</p>
-<p>总之这一部分就是 k8s 彻头彻尾的软文。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>尽管读了三遍这依然是一篇很碎很碎的论文，Google 还是对外隐藏了很多比较关键的设计，比如如何支持状态服务，网络和存储方面有没有什么特殊的设计，master 的设计细节等等都没有展开。不过很多其他设计的细节都在工作中碰到了，很多细节都很有现实意义。当然读到最后我觉得 Google 放出来就是像推广他的 k8s 项目。</p>
+<p>这些问题不影响我对这个方向的判断，Agent View 这种交互模式未来会成为标配。人们的注意力也会逐渐从当个 session 的管理，转移到更多工作的编排。</p>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2015/05/15/whyleaveali/" target="_self">
+              <a href="/2026/03/15/kidney-stones/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>上一页</span>
               </a>
@@ -272,27 +246,27 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="更新时间"></i>
-              2015-10-06 14:30:55
+              2026-05-26 10:00:00
             </span>
             
                   <span class="post-tags">
                     <i class="iconfont icon-tags mr-10" title="标签"></i>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/%E6%8A%80%E6%9C%AF/" title="技术">
-                        #技术
+                      <a href="/tags/AI/" title="AI">
+                        #AI
                       </a>
                     </span>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/Google/" title="Google">
-                        #Google
+                      <a href="/tags/Claude-Code/" title="Claude Code">
+                        #Claude Code
                       </a>
                     </span>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="论文阅读">
-                        #论文阅读
+                      <a href="/tags/%E5%B7%A5%E5%85%B7/" title="工具">
+                        #工具
                       </a>
                     </span>
                     
@@ -300,11 +274,6 @@
               
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2016/01/02/use-docker-performance-issue-and-solution/" target="_self">
-                <span>下一页</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -318,7 +287,7 @@
     <div class="title">目录</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E6%83%85%E5%86%B5"><span class="toc-text">任务情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E5%8F%8A%E7%9B%91%E6%8E%A7"><span class="toc-text">服务发现及监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E6%9D%82%E9%A1%B9"><span class="toc-text">一些杂项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84"><span class="toc-text">架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Borgmaster"><span class="toc-text">Borgmaster</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6"><span class="toc-text">调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Borglet"><span class="toc-text">Borglet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E6%80%A7"><span class="toc-text">扩展性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-text">可用性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E9%AA%8C%E6%95%99%E8%AE%AD"><span class="toc-text">经验教训</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-bad"><span class="toc-text">The bad</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-good"><span class="toc-text">The good</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%83%E8%A7%A3%E5%86%B3%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-text">它解决了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="toc-text">设计思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%B0%E9%98%B6%E6%AE%B5%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">现阶段的问题</span></a></li></ol>
       
     </div>
   </div>
@@ -680,12 +649,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Borg%20%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0 + '&url=' + http%3A%2F%2Foilbeater.com%2F2015%2F10%2F06%2Fborg-paper-reading-note%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Claude%20Code%20Agent%20View%20%E2%80%94%E2%80%94%20%E8%A2%AB%E4%BD%8E%E4%BC%B0%E7%9A%84%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F%E5%8D%87%E7%BA%A7 + '&url=' + http%3A%2F%2Foilbeater.com%2F2026%2F05%2F26%2Fclaude-code-agent-view%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2015/10/06/borg-paper-reading-note/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://oilbeater.com/2026/05/26/claude-code-agent-view/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
