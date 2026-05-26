@@ -9,6 +9,8 @@ tags:
 
 Claude Code 在 2.139 版本引入了 [Agent View](https://code.claude.com/docs/en/agent-view)，可以在一个界面里直接浏览多个项目下所有运行中和已结束的 session，方便更好地进行 session 管理和并行开发，在单个 terminal tab 下就能完成大量并发工作。
 
+![](../images/agent-views.png)
+
 在我看来，这是一个 Agent 交互体验模式的重大提升，现阶段人们对它的重要性是大大低估了。
 
 尽管这不是一个模型或者能力层面的更新，但这种用户体验的重新组织，极大提升了并行开发的效率。我之前其实已经回退到了线性开发的模式，因为我发现自己很难在多个任务之间进行快速的切换和响应。但是用了 Agent View 之后，我发现我可以开始大量并发工作了。
