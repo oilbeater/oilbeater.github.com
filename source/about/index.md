@@ -5,7 +5,7 @@ type: "about"
 ---
 ## 关于我
 
-- [MiniMax] AI Infra
+- [MiniMax](https://minimaxi.com/) AI Infra
 - [Kube-OVN](https://github.com/kubeovn) 项目发起人，维护者
 - 前[灵雀云](https://www.alauda.cn/)初创工程师，技术合伙人
 - 关注云原生，网络，性能，新技术和新产品
