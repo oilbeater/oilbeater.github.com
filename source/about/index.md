@@ -5,8 +5,9 @@ type: "about"
 ---
 ## 关于我
 
-- [灵雀云](https://www.alauda.cn/)初创工程师，技术合伙人
+- [MiniMax] AI Infra
 - [Kube-OVN](https://github.com/kubeovn) 项目发起人，维护者
+- 前[灵雀云](https://www.alauda.cn/)初创工程师，技术合伙人
 - 关注云原生，网络，性能，新技术和新产品
 - 孩子的父亲，未来的姥爷
 - 间歇性运动爱好者，概率性读书爱好者，爆米花电影收集者，伪球迷
