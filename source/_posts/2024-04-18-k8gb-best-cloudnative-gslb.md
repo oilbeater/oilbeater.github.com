@@ -51,7 +51,7 @@ k8gb 的解决方案其实也是用 DNS，但是通过自己的一系列巧妙�
 
 调整后用户请求 DNS 的流程如下图所示：
 
-- ![K8GB multi-cluster interoperability](https://www.k8gb.io/docs/images/gslb-basic-multi-cluster.svg)
+- ![K8GB multi-cluster interoperability](https://raw.githubusercontent.com/k8gb-io/k8gb/refs/heads/master/docs/images/gslb-basic-multi-cluster.svg)
 
 1. 用户向外部 DNS 服务商请求一个域名的 IP 记录。
 2. 外部 DNS 将这个请求代理发送给集群内由 k8gb 管控的一个 CoreDNS。
@@ -67,7 +67,7 @@ k8gb 的解决方案其实也是用 DNS，但是通过自己的一系列巧妙�
 
 同步的流程图如下所示：
 
-![k8gb multi-cluster-interoperability](https://www.k8gb.io/docs/images/k8gb-multi-cluster-interoperabililty.svg)
+![k8gb multi-cluster-interoperability](https://raw.githubusercontent.com/k8gb-io/k8gb/refs/heads/master/docs/images/k8gb-multi-cluster-interoperabililty.svg)
 
 大致的思路是每个集群的 k8gb 会把自己的 CoreDNS 的 Ingress IP 同样注册到上游 DNS，这样每个集群就可以直接访问另一个集群的 CoreDNS 了。然后每个集群内的 CoreDNS 再按照一个特殊的域名格式比如 `localtargets-app.cloud.example.com` 来保存本集群内 `app.cloud.example.com` Ingress 的 Ingress IP 并维护其健康状态。这样每个集群就都可以通过这个特殊的域名来获得其他集群这个域名对应的 Ingress IP 然后加入到自己的返回结果里，实现了域名解析的多集群同步。
 
